@@ -53,10 +53,7 @@ def init_mixed_team(mnr, *motor_params):
 
     mixed_team = []
     for index, params in enumerate(motor_params):
-        print(f'n_motors={mnr}')
         for i in range(mnr[index]):
-            print(f'for {i} in {mnr[index]}')
-            print(f'the amount of motors for {index} = {mnr[index]}')
             mixed_team.append(mc.MotorProtein(params['family'], params['member'], params['k_m'], params['alfa_0'], params['f_s'], params['epsilon_0'], params['f_d'], params['bind_rate'], params['step_size'], params['direction'], params['init_state'], params['calc_eps'], len(mixed_team)))
             print(f'{mixed_team[-1].id} - {mixed_team[-1].direction}')
 
