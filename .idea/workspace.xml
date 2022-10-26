@@ -1,67 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d599fbad-a598-4a0a-a323-4384fad44ad1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_constant/figures/motorforce_dist_(1, 1)_constant.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_constant/figures/xb_dist_(1, 1)_constant.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_constant/figures/xb_dist_(1, 1)_constant.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_constant/figures/xb_dist_(1, 1)_constant.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_constant/figures/xm_dist_(1, 1)_constant.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_constant/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_constant/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_constant/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_exponential/figures/motorforce_dist_(1, 1)_exponential.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_exponential/figures/xb_dist_(1, 1)_exponential.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_exponential/figures/xb_dist_(1, 1)_exponential.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_exponential/figures/xm_dist_(1, 1)_exponential.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_exponential/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_exponential/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_exponential/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_gaussian/figures/motorforce_dist_(1, 1)_gaussian.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_gaussian/figures/xb_dist_(1, 1)_gaussian.eps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_gaussian/figures/xb_dist_(1, 1)_gaussian.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_gaussian/figures/xm_dist_(1, 1)_gaussian.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_gaussian/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_gaussian/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(1, 1)_gaussian/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_constant/figures/motorforce_dist_(2, 2)_constant.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_constant/figures/xb_dist_(2, 2)_constant.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_constant/figures/xm_dist_(2, 2)_constant.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_constant/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_constant/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_constant/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_exponential/figures/motorforce_dist_(2, 2)_exponential.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_exponential/figures/xb_dist_(2, 2)_exponential.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_exponential/figures/xm_dist_(2, 2)_exponential.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_exponential/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_exponential/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_exponential/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_gaussian/figures/motorforce_dist_(2, 2)_gaussian.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_gaussian/figures/xb_dist_(2, 2)_gaussian.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_gaussian/figures/xm_dist_(2, 2)_gaussian.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_gaussian/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_gaussian/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_144711_symmetry1/(2, 2)_gaussian/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(1, 1)_constant/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(1, 1)_constant/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(1, 1)_constant/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(1, 1)_exponential/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(1, 1)_exponential/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(1, 1)_exponential/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(1, 1)_gaussian/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(1, 1)_gaussian/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(1, 1)_gaussian/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(2, 2)_constant/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(2, 2)_constant/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(2, 2)_constant/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(2, 2)_exponential/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(2, 2)_exponential/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(2, 2)_exponential/parameters.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(2, 2)_gaussian/motor0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(2, 2)_gaussian/motorteam" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/motor_objects/20221011_153538_symmetry1.2/(2, 2)_gaussian/parameters.txt" beforeDir="false" />
-    </list>
+    <list default="true" id="d599fbad-a598-4a0a-a323-4384fad44ad1" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,7 +42,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="file.status.colors" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
