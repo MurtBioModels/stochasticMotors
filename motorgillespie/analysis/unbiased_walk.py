@@ -8,7 +8,7 @@ import os
 
 def bead_symmetry(dirct, subdir):
 
-    # Unpickle motor0
+    # Unpickle test_motor0
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -85,7 +85,7 @@ def xbead_ks_qq(dirct, subdir, interval=(0, 95), stepsize=0.001, hypothesis='nor
         os.makedirs(f'.\motor_objects\{dirct}\{subdir}\\figures')
 
 
-    # Unpickle motor0
+    # Unpickle test_motor0
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -206,7 +206,7 @@ def fair_first_step(dirct, subdir, interval=(0, 95), stepsize=0.001, n_exp=1000,
     p_values = []
     for i in range(n_exp+1):
 
-        # Unpickle motor0 object
+        # Unpickle test_motor0 object
         pickle_file_motor0 = open(f'..\motor_objects\\{dirct}\\{subdir}\motor0_{i}', 'rb')
         motor0 = pickle.load(pickle_file_motor0)
         pickle_file_motor0.close()

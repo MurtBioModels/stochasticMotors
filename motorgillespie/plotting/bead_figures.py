@@ -21,7 +21,7 @@ def xbead_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probab
     if not os.path.isdir(f'.\motor_objects\{dirct}\{subdir}\\figures'):
         os.makedirs(f'.\motor_objects\{dirct}\{subdir}\\figures')
 
-    # Unpickle motor0
+    # Unpickle test_motor0
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -132,7 +132,7 @@ def dist_act_motors1(dirct, subdir, figname, titlestring, stepsize=0.001, stat='
     if not os.path.isdir(f'.\motor_objects\{dirct}\{subdir}\\figures'):
         os.makedirs(f'.\motor_objects\{dirct}\{subdir}\\figures')
 
-    # Unpickle motor0
+    # Unpickle test_motor0
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -198,7 +198,7 @@ def dist_act_motors2(dirct, subdir, figname, titlestring, stat='probability', sh
     if not os.path.isdir(f'.\motor_objects\{dirct}\{subdir}\\figures'):
         os.makedirs(f'.\motor_objects\{dirct}\{subdir}\\figures')
 
-    # Unpickle motor0
+    # Unpickle test_motor0
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -387,7 +387,7 @@ def segmented_velocity(dirct, subdir, figname, titlestring, stat='probability', 
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\{subdir}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\{subdir}\\figures')
 
-    # Unpickle motor0
+    # Unpickle test_motor0
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -564,7 +564,7 @@ def violin_xb(dirct, figname, titlestring, stepsize=0.001, show=True):
         for index, subdir in enumerate(subdirs):
             if subdir == 'figures':
                 continue
-            # Unpickle motor0
+            # Unpickle test_motor0
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
@@ -642,7 +642,7 @@ def cdf_xbead(dirct, figname, titlestring, stepsize=0.001, show=False):
         for index, subdir in enumerate(subdirs):
             if subdir == 'figures':
                 continue
-            # Unpickle motor0
+            # Unpickle test_motor0
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()

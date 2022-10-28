@@ -86,7 +86,7 @@ def simpar_loop(sim_params, varsimpar, simpar, gill_set, *motor_params, dirct, s
             and contains one or multiple subdirectories containing the actual motor objects.
     subdir : string
              Subdirectory to store the the motor object simulated under specific parameter values.
-             Contains pickled motor team, pickled motor0, meta data file and figure directory.
+             Contains pickled motor team, pickled test_motor0, meta data file and figure directory.
              Subdirectory name should contain the value(s) of the varied parameter(s).
              For example, the number of motors is varied, or a specific motor parameter.
     sd : string
@@ -101,7 +101,7 @@ def simpar_loop(sim_params, varsimpar, simpar, gill_set, *motor_params, dirct, s
     n_it = gill_set['n_it']
     t_max = gill_set['t_max']
     dimension = gill_set['dimension']
-    calc_epsilon = gill_set['epsilon']
+    calc_epsilon = gill_set['__epsilon']
     sim_par = simpar
 
     t = time.strftime("%Y%m%d_%H%M%S")

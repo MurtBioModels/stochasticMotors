@@ -200,7 +200,7 @@ def forces_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='proba
     pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\{subdir}\motorteam', 'rb')
     motorteam = pickle.load(pickle_file_motorteam)
     pickle_file_motorteam.close()
-    # Unpickle motor0 object
+    # Unpickle test_motor0 object
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -276,7 +276,7 @@ def xm_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probabili
     pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\\{subdir}\motorteam', 'rb')
     motorteam = pickle.load(pickle_file_motorteam)
     pickle_file_motorteam.close()
-    # Unpickle motor0 object
+    # Unpickle test_motor0 object
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()

@@ -29,7 +29,7 @@ class MotorProtein(object):
         direction : string
                     Retrograde or anterograde
         init_state : string
-                     Bound or unbound
+                     Bound or __unbound
         calc_eps :
         id : integer
              Numerical id for bookkeeping during simulation
@@ -53,12 +53,12 @@ class MotorProtein(object):
         self.calc_eps = calc_eps
         self.id = int(id)+1
         ## Updating variables ##
-        self.unbound = None
-        self.xm_abs = 0
-        self.xm_rel = 0
-        self.f_current = None # for 2D this is f_x
-        self.alfa = None
-        self.epsilon = None
+        self.__unbound = None
+        self.__xm_abs = None
+        self.__xm_rel = None
+        self.__f_current = None # for 2D this is f_x
+        self.__alfa = None
+        self.__epsilon = None
         ## Motor data ##
         self.x_m_abs = [] # lis of lists
         self.forces = [] # 1D, list of lists
@@ -88,17 +88,26 @@ class MotorProtein(object):
         -------
 
         """
-        # Check if the force dependent unbinding rate equation is valid
+        # Check if the force dependent unbinding relation
         calc_epsilon_options = ['gaussian', 'exponential', 'constant']
         if self.calc_eps not in calc_epsilon_options:
-            raise ValueError("Invalid function. Expected one of: %s. Equations can be added in MotorProtein code" % calc_epsilon_options)
+            raise ValueError("Not a valid motor: invalid force-unbinding relation. Expected one of: %s. Equations can be added in MotorProtein code" % calc_epsilon_options)
+        # Check initial state
+        initial_options = ['bound', '__unbound']
+        if self.init_state not in initial_options:
+            raise ValueError("Not a valid motor: invalid initial state. Expected one of: %s." % calc_epsilon_options)
+        # Check motor direction
+        direction_options = ['anterograde', 'retrograde']
+        if self.direction not in direction_options:
+            raise ValueError("Not a valid motor: invalid polarity. Expected one of: %s." % calc_epsilon_options)
+
         # Check if dimensional restrictions are met
         if dimension == '1D':
             if len(self.epsilon_0) != 1:
-                raise ValueError("Zero force unbinding rate list should contain only one value")
+                raise ValueError("Not a valid motor: zero force unbinding rate list should contain only one value")
         if dimension == '2D':
             if len(self.epsilon_0) != 2:
-                raise ValueError("Zero force unbinding rate list should contain two value")
+                raise ValueError("Not a valid motor: zero force unbinding rate list should contain two value")
         return
 
     ### Initiate motor to default state every Gillespie run (t=0) ###
@@ -113,15 +122,15 @@ class MotorProtein(object):
         -------
 
         """
-        if self.init_state == 'unbound':
-            self.unbound = True
+        if self.init_state == '__unbound':
+            self.__unbound = True
         elif self.init_state == 'bound':
-            self.unbound = False
+            self.__unbound = False
         else:
-            raise ValueError("Motor proteins can either be in an bound or unbound (initial) state")
+            raise ValueError("Motor proteins can either be in an bound or __unbound (initial) state")
 
-        self.xm_abs = 0
-        self.xm_rel = 0
+        self.__xm_abs = 0
+        self.__xm_rel = 0
         self.x_m_abs.append([0])
 
         if dimension == '1D':
@@ -148,6 +157,27 @@ class MotorProtein(object):
         """
         return
 
+    ### Calculate force ###
+    def cal_force(self, bead_loc, i):
+        """
+
+        Parameters
+        ----------
+
+
+        Returns
+        -------
+
+        """
+        if self.__unbound:
+            self.__f_current = 0
+        else:
+            self.__f_current = self.k_m * (self.__xm_abs - bead_loc)
+
+        self.forces[i].append(self.__f_current)
+
+        return self.__f_current
+
     ### Force dependent rate equations ###
     def stepping_rate(self):
         """
@@ -163,23 +193,23 @@ class MotorProtein(object):
         if self.f_s == 0:
             raise ValueError("Invalid stall force (Fs). Deliminator can not be zero")
         if self.direction == 'anterograde':
-            if self.f_current < 0:
-                self.alfa = self.alfa_0
-            elif self.f_current > self.f_s:
-                self.alfa = 0
+            if self.__f_current < 0:
+                self.__alfa = self.alfa_0
+            elif self.__f_current > self.f_s:
+                self.__alfa = 0
             else:
-                self.alfa = self.alfa_0 * (1 - (self.f_current / self.f_s))
+                self.__alfa = self.alfa_0 * (1 - (self.__f_current / self.f_s))
         elif self.direction == 'retrograde':
-            if self.f_current > 0:
-                self.alfa = self.alfa_0
-            elif (-1*self.f_current) > self.f_s:
-                self.alfa = 0
+            if self.__f_current > 0:
+                self.__alfa = self.alfa_0
+            elif (-1*self.__f_current) > self.f_s:
+                self.__alfa = 0
             else:
-                self.alfa = self.alfa_0 * (1 - ((-1*self.f_current) / self.f_s))
+                self.__alfa = self.alfa_0 * (1 - ((-1 * self.__f_current) / self.f_s))
         else:
             raise ValueError("Transport must be either retrograde or anterograde")
 
-        self.alfa_list.append(self.alfa)
+        self.alfa_list.append(self.__alfa)
 
         return
 
@@ -198,17 +228,17 @@ class MotorProtein(object):
 
         #
         if self.calc_eps == 'gaussian':
-            self.epsilon = 1+(6*math.exp(-(abs(self.f_current)-2.5)**2))
+            self.__epsilon = 1 + (6 * math.exp(-(abs(self.__f_current) - 2.5) ** 2))
         elif self.calc_eps == 'exponential':
             if self.f_d == 0:
                 raise ValueError("Invalid detachment force (Fd) force. Deliminator can not be zero")
-            self.epsilon = self.epsilon_0[0] * math.exp(abs(self.f_current)/self.f_d)
+            self.__epsilon = self.epsilon_0[0] * math.exp(abs(self.__f_current) / self.f_d)
         elif self.calc_eps == 'constant':
-            self.epsilon = self.epsilon_0[0]
+            self.__epsilon = self.epsilon_0[0]
         else:
             raise ValueError("Unbinding equation not recognized. Retry or add equation to unbinding_rate_1")
 
-        self.eps_list.append(self.epsilon)
+        self.eps_list.append(self.__epsilon)
 
         return
 
@@ -238,7 +268,7 @@ class MotorProtein(object):
         k1 = self.epsilon_0[0] * np.exp((np.dot(f_v,dp_v1)) / (Boltzmann * T))
         k2 = self.epsilon_0[1] * np.exp((np.dot(f_v,dp_v2)) / (Boltzmann * T))
 
-        self.epsilon = k1*k2/(k1+k2)
+        self.__epsilon = k1 * k2 / (k1 + k2)
         self.eps_list.append(k1 * k2 / (k1 + k2))
 
         return
@@ -256,11 +286,11 @@ class MotorProtein(object):
 
         """
         if self.direction == 'anterograde':
-            self.xm_abs = self.xm_abs + self.step_size
-            self.xm_rel = self.xm_rel + self.step_size
+            self.__xm_abs = self.__xm_abs + self.step_size
+            self.__xm_rel = self.__xm_rel + self.step_size
         elif self.direction == 'retrograde':
-            self.xm_abs = self.xm_abs - self.step_size
-            self.xm_rel = self.xm_rel - self.step_size
+            self.__xm_abs = self.__xm_abs - self.step_size
+            self.__xm_rel = self.__xm_rel - self.step_size
         else:
             raise ValueError("Transport must be either retrograde or anterograde")
         return
@@ -276,9 +306,9 @@ class MotorProtein(object):
         -------
 
         """
-        self.xm_abs = x_bead
-        self.xm_rel = 0
-        self.unbound = False
+        self.__xm_abs = x_bead
+        self.__xm_rel = 0
+        self.__unbound = False
 
         return
 
@@ -293,11 +323,37 @@ class MotorProtein(object):
         -------
 
         """
-        self.xm_abs = 0
-        self.xm_rel = 0
-        self.unbound = True
+        self.__xm_abs = 0
+        self.__xm_rel = 0
+        self.__unbound = True
 
         return
+
+    ### Getters for private attributes ###
+    @property
+    def unbound(self):
+        return self.__unbound
+
+    @property
+    def xm_abs(self):
+        return self.__xm_abs
+
+    @property
+    def xm_rel(self):
+        return self.__xm_rel
+
+    @property
+    def f_current(self):
+        return self.__f_current
+
+    @property
+    def alfa(self):
+        return self.__alfa
+
+    @property
+    def epsilon(self):
+        return self.__epsilon
+
 
 
 class MotorFixed(object):
@@ -311,9 +367,9 @@ class MotorFixed(object):
 
     """
     ## Class attributes ##
-    id = 0
-    unbound = False
-    x_m = 0
+    __id = 0
+    __unbound = False
+    __x_m = 0
 
     def __init__(self, dp_v1, dp_v2, radius, rest_length, temp, k_t):
         ## Simulation parameters ##
@@ -326,7 +382,8 @@ class MotorFixed(object):
         self.angle = None
         ## Bead/simulation data  ##
         self.time_points = [] # list of lists
-        self.x_bead = [] # list of lists; divide bij k_t to get force
+        self.x_bead = [] # list of lists
+        self.force_bead = [] # list of lists
         self.retro_motors = [] # list of lists
         self.antero_motors = [] # list of lists
         self.bead_unbind_events = [] # list if lists
@@ -348,6 +405,7 @@ class MotorFixed(object):
         """
         self.time_points.append([0])
         self.x_bead.append([])
+        self.force_bead.append([])
         self.antero_motors.append([])
         self.retro_motors.append([])
         self.bead_unbind_events.append([])
@@ -355,19 +413,35 @@ class MotorFixed(object):
 
         return
 
+    ### Calculate force ###
+    def calc_force(self, bead_loc, i):
+        """
 
+        Parameters
+        ----------
 
+        Returns
+        -------
 
+        """
 
+        force = self.k_t*(self.__x_m - bead_loc)
+        self.force_bead[i].append(force)
 
+        return force
 
+    ### Getters for private attributes ###
+    @property
+    def x_m(self):
+        return self.__x_m
 
+    @property
+    def id(self):
+        return self.__id
 
-
-
-
-
-
+    @property
+    def unbound(self):
+        return self.__unbound
 
 
 

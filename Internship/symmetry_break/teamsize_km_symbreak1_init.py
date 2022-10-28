@@ -18,7 +18,7 @@ kinesin_params = {
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'anterograde',
- 'init_state': 'unbound',
+ 'init_state': '__unbound',
  'calc_eps': 'exponential', # exponential and gaussian
  'test1':1000
 }
@@ -35,7 +35,7 @@ dynesin_params = {
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'retrograde',
- 'init_state': 'unbound',
+ 'init_state': '__unbound',
  'calc_eps': 'exponential',
  'test1':1000
 }
@@ -48,7 +48,7 @@ sim_params = {
  'temp': None,
  'radius': None,
  'rest_length': None,
- 'k_t': 0.0000000000001,
+ 'k_t': 0.0000000000001
 }
 
 ### Simulation settings ###
@@ -56,7 +56,7 @@ gill_set = {
     'n_motors': None,
     'n_it': 1000,
     't_max': 100,
-    'dimension': '1D',
+    'dimension': '1D'
 }
 
 date = time.strftime("%Y%m%d_%H%M%S")

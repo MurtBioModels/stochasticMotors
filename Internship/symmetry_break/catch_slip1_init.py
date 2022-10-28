@@ -34,7 +34,7 @@ kinesin2_params = {
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'anterograde',
- 'init_state': 'unbound',
+ 'init_state': '__unbound',
  'calc_eps': 'exponential',
  'test1':1000
 }
@@ -66,7 +66,7 @@ dynesin2_params = {
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'retrograde',
- 'init_state': 'unbound',
+ 'init_state': '__unbound',
  'calc_eps': 'gaussian',
  'test1':1000
 }

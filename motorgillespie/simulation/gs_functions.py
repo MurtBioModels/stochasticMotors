@@ -22,11 +22,10 @@ def calc_force_1D(team, motor_0, i):
     None
     """
     # List of Km_i*Xm_i of motor proteins in motor team
-    xm_km_list = [(motor.xm_abs * motor.k_m) for motor in team]
-    xm_km_list.append(motor_0.k_t * motor_0.x_m)
+    xm_km_list = [(motor.__xm_abs * motor.k_m) for motor in team]
 
     # List of Km's of bound motor proteins in motor team
-    km_list = [motor.k_m for motor in team if not motor.unbound]
+    km_list = [motor.k_m for motor in team if not motor.__unbound]
     km_list.append(motor_0.k_t)
 
     # Calculate position beat/cargo
@@ -39,16 +38,11 @@ def calc_force_1D(team, motor_0, i):
     # Update forces acting on each individual motor protein
     net_force = 0
     for motor in team:
-        if motor.unbound:
-            motor.f_current = 0
-            motor.forces[i].append(0)
-            net_force += 0
-        else:
-            motor.f_current = motor.k_m*(motor.xm_abs - bead_loc)
-            motor.forces[i].append(motor.f_current)
-            net_force += motor.f_current
+        f_m = motor.cal_force(bead_loc, i)
+        net_force += f_m
+
     # Motor0/fixed motor
-    f_fixed = motor_0.k_t*(motor_0.x_m - bead_loc)
+    f_fixed = motor_0.calc_force(bead_loc, i)
     net_force += f_fixed
     # Net force should be zero
     if abs(net_force) > 10**-13:
@@ -81,12 +75,11 @@ def calc_force_2D(team, motor_0, k_t, rest_length, radius, i):
     None
     """
 
-    breakpoint()
     # List of Km_i*Xm_i of motor proteins in motor team
     if len(team) != 1:
         raise ValueError("The 2D simulation is currently only available for 1 motor simulations")
-    xm_km_list = [(motor.xm_abs * motor.k_m) for motor in team]
-    xm_km_list.append(motor_0.k_t * motor_0.xm_abs)
+    xm_km_list = [(motor.__xm_abs * motor.k_m) for motor in team]
+    xm_km_list.append(motor_0.k_t * motor_0.__xm_abs)
     # List of Km's of bound motor proteins in motor team
     km_list = [motor.k_m for motor in team if not motor.init_state]
     km_list.append(k_t)
@@ -100,19 +93,19 @@ def calc_force_2D(team, motor_0, k_t, rest_length, radius, i):
     net_force = 0
     for motor in team:
         breakpoint()
-        if motor.unbound:
-            motor.f_current = 0
+        if motor.__unbound:
+            motor.__f_current = 0
             motor.f_x[i].append(0)
             motor.f_z[i].append(0)
-            net_force += motor.f_current
+            net_force += motor.__f_current
         else:
-            fx = motor.k_m * (motor.xm_abs - bead_loc)
-            motor.f_current = fx
+            fx = motor.k_m * (motor.__xm_abs - bead_loc)
+            motor.__f_current = fx
             motor.f_x[i].append(fx)
             motor.f_z[i].append(  fx / np.sqrt( ( (1 + (rest_length / radius) )**2 ) - 1)  ) # Dit nog checken met de simpele?
-            net_force += motor.f_current
+            net_force += motor.__f_current
 
-    f_fixed = motor_0.k_t*(motor_0.xm_abs - bead_loc)
+    f_fixed = motor_0.k_t*(motor_0.__xm_abs - bead_loc)
     #print(f'force motorfixed calculated={f_fixed}, xbead={bead_loc}')
     net_force += f_fixed
 
@@ -131,8 +124,8 @@ def draw_event(list_rates, sum_rates):
     list_rates : list of floats
                  List of rates of all possible events for all proteins.
                  Rates are updates each Gillespie iteration based on updated current force acting on each motor.
-                 List of rates is created each iteration based on bound or unbound state of each motor.
-                 Example: 1 bound + 1 unbound: [alfa motor1, epsilon motor1, attachment rate motor2]
+                 List of rates is created each iteration based on bound or __unbound state of each motor.
+                 Example: 1 bound + 1 __unbound: [__alfa motor1, __epsilon motor1, attachment rate motor2]
     sum_rates: float
 
     Returns

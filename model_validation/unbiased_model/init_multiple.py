@@ -59,7 +59,7 @@ gill_set = {
     'n_it': 100,
     't_max': 10,
     'dimension': '1D',
-    'epsilon': 'constant'
+    '__epsilon': 'constant'
 }
 ### Parameters to pass ###
 n_motors = gill_set['n_motors']
@@ -90,7 +90,7 @@ if __name__ == '__main__':
             motor_team.append(mc.MotorProtein(motor_params_antero['family'], motor_params_antero['member'], motor_params_antero['k_m'], motor_params_antero['alfa_0'], motor_params_antero['f_s'], motor_params_antero['epsilon_0'], motor_params_antero['f_d'], motor_params_antero['bind_rate'], motor_params_antero['step_size'], motor_params_antero['direction'], motor_params_antero['init_state'], 0))
             motor_team.append(mc.MotorProtein(motor_params_retro['family'], motor_params_retro['member'], motor_params_retro['k_m'], motor_params_retro['alfa_0'], motor_params_retro['f_s'], motor_params_retro['epsilon_0'], motor_params_retro['f_d'], motor_params_retro['bind_rate'], motor_params_retro['step_size'], motor_params_retro['direction'], motor_params_retro['init_state'], 1))
 
-            team_out, motor0_out = gs.gillespie_2D_walk(motor_team, motor0, t_max=gill_set['t_max'], n_iteration=gill_set['n_it'], dimension=gill_set['dimension'], calc_epsilon=gill_set['epsilon'])
+            team_out, motor0_out = gs.gillespie_2D_walk(motor_team, motor0, t_max=gill_set['t_max'], n_iteration=gill_set['n_it'], dimension=gill_set['dimension'], calc_epsilon=gill_set['__epsilon'])
 
             # Pickle motor objects
             if not os.path.isdir(f'..\motor_objects\\{subject}\\{subdir}'):

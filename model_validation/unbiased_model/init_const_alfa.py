@@ -56,7 +56,7 @@ gill_set = {
     'n_it': 1000,
     't_max': 100,
     'dimension': '1D',
-    'epsilon': 'constant'
+    '__epsilon': 'constant'
 }
 
 ### Variable lists to loop over ###
@@ -67,7 +67,7 @@ subject = 'model_validation'
 date = time.strftime("%Y%m%d_%H%M%S")
 subdir = f'{date}_constalfa'
 short_description = 'This script runs a simulation with two equal motors, only one walks anterograde and and retrograde \n' \
-                    'Alfa and epsilon are both kept constant, so that the error in force calculation will not influence \n' \
+                    'Alfa and __epsilon are both kept constant, so that the error in force calculation will not influence \n' \
                     'which motor will step or unbind.\n' \
                     'X_bead still has a bias (and this is what biases the force), but this will not bias which motor will be chosen. \n' \
                     'This way it can be investigating if the event choosing is biased without influence of the bead \n' \

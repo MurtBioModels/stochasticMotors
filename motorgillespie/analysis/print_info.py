@@ -9,7 +9,7 @@ def inspect(dirct, subdir):
     pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\\{subdir}\motorteam', 'rb')
     motorteam = pickle.load(pickle_file_motorteam)
     pickle_file_motorteam.close()
-    # Unpickle motor0 object
+    # Unpickle test_motor0 object
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -22,7 +22,7 @@ def inspect(dirct, subdir):
         print(motor.direction)
     print(motor0.k_t)
     print(motor0.x_m)
-    print(motor0.unbound)
+    print(motor0.__unbound)
     return
 
 
@@ -95,7 +95,7 @@ def print_things_sym(subdir, family, n_motors, kt):
     pickle_file_team.close()
 
     for motor in motor_team:
-        #print(f'motor{motor.id}: {motor.direction} unique epsilon: {np.unique(motor.eps_list)}, unique alfa: {np.unique(motor.alfa_list)}')
+        #print(f'motor{motor.id}: {motor.direction} unique __epsilon: {np.unique(motor.eps_list)}, unique __alfa: {np.unique(motor.alfa_list)}')
         print(f'motor{motor.id}: {motor.direction} np.rand match events: {motor.match_events}')
 
 
