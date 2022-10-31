@@ -755,24 +755,111 @@ def cdf_trace_vel(dirct, figname, titlestring, show=False):
         print('Figure saved')
     return
 
-def function(dirct, figname, titlestring, show=False):
+
+def heatmap(dirct, figname, titlestring, show=False):
     """
 
     Parameters
     ----------
+    dirct:
+    index:
+        This has to be a ordered as
+    cols:
+
 
     Returns
     -------
 
     """
+    index = ['1-1', '2-2', '3-3', '4-4', '5-5']
+    columns = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1']
+    array_antero = np.zeros((len(index), len(cols)))
+    array_retro = np.zeros((len(index), len(cols)))
+
+    index_teamsize = 0
+    index_ratio = 0
+
     for root, subdirs, files in os.walk(f'.\motor_objects\{dirct}'):
         for index, subdir in enumerate(subdirs):
             if subdir == 'figures':
                 continue
+            print(f'index_teamsize={index_teamsize}')
+            print(f'index_ratio={index_ratio}')
+            print(f'subdir={subdir}')
+            #
+            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
+            motor0 = pickle.load(pickle_file_motor0)
+            pickle_file_motor0.close()
+            # Unpickle motor team
+            pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\{subdir}\motorteam', 'rb')
+            motorteam = pickle.load(pickle_file_motorteam)
+            pickle_file_motorteam.close()
+            print(f'teamsize={len(motorteam)}')
+            print(f'ratio={motorteam[-1].k_m/motorteam[0]}.k_m')
 
+            #
+            flattened_antero = [val for sublist in motor0.antero_motors for val in sublist]
+            flattened_retro = [val for sublist in motor0.retro_motors for val in sublist]
+            mean_antero = sum(flattened_antero)/len(flattened_antero)
+            mean_retro = sum(flattened_retro)/len(flattened_retro)
+            #
+            array_antero[index_teamsize, index_ratio] = mean_antero
+            array_retro[index_teamsize, index_ratio] = mean_retro
 
+            print(array_antero)
+            print(array_retro)
+            #
+            if index_ratio < 9:
+                index_ratio += 1
+            elif index_ratio == 9:
+                index_ratio = 0
+                index_teamsize += 1
+            else:
+                print('This cannot be right')
 
+    print('done')
+    print(array_antero)
+    print(array_retro)
+    #
+    if not os.path.isdir(f'.\motor_objects\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\{dirct}\\figures')
+    #
+    df_antero = pd.DataFrame(array_antero, index=index, columns=columns)
+    df_retro = pd.DataFrame(array_retro, index=index, columns=columns)
+    #
+    plt.figure()
+    sns.heatmap(df_antero, annot=True)
+    plt.xlabel('')
+    plt.ylabel('')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\heatmap_antero_boundmotors_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+    #
+    plt.figure()
+    sns.heatmap(df_retro, annot=True)
+    plt.xlabel('')
+    plt.ylabel('')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\heatmap_retro_boundmotors_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
     return
+
 
 def bla(dirct, figname, titlestring, show=False):
     """

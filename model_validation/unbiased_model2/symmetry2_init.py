@@ -18,7 +18,7 @@ kinesin_params = {
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'anterograde',
- 'init_state': '__unbound',
+ 'init_state': 'unbound',
  'test1':1000
 }
 
@@ -34,7 +34,7 @@ dynesin_params = {
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'retrograde',
- 'init_state': '__unbound',
+ 'init_state': 'unbound',
  'test1':1000
 }
 
@@ -61,7 +61,7 @@ for i in team_comb:
             'n_it': 100,
             't_max': 100,
             'dimension': '1D',
-            '__epsilon': j
+            'epsilon': j
         }
         ### Data storage ###
         subdir = f'{i}_{j}'

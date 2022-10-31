@@ -9,7 +9,7 @@
 ###- Gaussian function for unbinding rate OR quadratic function, with shift CHECK
     ###- Change trap stiffness (if K_t is large, you get large forces, and then large stall times?) CHECK
     ###- Plot P(F_u)CHECK and P(F)CHECK>>Then first normalize over time!!CHECK distributions + trajectories CHECK + unbinding events per F_u per k_t CHECK and Tau distribution(from 250ms!!)CHECK
-    ###- Correct for 0 force for __unbound motor CHECK
+    ###- Correct for 0 force for unbound motor CHECK
 
 26-08-2022
 3.
@@ -28,14 +28,14 @@
 
 
 4. UNBIASED
-4.1 Symmetric simulation: two kinesins, bead (varvalue=0), __epsilon=0 > make bead trajectory histogram (should be unbiased, random motion, brownian) CHECK
+4.1 Symmetric simulation: two kinesins, bead (varvalue=0), epsilon=0 > make bead trajectory histogram (should be unbiased, random motion, brownian) CHECK
 >> First normalize the time!! You have lists of time points and Xb's. CHECK
 > They should stall at 7pN until simulation is over CHECK
 >> Check again the order! Analyze with statistics check if there is a bias CHECK(there is) >> f_s = 10000
-4.2 Add Kt, then add __epsilon(constant) > make bead traj. histograms again for these settings CHECK
+4.2 Add Kt, then add epsilon(constant) > make bead traj. histograms again for these settings CHECK
 >> Think about how binding and unbinding would affect those histograms CHECK
-    >  With Kt and no __epsilon, also stalls at 7pN until simulation is over, but less diffusion, biased to the center (x=0) CHECK
-4.3  Also try __epsilon + no Kt >  use this extreme case to check your code: after unbinding Xb should equal Xm, and so the force 0 CHECK
+    >  With Kt and no epsilon, also stalls at 7pN until simulation is over, but less diffusion, biased to the center (x=0) CHECK
+4.3  Also try epsilon + no Kt >  use this extreme case to check your code: after unbinding Xb should equal Xm, and so the force 0 CHECK
 >> and thus epsilon0 + alfa0 CHECK (not the case, but found reason)
 4.4 EVERYTHING UNBIASED?? check
 oplossingen:
@@ -102,5 +102,5 @@ if __name__ == '__main__':
 >> Math
 (# Write out equations)
 # Do the fitting of parameters on analytical eqs (Fu and X walk) with data from exponential >Matlab?
-# Solve equations in Mathematica for exponential __epsilon > then plot that equation against simulated data with exponential __epsilon 
+# Solve equations in Mathematica for exponential epsilon > then plot that equation against simulated data with exponential epsilon 
 (# Take derivative of displacement over discrete time)'''

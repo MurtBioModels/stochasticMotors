@@ -6,7 +6,7 @@ import numpy as np
 
 def fx_eps(family, k_t, n_motors, n_it, list_r):
     """
-    Plotting unbinding rate (__epsilon) of motor in optical trap in 2D simulation.
+    Plotting unbinding rate (epsilon) of motor in optical trap in 2D simulation.
     The angle is fixed in the simulation.
 
     Parameters

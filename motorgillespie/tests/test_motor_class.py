@@ -6,7 +6,7 @@ class TestMotorProtein(unittest.TestCase):
 
     def setUp(self):
         test_motor = mc.MotorProtein('family': 'Kinesin-1', 'member': 'unknown', 'step_size': 8, 'k_m': 0.2, 'v_0': 740, 'alfa_0': 92.5,
-        'f_s': 7, 'epsilon_0': [0.66], 'f_d': 2.1, 'bind_rate': 5, 'direction': 'anterograde', 'init_state': '__unbound',
+        'f_s': 7, 'epsilon_0': [0.66], 'f_d': 2.1, 'bind_rate': 5, 'direction': 'anterograde', 'init_state': 'unbound',
          'calc_eps': 'exponential')
 
 

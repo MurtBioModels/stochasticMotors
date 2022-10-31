@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def calc_force_1D(team, motor_0, i):
+def calc_force_1D(team, motor_0, k_t, x_motor0, i):
     """
     This function updates the current force acting on each  motor protein
     in a team of multiple motors in Gillespie Stochastic Simulation gillespie_motor_team
@@ -21,12 +21,13 @@ def calc_force_1D(team, motor_0, i):
     -------
     None
     """
+
     # List of Km_i*Xm_i of motor proteins in motor team
-    xm_km_list = [(motor.__xm_abs * motor.k_m) for motor in team]
+    xm_km_list = [(motor.xm_abs * motor.k_m) for motor in team]
 
     # List of Km's of bound motor proteins in motor team
-    km_list = [motor.k_m for motor in team if not motor.__unbound]
-    km_list.append(motor_0.k_t)
+    km_list = [motor.k_m for motor in team if not motor.unbound]
+    km_list.append(k_t)
 
     # Calculate position beat/cargo
     bead_loc = sum(xm_km_list)/sum(km_list)
@@ -38,15 +39,22 @@ def calc_force_1D(team, motor_0, i):
     # Update forces acting on each individual motor protein
     net_force = 0
     for motor in team:
-        f_m = motor.cal_force(bead_loc, i)
-        net_force += f_m
+        if motor.unbound:
+            f = 0
+        else:
+            f = motor.k_m * (motor.xm_abs - bead_loc)
+        motor.f_current = f
+        motor.forces[i].append(f)
+        net_force += f
 
     # Motor0/fixed motor
-    f_fixed = motor_0.calc_force(bead_loc, i)
-    net_force += f_fixed
+    f0 = k_t*(x_motor0 - bead_loc)
+    motor_0.force_bead[i].append(f0)
+    net_force += f0
+
     # Net force should be zero
-    if abs(net_force) > 10**-13:
-        print(net_force)
+    if abs(net_force) > 10**-11:
+        print(f'Net force = {net_force}')
         raise AssertionError('Net force on bead should be zero, look for problems in code')
 
     return
@@ -78,8 +86,8 @@ def calc_force_2D(team, motor_0, k_t, rest_length, radius, i):
     # List of Km_i*Xm_i of motor proteins in motor team
     if len(team) != 1:
         raise ValueError("The 2D simulation is currently only available for 1 motor simulations")
-    xm_km_list = [(motor.__xm_abs * motor.k_m) for motor in team]
-    xm_km_list.append(motor_0.k_t * motor_0.__xm_abs)
+    xm_km_list = [(motor.xm_abs * motor.k_m) for motor in team]
+    xm_km_list.append(motor_0.k_t * motor_0.xm_abs)
     # List of Km's of bound motor proteins in motor team
     km_list = [motor.k_m for motor in team if not motor.init_state]
     km_list.append(k_t)
@@ -93,19 +101,19 @@ def calc_force_2D(team, motor_0, k_t, rest_length, radius, i):
     net_force = 0
     for motor in team:
         breakpoint()
-        if motor.__unbound:
-            motor.__f_current = 0
+        if motor.unbound:
+            motor.f_current = 0
             motor.f_x[i].append(0)
             motor.f_z[i].append(0)
-            net_force += motor.__f_current
+            net_force += motor.f_current
         else:
-            fx = motor.k_m * (motor.__xm_abs - bead_loc)
-            motor.__f_current = fx
+            fx = motor.k_m * (motor.xm_abs - bead_loc)
+            motor.f_current = fx
             motor.f_x[i].append(fx)
             motor.f_z[i].append(  fx / np.sqrt( ( (1 + (rest_length / radius) )**2 ) - 1)  ) # Dit nog checken met de simpele?
-            net_force += motor.__f_current
+            net_force += motor.f_current
 
-    f_fixed = motor_0.k_t*(motor_0.__xm_abs - bead_loc)
+    f_fixed = motor_0.k_t*(motor_0.xm_abs - bead_loc)
     #print(f'force motorfixed calculated={f_fixed}, xbead={bead_loc}')
     net_force += f_fixed
 
@@ -124,8 +132,8 @@ def draw_event(list_rates, sum_rates):
     list_rates : list of floats
                  List of rates of all possible events for all proteins.
                  Rates are updates each Gillespie iteration based on updated current force acting on each motor.
-                 List of rates is created each iteration based on bound or __unbound state of each motor.
-                 Example: 1 bound + 1 __unbound: [__alfa motor1, __epsilon motor1, attachment rate motor2]
+                 List of rates is created each iteration based on bound or unbound state of each motor.
+                 Example: 1 bound + 1 unbound: [alfa motor1, epsilon motor1, attachment rate motor2]
     sum_rates: float
 
     Returns

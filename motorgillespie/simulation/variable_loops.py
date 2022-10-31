@@ -30,25 +30,35 @@ def init_run(sim_params, gill_set, *motor_params, dirct, subdir, sd=None):
     dimension = gill_set['dimension']
 
     # Create team of motor proteins
+    print('Initiating motor team..')
     motor_team = im.init_mixed_team(n_motors, *motor_params)
     # Create fixed motor
+    print('Initiating motor0...')
     motor0 = im.init_motor_0(sim_params)
     # Simulate motor dynamics with Gillespie
+    print('Call Gillespie simulation...')
     team_out, motor0_out = gsim.gillespie_2D_walk(motor_team, motor0, t_max, n_it, dimension=dimension)
+    print('Done simulating')
 
     # Directory created in current working directory
-    if not os.path.isdir(f'.\motor_objects\{dirct}\{subdir}'):
-        os.makedirs(f'.\motor_objects\{dirct}\{subdir}')
+    if not os.path.isdir(f'.\motor_objects\{dirct}'):
+        os.makedirs(f'.\motor_objects\{dirct}')
+
     # Motor team: list of all motors containing own data
-    pickleTeam = open(f'.\motor_objects\{dirct}\{subdir}\motorteam', 'wb')
-    pickle.dump(team_out, pickleTeam)
-    pickleTeam.close()
+    os.makedirs(f'.\motor_objects\{dirct}\{subdir}')
+    print('Pickling motor team...')
+    for motor in motor_team:
+        pickleTeam = open(f'.\motor_objects\{dirct}\{subdir}\{motor.id}_{motor.family}_{motor.direction}', 'wb')
+        pickle.dump(motor, pickleTeam)
+        pickleTeam.close()
     # Motor0/fixed motor: holds data about the 'bead'
+    print('Pickling motor0...')
     pickleMotor0 = open(f'.\motor_objects\{dirct}\{subdir}\motor0', 'wb')
     pickle.dump(motor0_out, pickleMotor0)
     pickleMotor0.close()
 
     # Write meta data file in subdirectory
+    print('Saving metadata to .txt file...')
     with open(f".\motor_objects\{dirct}\{subdir}\parameters.txt", "w") as par_file:
         par_file.write(f"Simulation description: {sd}: \n")
         for index, dict in enumerate(motor_params):
@@ -61,6 +71,8 @@ def init_run(sim_params, gill_set, *motor_params, dirct, subdir, sd=None):
         par_file.write("Gillespie settings: \n")
         for gs, value in gill_set.items():
             par_file.write(f"{gs}={value}\n")
+
+    print('Done')
 
     return
 
@@ -101,7 +113,7 @@ def simpar_loop(sim_params, varsimpar, simpar, gill_set, *motor_params, dirct, s
     n_it = gill_set['n_it']
     t_max = gill_set['t_max']
     dimension = gill_set['dimension']
-    calc_epsilon = gill_set['__epsilon']
+    calc_epsilon = gill_set['epsilon']
     sim_par = simpar
 
     t = time.strftime("%Y%m%d_%H%M%S")
@@ -115,7 +127,7 @@ def simpar_loop(sim_params, varsimpar, simpar, gill_set, *motor_params, dirct, s
         sim_params[sim_par] = sp
         motor0 = im.init_motor_0(sim_params)
         # Simulate motor dynamics with Gillespie
-        team_out, motor0_out = gsim.gillespie_2D_walk(motor_team, motor0, t_max, n_it, dimension=dimension, calc_epsilon=calc_epsilon)
+        team_out, motor0_out = gsim.gillespie_2D_walk(motor_team, motor0, t_max, n_it, dimension=dimension)
 
         # Directory created in current working directory
         os.makedirs(f'.\motor_objects\{dirct}\{t}_{sp}{sim_par}')

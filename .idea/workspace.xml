@@ -6,6 +6,7 @@
       <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/catch_slip1_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/catch_slip1_init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/sym_break1_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/sym_break1_init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/sym_break2_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/sym_break2_init.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_analysis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model_validation/angle_2d/2Dmodel.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_validation/angle_2d/2Dmodel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model/init_const_alfa.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_validation/unbiased_model/init_const_alfa.py" afterDir="false" />
@@ -15,15 +16,12 @@
       <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/symmetry1_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_validation/unbiased_model2/symmetry1_init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model_validation/unbiased_model2/symmetry2_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_validation/unbiased_model2/symmetry2_init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/print_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/print_info.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/unbiased_walk.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/unbiased_walk.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/bead_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/bead_figures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/motor_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/motor_figures.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/gs_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/gs_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/motor_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/motor_class.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/variable_loops.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/variable_loops.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/tests/test_initiate_motors.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/tests/test_initiate_motors.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/tests/test_motor_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/tests/test_motor_class.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -83,7 +81,28 @@
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation\motor_objects" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Python tests for test_initiate_motors.TestMotorFixed.test_notMotorProtein">
+  <component name="RunManager" selected="Python.teamsize_km_symbreak1_analysis">
+    <configuration name="catch_slip1_init" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="2Dsimulation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Internship/symmetry_break" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Internship/symmetry_break/catch_slip1_init.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="2Dsimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -105,46 +124,46 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for test_initiate_motors.TestInitiate.test_order" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="teamsize_km_symbreak1_analysis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="2Dsimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/motorgillespie/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Internship/symmetry_break" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_initiate_motors.TestInitiate.test_order&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_analysis.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for test_initiate_motors.TestInitiate.test_rightFamily" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="teamsize_km_symbreak1_init" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="2Dsimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/motorgillespie/tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Internship/symmetry_break" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_initiate_motors.TestInitiate.test_rightFamily&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Python tests for test_initiate_motors.TestMotorFixed" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="2Dsimulation" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/motorgillespie/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_initiate_motors.TestMotorFixed&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_init.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <configuration name="Python tests for test_initiate_motors.TestMotorFixed.test_notMotorProtein" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
@@ -177,11 +196,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.teamsize_km_symbreak1_analysis" />
+        <item itemvalue="Python.teamsize_km_symbreak1_init" />
+        <item itemvalue="Python.catch_slip1_init" />
         <item itemvalue="Python tests.Python tests for test_initiate_motors.TestMotorFixed.test_notMotorProtein" />
         <item itemvalue="Python tests.Python tests in test_initiate_motors.py" />
-        <item itemvalue="Python tests.Python tests for test_initiate_motors.TestMotorFixed" />
-        <item itemvalue="Python tests.Python tests for test_initiate_motors.TestInitiate.test_rightFamily" />
-        <item itemvalue="Python tests.Python tests for test_initiate_motors.TestInitiate.test_order" />
       </list>
     </recent_temporary>
   </component>

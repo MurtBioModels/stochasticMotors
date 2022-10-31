@@ -8,7 +8,7 @@ Boltzmann = 1.38064852e-23
 ### Motor parameters ###
 kinesin_params = {
  'family': 'Kinesin-1',
- 'member': 'unknown',
+ 'member': 'antero',
  'step_size': 8,
  'k_m': 0.2,
  'v_0': 740,
@@ -18,14 +18,13 @@ kinesin_params = {
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'anterograde',
- 'init_state': '__unbound',
+ 'init_state': 'unbound',
  'calc_eps': 'exponential', # exponential and gaussian
- 'test1':1000
 }
 
 dynesin_params = {
  'family': 'Kinesin-1',
- 'member': 'unknown',
+ 'member': 'retro',
  'step_size': 8,
  'k_m': None,
  'v_0': 740,
@@ -35,9 +34,8 @@ dynesin_params = {
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'retrograde',
- 'init_state': '__unbound',
+ 'init_state': 'unbound',
  'calc_eps': 'exponential',
- 'test1':1000
 }
 
 
@@ -60,10 +58,12 @@ gill_set = {
 }
 
 date = time.strftime("%Y%m%d_%H%M%S")
-dir = f'{date}_teamsize_km_symbreak1_(2,2)'
+dir = f'{date}_teamsize_km_symbreak1'
 
-team_comb = [(2,2)]
-retro_km = [0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2]
+team_comb = [(3,3)]
+retro_km = [0.02]
+#retro_km = [0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2]
+
 for i in team_comb:
     for j in retro_km:
         gill_set['n_motors'] = i

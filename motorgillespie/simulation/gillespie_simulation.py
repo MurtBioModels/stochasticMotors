@@ -53,9 +53,9 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
     dp_v2 = motor_0.dp_v2
     temp = motor_0.temp
     if radius and rest_length is not None:
-        angle = np.arcsin(radius/(radius+rest_length))
-        motor_0.angle = np.rad2deg(angle)
+        motor_0.calc_angle()
     k_t = motor_0.k_t
+    x_motor0 = motor_0.x_m
 
     ## Do i Gillespie runs ##
     print('Begin simulation...')
@@ -76,7 +76,7 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
 
             # Update force
             if dimension == '1D':
-                gsf.calc_force_1D(my_team, motor_0, i)
+                gsf.calc_force_1D(my_team, motor_0, k_t, x_motor0, i)
             else:
                 gsf.calc_force_2D(my_team, motor_0, k_t, rest_length, radius, i)
 
@@ -93,17 +93,17 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
             list_ids = []
             # Append rates of only the possible events (+ corresponding ID's)
             for motor in my_team:
-                if motor.__unbound:
+                if motor.unbound:
                     list_rates.append(motor.binding_rate)
                     list_ids.append(motor.id)
                 else:
-                    list_rates.append(motor.__epsilon)
+                    list_rates.append(motor.epsilon)
                     list_ids.append(motor.id)
-                    list_rates.append(motor.__alfa)
+                    list_rates.append(motor.alfa)
                     list_ids.append(motor.id)
             # Sum of rates
             sum_rates = sum(list_rates)
-            motor_0.sum_rates.append(sum_rates)
+            #motor_0.sum_rates.append(sum_rates)
 
             # Draw waiting time (tau) and update time
             if sum_rates > 0:
@@ -130,19 +130,19 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
                 if list_ids[index] == motor.id:
                     id_match += 1
                     motor_0.match_events[i].append(motor.id)
-                    if list_rates[index] == motor.__epsilon:
+                    if list_rates[index] == motor.epsilon:
                         event_match += 1
                         # Save unbinding data
                         if dimension == '1D':
-                            motor.forces_unbind.append(motor.__f_current) # 1D
-                            motor.run_length.append(motor.__xm_rel)
+                            motor.forces_unbind.append(motor.f_current) # 1D
+                            motor.run_length.append(motor.xm_rel)
                         else:
                             motor.fx_unbind.append(motor.f_x[i][-1]) # 2D
                             motor.fz_unbind.append(motor.f_z[i][-1]) # 2D
-                            motor.run_length.append(motor.__xm_rel)
+                            motor.run_length.append(motor.xm_rel)
                         # Initiate event
                         motor.unbinding_event()
-                    elif list_rates[index] == motor.__alfa:
+                    elif list_rates[index] == motor.alfa:
                         event_match += 1
                         # Initiate event
                         motor.stepping_event()
@@ -163,13 +163,13 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
 
             # Save all current motor locations
             for motor in my_team:
-                motor.x_m_abs[i].append(motor.__xm_abs)
+                motor.x_m_abs[i].append(motor.xm_abs)
 
             # Save how many motors are bound
             antero_bound = 0
             retro_bound = 0
             for motor in my_team:
-                if motor.__unbound == False:
+                if motor.unbound == False:
                     if motor.direction == 'anterograde':
                         antero_bound += 1
                     if motor.direction == 'retrograde':

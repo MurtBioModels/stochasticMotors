@@ -56,7 +56,7 @@ gill_set = {
     'n_it': 1000,
     't_max': 100,
     'dimension': '1D',
-    '__epsilon': 'gaussian'
+    'epsilon': 'gaussian'
 }
 
 ### Variable lists to loop over ###
