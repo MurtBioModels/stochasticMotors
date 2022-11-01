@@ -43,7 +43,7 @@ def init_mixed_team(mnr, *motor_params):
 
     Parameters
     ----------
-    mnr : tuple
+    mnr : list
 
 
     Returns

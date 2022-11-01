@@ -29,6 +29,12 @@ def init_run(sim_params, gill_set, *motor_params, dirct, subdir, sd=None):
     t_max = gill_set['t_max']
     dimension = gill_set['dimension']
 
+    # Directory created in current working directory
+    if not os.path.isdir(f'.\motor_objects\{dirct}'):
+        os.makedirs(f'.\motor_objects\{dirct}')
+    # Motor team: list of all motors containing own data
+    os.makedirs(f'.\motor_objects\{dirct}\{subdir}')
+
     # Create team of motor proteins
     print('Initiating motor team..')
     motor_team = im.init_mixed_team(n_motors, *motor_params)
@@ -40,12 +46,6 @@ def init_run(sim_params, gill_set, *motor_params, dirct, subdir, sd=None):
     team_out, motor0_out = gsim.gillespie_2D_walk(motor_team, motor0, t_max, n_it, dimension=dimension)
     print('Done simulating')
 
-    # Directory created in current working directory
-    if not os.path.isdir(f'.\motor_objects\{dirct}'):
-        os.makedirs(f'.\motor_objects\{dirct}')
-
-    # Motor team: list of all motors containing own data
-    os.makedirs(f'.\motor_objects\{dirct}\{subdir}')
     print('Pickling motor team...')
     for motor in motor_team:
         pickleTeam = open(f'.\motor_objects\{dirct}\{subdir}\{motor.id}_{motor.family}_{motor.direction}', 'wb')

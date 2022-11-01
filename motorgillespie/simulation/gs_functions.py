@@ -49,11 +49,11 @@ def calc_force_1D(team, motor_0, k_t, x_motor0, i):
 
     # Motor0/fixed motor
     f0 = k_t*(x_motor0 - bead_loc)
-    motor_0.force_bead[i].append(f0)
+    #motor_0.force_bead[i].append(f0)
     net_force += f0
 
-    # Net force should be zero
-    if abs(net_force) > 10**-11:
+    # Net force should be approximately zero)
+    if (net_force**2)**0.5 > 10**-10:
         print(f'Net force = {net_force}')
         raise AssertionError('Net force on bead should be zero, look for problems in code')
 

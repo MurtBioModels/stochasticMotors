@@ -1,3 +1,4 @@
+import numpy as np
 import motorgillespie.simulation.variable_loops as vl
 import time
 import cProfile
@@ -10,22 +11,6 @@ kinesin_params = {
  'family': 'Kinesin-1',
  'member': 'antero',
  'step_size': 8,
- 'k_m': 0.2,
- 'v_0': 740,
- 'alfa_0': 92.5,
- 'f_s': 7,
- 'epsilon_0': 0.66,
- 'f_d': 2.1,
- 'bind_rate': 5,
- 'direction': 'anterograde',
- 'init_state': 'unbound',
- 'calc_eps': 'exponential', # exponential and gaussian
-}
-
-dynesin_params = {
- 'family': 'Kinesin-1',
- 'member': 'retro',
- 'step_size': 8,
  'k_m': None,
  'v_0': 740,
  'alfa_0': 92.5,
@@ -33,11 +18,10 @@ dynesin_params = {
  'epsilon_0': 0.66,
  'f_d': 2.1,
  'bind_rate': 5,
- 'direction': 'retrograde',
- 'init_state': 'unbound',
+ 'direction': 'anterograde',
+ 'init_state': 'bound', # bound and unbound
  'calc_eps': 'exponential',
 }
-
 
 ### Simulation parameters ###
 sim_params = {
@@ -46,7 +30,7 @@ sim_params = {
  'temp': None,
  'radius': None,
  'rest_length': None,
- 'k_t': 0.0000000000001
+ 'k_t': 0.00000000001
 }
 
 ### Simulation settings ###
@@ -58,18 +42,19 @@ gill_set = {
 }
 
 date = time.strftime("%Y%m%d_%H%M%S")
-dir = f'{date}_teamsize_km_symbreak1'
+dirct = '20221101_123744_elastic_coupling'
 
-#team_comb = [(1,1), (2,2), (3,3)]
-retro_km = [0.02]
-team_comb = [(3,3)]
+#team_comb = retro_km = np.arange(0.02, 0.2, 0.02)
+team_comb = [[4]]
 #retro_km = np.arange(0.02, 0.2, 0.02)
-#retro_km = [0.02, 0.06, 0.1, 0.14, 0.2]
+retro_km = [0.13999999999999999]
+#retro_km = np.arange(0.02, 0.22, 0.02)
+
 
 for i in team_comb:
     for j in retro_km:
         gill_set['n_motors'] = i
-        dynesin_params['k_m'] = j
+        kinesin_params['k_m'] = j
 
         ### Data storage ###
         subdir = f'{i}_{j}'
@@ -77,8 +62,9 @@ for i in team_comb:
 
         # Initiate motor team an run simulation n_it times for t_end seconds each
         with cProfile.Profile() as profile:
-            out = output_gillespie = vl.init_run(sim_params, gill_set, kinesin_params, dynesin_params, sd=short_description, dirct=dir, subdir=subdir)
+            out = output_gillespie = vl.init_run(sim_params, gill_set, kinesin_params, sd=short_description, dirct=dirct, subdir=subdir)
             ps = pstats.Stats(profile)
             ps.sort_stats('calls', 'cumtime')
             ps.print_stats(15)
+
 

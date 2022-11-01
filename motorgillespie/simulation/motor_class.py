@@ -1,5 +1,4 @@
 import numpy as np
-import math
 
 
 class MotorProtein(object):
@@ -20,8 +19,7 @@ class MotorProtein(object):
                Zero force stepping rate (1/s), v_0/size_step
         f_s = 7 : float or integer
                 Stall force (pN)
-        epsilon_0 : list of floats or integers
-                  Length 1 for 1D, length 2 for 2D
+        epsilon_0 : tuple of floats or integers or integer
         f_d : float or integer
               Detachment force (pN)
         bind_rate : float or integer
@@ -30,7 +28,7 @@ class MotorProtein(object):
                     Retrograde or anterograde
         init_state : string
                      Bound or unbound
-        calc_eps :
+        calc_eps : string
         id : integer
              Numerical id for bookkeeping during simulation
 
@@ -98,14 +96,20 @@ class MotorProtein(object):
         direction_options = ['anterograde', 'retrograde']
         if self.direction not in direction_options:
             raise ValueError("Not a valid motor: invalid polarity. Expected one of: %s." % direction_options)
-
+        # Check motor parameters
+        if self.f_d == 0:
+            raise ValueError("Invalid detachment force (Fd) force. Deliminator can not be zero in equations")
+        if self.f_s == 0:
+            raise ValueError("Invalid stall force (Fs). Deliminator can not be zero in equations")
         # Check if dimensional restrictions are met
         if dimension == '1D':
-            if len(self.epsilon_0) != 1:
-                raise ValueError("Not a valid motor: zero force unbinding rate list should contain only one value")
+            if type(self.epsilon_0) != int and type(self.epsilon_0) != float:
+                raise ValueError(f"Not a valid motor: zero force unbinding rate should be an integer or float, not {type(self.epsilon_0)}")
         if dimension == '2D':
+            if type(self.epsilon_0) != list:
+                raise ValueError(f"Not a valid motor: zero force unbinding rate should be a list, not {type(self.epsilon_0)}")
             if len(self.epsilon_0) != 2:
-                raise ValueError("Not a valid motor: zero force unbinding rate list should contain two value")
+                raise ValueError(f"Not a valid motor: zero force unbinding rate list should contain two values, not {len(self.epsilon_0)}")
         return
 
     ### Initiate motor to default state every Gillespie run (t=0) ###
@@ -167,22 +171,23 @@ class MotorProtein(object):
         -------
 
         """
-        if self.f_s == 0:
-            raise ValueError("Invalid stall force (Fs). Deliminator can not be zero")
-        if self.direction == 'anterograde':
-            if self.f_current < 0:
+        f_current = self.f_current
+        direction = self.direction
+        f_s = self.f_s
+        if direction == 'anterograde':
+            if f_current < 0:
                 self.alfa = self.alfa_0
-            elif self.f_current > self.f_s:
+            elif f_current > f_s:
                 self.alfa = 0
             else:
-                self.alfa = self.alfa_0 * (1 - (self.f_current / self.f_s))
-        elif self.direction == 'retrograde':
-            if self.f_current > 0:
+                self.alfa = self.alfa_0 * (1 - (f_current / f_s))
+        elif direction == 'retrograde':
+            if f_current > 0:
                 self.alfa = self.alfa_0
-            elif (-1*self.f_current) > self.f_s:
+            elif (-1*f_current) > f_s:
                 self.alfa = 0
             else:
-                self.alfa = self.alfa_0 * (1 - ((-1 * self.f_current) / self.f_s))
+                self.alfa = self.alfa_0 * (1 - ((-1 * f_current) / f_s))
         else:
             raise ValueError("Transport must be either retrograde or anterograde")
 
@@ -201,18 +206,17 @@ class MotorProtein(object):
 
         """
 
+        f_current = (self.f_current**2)**0.5
+        calc_eps = self.calc_eps
         #
-        if self.calc_eps == 'gaussian':
-            self.epsilon = 1 + (6 * math.exp(-(abs(self.f_current) - 2.5) ** 2))
-        elif self.calc_eps == 'exponential':
-            if self.f_d == 0:
-                raise ValueError("Invalid detachment force (Fd) force. Deliminator can not be zero")
-            self.epsilon = self.epsilon_0[0] * math.exp(abs(self.f_current) / self.f_d)
-        elif self.calc_eps == 'constant':
-            self.epsilon = self.epsilon_0[0]
+        if calc_eps == 'gaussian':
+            self.epsilon = 1 + (6 * np.exp(-(f_current - 2.5) ** 2))
+        elif calc_eps == 'exponential':
+            self.epsilon = self.epsilon_0 * (np.e**(f_current / self.f_d))
+        elif calc_eps == 'constant':
+            self.epsilon = self.epsilon_0
         else:
             raise ValueError("Unbinding equation not recognized. Retry or add equation to unbinding_rate_1")
-
 
         return
 
@@ -258,12 +262,14 @@ class MotorProtein(object):
         -------
 
         """
-        if self.direction == 'anterograde':
-            self.xm_abs = self.xm_abs + self.step_size
-            self.xm_rel = self.xm_rel + self.step_size
-        elif self.direction == 'retrograde':
-            self.xm_abs = self.xm_abs - self.step_size
-            self.xm_rel = self.xm_rel - self.step_size
+        step_size = self.step_size
+        direction = self.direction
+        if direction == 'anterograde':
+            self.xm_abs = self.xm_abs + step_size
+            self.xm_rel = self.xm_rel + step_size
+        elif direction == 'retrograde':
+            self.xm_abs = self.xm_abs - step_size
+            self.xm_rel = self.xm_rel - step_size
         else:
             raise ValueError("Transport must be either retrograde or anterograde")
         return
@@ -303,10 +309,6 @@ class MotorProtein(object):
         return
 
 
-
-
-
-
 class MotorFixed(object):
     """
 
@@ -334,11 +336,11 @@ class MotorFixed(object):
         ## Bead/simulation data  ##
         self.time_points = [] # list of lists
         self.x_bead = [] # list of lists
-        self.force_bead = [] # list of lists
+        #self.force_bead = [] # list of lists
         self.retro_motors = [] # list of lists
         self.antero_motors = [] # list of lists
-        self.bead_unbind_events = [] # list if lists
-        self.match_events = [] # list of lists
+        self.bead_unbind_events = [] # list
+        #self.match_events = [] # list of lists; for testing simulation
         self.runlength_bead = [] # divide bij k_t to get force
         self.stall_time = []
         #self.sum_rates = [] # for testing simulation
@@ -356,11 +358,11 @@ class MotorFixed(object):
         """
         self.time_points.append([0])
         self.x_bead.append([])
-        self.force_bead.append([])
+        #self.force_bead.append([])
         self.antero_motors.append([])
         self.retro_motors.append([])
-        self.bead_unbind_events.append([])
-        self.match_events.append([])
+        self.bead_unbind_events.append(0)
+        #self.match_events.append([])
 
         return
 

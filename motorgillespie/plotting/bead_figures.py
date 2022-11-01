@@ -773,8 +773,8 @@ def heatmap(dirct, figname, titlestring, show=False):
     """
     index = ['1-1', '2-2', '3-3', '4-4', '5-5']
     columns = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1']
-    array_antero = np.zeros((len(index), len(cols)))
-    array_retro = np.zeros((len(index), len(cols)))
+    array_antero = np.zeros((len(index), len(columns)))
+    array_retro = np.zeros((len(index), len(columns)))
 
     index_teamsize = 0
     index_ratio = 0
@@ -861,7 +861,7 @@ def heatmap(dirct, figname, titlestring, show=False):
     return
 
 
-def bla(dirct, figname, titlestring, show=False):
+def plot_N_km(dirct, figname, titlestring, df=None, show=False):
     """
 
     Parameters
@@ -871,11 +871,94 @@ def bla(dirct, figname, titlestring, show=False):
     -------
 
     """
-    for root, subdirs, files in os.walk(f'.\motor_objects\{dirct}'):
-        for index, subdir in enumerate(subdirs):
-            if subdir == 'figures':
-                continue
 
+    if df == None:
+        df_teamsize = ['1', '2', '3', '4']
+        df_km = ['0.02', '0.04', '0.06', '0.08', '0.1', '0.12', '0.14', '0.16', '0.18', '0.2']
+        df = pd.DataFrame(columns=['runlength', 'teamsize', 'km'])
 
+        teamsize_count = 0
+        km_count = 0
+
+        counter = 0
+        for root, subdirs, files in os.walk(f'.\motor_objects\{dirct}'):
+            for index, subdir in enumerate(subdirs):
+                if subdir == 'figures':
+                    continue
+                print(subdir)
+                print(f'teamsize_count={teamsize_count}')
+                print(f'km_count={km_count}')
+                #
+                pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
+                motor0 = pickle.load(pickle_file_motor0)
+                pickle_file_motor0.close()
+                #
+                tz = df_teamsize[teamsize_count]
+                km = df_km[km_count]
+                print(f'tz={tz}')
+                print(f'km={km}')
+                runlength = motor0.runlength_bead
+                for i in runlength:
+                    df.loc[counter, 'runlength'] = i
+                    df.loc[counter, 'teamsize'] = tz
+                    df.loc[counter, 'km'] = km
+                    print(f'df.iloc[counter]={df.iloc[counter]}')
+                    counter +=1
+
+                #
+                if km_count < 9:
+                    km_count += 1
+                elif km_count == 9:
+                    km_count = 0
+                    teamsize_count += 1
+                else:
+                    print('This cannot be right')
+        print(df)
+        #
+        if not os.path.isdir(f'.\motor_objects\{dirct}\\data'):
+            os.makedirs(f'.\motor_objects\{dirct}\\data')
+        df.to_csv(f'.\motor_objects\{dirct}\\figures/runlength_N_km.csv')
+    else:
+        df = pd.read_csv(f'.\motor_objects\{dirct}\\figures\{df}')
+
+    #
+    if not os.path.isdir(f'.\motor_objects\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\{dirct}\\figures')
+
+    sns.color_palette()
+    sns.set_style("whitegrid")
+    plt.figure()
+    g = sns.catplot(data=df, x="km", y="runlength", hue="teamsize", style='teamsize', marker='teamsize', kind="point")
+    g._legend.set_title('Team size n=')
+    plt.xlabel('Motor stiffness Km [pN/nm]')
+    plt.ylabel('Average cargo run length [nm]')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_hueN_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    plt.figure()
+    g = sns.catplot(data=df, x="teamsize", y="runlength", hue="km", style='teamsize', marker='teamsize', kind="point")
+    g._legend.set_title('Motor stiffness [pN/nm]:')
+    plt.xlabel('Team size N')
+    plt.ylabel('Average cargo run length [nm]')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_N_huekm_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
 
     return
