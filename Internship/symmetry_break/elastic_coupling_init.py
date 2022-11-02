@@ -30,7 +30,7 @@ sim_params = {
  'temp': None,
  'radius': None,
  'rest_length': None,
- 'k_t': 0.00000000001
+ 'k_t': 0.03
 }
 
 ### Simulation settings ###
@@ -42,13 +42,12 @@ gill_set = {
 }
 
 date = time.strftime("%Y%m%d_%H%M%S")
-dirct = '20221101_123744_elastic_coupling'
+dirct = f'{date}_elastic_coupling_TEST'
 
-#team_comb = retro_km = np.arange(0.02, 0.2, 0.02)
-team_comb = [[4]]
-#retro_km = np.arange(0.02, 0.2, 0.02)
-retro_km = [0.13999999999999999]
 #retro_km = np.arange(0.02, 0.22, 0.02)
+retro_km = [0.2]
+team_comb = [[1], [2], [3], [4]]
+
 
 
 for i in team_comb:

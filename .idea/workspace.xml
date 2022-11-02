@@ -2,16 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d599fbad-a598-4a0a-a323-4384fad44ad1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_init.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/bead_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/bead_figures.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/gs_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/gs_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/initiate_motors.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/initiate_motors.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/motor_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/motor_class.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/variable_loops.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/variable_loops.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,11 +58,11 @@
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation\unbiased_model2\motor_objects" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\20221101_123744_elastic_coupling\data" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\CDFs_subdir" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\motorgillespie\analysis" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation\unbiased_model2" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation\unbiased_model" />
-      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation\motor_objects" />
     </key>
   </component>
   <component name="RunManager" selected="Python.elastic_coupling_analysis">

@@ -861,7 +861,7 @@ def heatmap(dirct, figname, titlestring, show=False):
     return
 
 
-def plot_N_km(dirct, figname, titlestring, df=None, show=False):
+def plot_N_km_runlength(dirct, figname, titlestring, file=None, show=False):
     """
 
     Parameters
@@ -872,7 +872,7 @@ def plot_N_km(dirct, figname, titlestring, df=None, show=False):
 
     """
 
-    if df == None:
+    if file == None:
         df_teamsize = ['1', '2', '3', '4']
         df_km = ['0.02', '0.04', '0.06', '0.08', '0.1', '0.12', '0.14', '0.16', '0.18', '0.2']
         df = pd.DataFrame(columns=['runlength', 'teamsize', 'km'])
@@ -884,6 +884,8 @@ def plot_N_km(dirct, figname, titlestring, df=None, show=False):
         for root, subdirs, files in os.walk(f'.\motor_objects\{dirct}'):
             for index, subdir in enumerate(subdirs):
                 if subdir == 'figures':
+                    continue
+                if subdir == 'data':
                     continue
                 print(subdir)
                 print(f'teamsize_count={teamsize_count}')
@@ -917,16 +919,32 @@ def plot_N_km(dirct, figname, titlestring, df=None, show=False):
         #
         if not os.path.isdir(f'.\motor_objects\{dirct}\\data'):
             os.makedirs(f'.\motor_objects\{dirct}\\data')
-        df.to_csv(f'.\motor_objects\{dirct}\\figures/runlength_N_km.csv')
+        df.to_csv(f'.\motor_objects\{dirct}\\data/runlength_N_km.csv')
     else:
-        df = pd.read_csv(f'.\motor_objects\{dirct}\\figures\{df}')
+        df = pd.read_csv(f'.\motor_objects\{dirct}\\data\{file}')
 
     #
     if not os.path.isdir(f'.\motor_objects\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\{dirct}\\figures')
 
+    #
+    xb_list = []
+    v = 0.74
+    N = [1,2,3,4]
+    k_bind = 5
+    k_unbind = 0.66
+    for i in N:
+        xb = v/(i*k_bind) * ( (1 + k_bind/k_unbind )**i -1 )
+        xb_list.append(xb*1000)
+    df2 = pd.DataFrame(columns=['N', 'xb'])
+    df2['N'] = N
+    df2['xb'] = xb_list
+    print(df2)
+
     sns.color_palette()
     sns.set_style("whitegrid")
+
+    # hue=teamsize
     plt.figure()
     g = sns.catplot(data=df, x="km", y="runlength", hue="teamsize", style='teamsize', marker='teamsize', kind="point")
     g._legend.set_title('Team size n=')
@@ -943,9 +961,9 @@ def plot_N_km(dirct, figname, titlestring, df=None, show=False):
         plt.clf()
         plt.close()
         print('Figure saved')
-
+    # hue=km
     plt.figure()
-    g = sns.catplot(data=df, x="teamsize", y="runlength", hue="km", style='teamsize', marker='teamsize', kind="point")
+    g = sns.catplot(data=df, x="teamsize", y="runlength", hue="km", style='km', marker='km', kind="point")
     g._legend.set_title('Motor stiffness [pN/nm]:')
     plt.xlabel('Team size N')
     plt.ylabel('Average cargo run length [nm]')
@@ -961,4 +979,232 @@ def plot_N_km(dirct, figname, titlestring, df=None, show=False):
         plt.close()
         print('Figure saved')
 
+    # Analytical included in hue=km and log
+    #ax.legend(title="Motor stiffness [pN/nm]:")
+    plt.figure()
+    ax1 = sns.catplot(data=df, x="teamsize", y="runlength", hue="km", style='km', marker='km', kind="point")
+    ax2 = sns.pointplot(data=df2, x='N', y='xb', errorbar=None, color='b', label='analytical', legend=True)
+    ax1.set(yscale="log")
+    ax2.set(yscale="log")
+    ax1._legend.set_title('Motor stiffness [pN/nm]:')
+
+    plt.xlabel('Team size N')
+    plt.ylabel('Average cargo run length [nm]')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_N_huekm_ana_log_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # Analytical included in hue=km
+    #ax.legend(title="Motor stiffness [pN/nm]:")
+    fig, ax = plt.subplots()
+    ax1 = sns.catplot(data=df, x="teamsize", y="runlength", hue="km", style='km', marker='km', kind="point")
+    ax2 = sns.pointplot(data=df2, x='N', y='xb', errorbar=None, label='Analytical')
+    ax1._legend.set_title('Motor stiffness [pN/nm]:')
+
+    plt.xlabel('Team size N')
+    plt.ylabel('Average cargo run length [nm]')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_N_huekm_ana_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+
+    # contour plot
+    df_pivot = pd.pivot_table(df, values='runlength', index='teamsize', columns='km', aggfunc={'runlength': np.mean})
+
+    print(df_pivot)
+    plt.figure()
+    sns.heatmap(df_pivot, cbar=True, cbar_kws={'label': 'Average runlength'})
+    plt.xlabel('km')
+    plt.ylabel('teamsize')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\contourplot_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # count plot
+    plt.figure()
+    sns.displot(data=df, x='runlength', hue='km', col='teamsize', stat='count', common_norm=False, palette="bright")
+    plt.xlabel('km')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\distplot_runlength_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # swarm plot
+    plt.figure()
+    sns.swarmplot(data=df, x="km", y="runlength", hue="teamsize", s=1, dodge=True)
+    plt.xlabel('km')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\swarmplot_runlength_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # box plot
+    plt.figure()
+    sns.catplot(data=df, x="km", y="runlength", hue='teamsize',  kind='box')
+    plt.xlabel('km')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\boxplot_runlength_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+    '''
+    # dist plot
+    plt.figure()
+    sns.jointplot(data=df, x="km", y="runlength", hue="teamsize")
+    plt.xlabel('Team size N')
+    plt.ylabel('Average cargo run length [nm]')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\jointplot_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+   '''
+
     return
+
+
+def plot_N_km_bound_motors(dirct, figname, titlestring, file=None, show=False):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    if file == None:
+        df_teamsize = ['1', '2', '3', '4']
+        df_km = ['0.02', '0.04', '0.06', '0.08', '0.1', '0.12', '0.14', '0.16', '0.18', '0.2']
+        df = pd.DataFrame(columns=['bound_motors', 'teamsize', 'km'])
+
+        teamsize_count = 0
+        km_count = 0
+
+        counter = 0
+        for root, subdirs, files in os.walk(f'.\motor_objects\{dirct}'):
+            for index, subdir in enumerate(subdirs):
+                if subdir == 'figures':
+                    continue
+                if subdir == 'data':
+                    continue
+                print(subdir)
+                print(f'teamsize_count={teamsize_count}')
+                print(f'km_count={km_count}')
+                #
+                pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
+                motor0 = pickle.load(pickle_file_motor0)
+                pickle_file_motor0.close()
+                #
+                tz = df_teamsize[teamsize_count]
+                km = df_km[km_count]
+                print(f'tz={tz}')
+                print(f'km={km}')
+                motor_bound = motor0.antero_motors
+                flattened_motor_bound = [val for sublist in motor_bound for val in sublist]
+                retro = motor0.retro_motors
+                flattened_retro_bound = [val for sublist in retro for val in sublist]
+                print(f'unique values in motor_retro= {np.unique(np.array(flattened_retro_bound))}')
+
+                for i in flattened_motor_bound:
+                    df.loc[counter, 'bound_motors'] = i
+                    df.loc[counter, 'teamsize'] = tz
+                    df.loc[counter, 'km'] = km
+                    print(f'df.iloc[counter]={df.iloc[counter]}')
+                    counter +=1
+
+                #
+                if km_count < 9:
+                    km_count += 1
+                elif km_count == 9:
+                    km_count = 0
+                    teamsize_count += 1
+                else:
+                    print('This cannot be right')
+        print(df)
+        #
+        if not os.path.isdir(f'.\motor_objects\{dirct}\\data'):
+            os.makedirs(f'.\motor_objects\{dirct}\\data')
+        df.to_csv(f'.\motor_objects\{dirct}\\data\\bound_motors_N_km.csv')
+    else:
+        df = pd.read_csv(f'.\motor_objects\{dirct}\\data\{file}')
+
+    #
+    if not os.path.isdir(f'.\motor_objects\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\{dirct}\\figures')
+
+
+    sns.color_palette()
+    sns.set_style("whitegrid")
+
+    # distplot
+    plt.figure()
+    g = sns.catplot(data=df, x="km", y="bound_motors", hue="teamsize", style='teamsize', marker='teamsize', kind="point")
+    g._legend.set_title('Team size n=')
+    plt.xlabel('Motor stiffness Km [pN/nm]')
+    plt.ylabel('Average bound motors ')
+    plt.title(f': {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_bound_motors_hueN_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    return
+
