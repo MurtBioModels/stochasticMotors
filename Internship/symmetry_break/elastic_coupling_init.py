@@ -19,7 +19,7 @@ kinesin_params = {
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'anterograde',
- 'init_state': 'bound', # bound and unbound
+ 'init_state': 'unbound', # bound and unbound
  'calc_eps': 'exponential',
 }
 
@@ -30,7 +30,7 @@ sim_params = {
  'temp': None,
  'radius': None,
  'rest_length': None,
- 'k_t': 0.03
+ 'k_t': 0.00000000001
 }
 
 ### Simulation settings ###
@@ -42,10 +42,10 @@ gill_set = {
 }
 
 date = time.strftime("%Y%m%d_%H%M%S")
-dirct = f'{date}_elastic_coupling_TEST'
+dirct = f'{date}_elastic_coupling_startunbound'
 
-#retro_km = np.arange(0.02, 0.22, 0.02)
-retro_km = [0.2]
+retro_km = np.arange(0.02, 0.22, 0.02)
+#retro_km = [0.2]
 team_comb = [[1], [2], [3], [4]]
 
 

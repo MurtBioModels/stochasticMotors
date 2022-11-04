@@ -157,6 +157,11 @@ class MotorProtein(object):
         -------
 
         """
+
+        # maybe make a functionality that you can make motors start at a specific place within stalk length rest length
+        # optogenetics would be more for during the simulation runs but this could be another function ^
+
+
         return
 
     ### Force dependent rate equations ###

@@ -3,10 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d599fbad-a598-4a0a-a323-4384fad44ad1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_init.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/bead_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/bead_figures.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/motor_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/motor_class.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +65,7 @@
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation\unbiased_model" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.elastic_coupling_analysis">
+  <component name="RunManager" selected="Python.elastic_coupling_init">
     <configuration name="catch_slip1_init" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="2Dsimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -194,8 +194,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.elastic_coupling_analysis" />
         <item itemvalue="Python.elastic_coupling_init" />
+        <item itemvalue="Python.elastic_coupling_analysis" />
         <item itemvalue="Python.teamsize_km_symbreak1_init" />
         <item itemvalue="Python.teamsize_km_symbreak1_analysis" />
         <item itemvalue="Python.catch_slip1_init" />
