@@ -6,6 +6,7 @@ import seaborn as sns
 import pandas as pd
 import os
 
+
 def furl(dirct, subdir, figname, titlestring, stat='probability'):
 
     """
@@ -230,6 +231,8 @@ def forces_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='proba
             forces_intrpl = f(t_intrpl)
             # Remove zeroes
             forces_intrpl_nozero = [x for x in forces_intrpl if x != 0]
+            if 0 in forces_intrpl_nozero:
+                print(f'something went wrong with the zeroes')
             # Add interpolated data points to list of all forces of one motor
             forces_ip.extend(forces_intrpl_nozero)
 
@@ -305,6 +308,8 @@ def xm_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probabili
             xm_intrpl = f(t_intrpl)
             # Remove zeroes
             xm_intrpl_nozero = [x for x in xm_intrpl if x != 0]
+            if 0 in xm_intrpl_nozero:
+                print(f'something went wrong with the zeroes')
             # Add interpolated data points to list of all forces of one motor
             xb_ip.extend(xm_intrpl_nozero)
 
@@ -392,4 +397,213 @@ def forces_dist_notintrpl(subdir, family, n_motors, kt, calc_eps, subject='varva
     return
 
 
+def plot_N_km_motorforces(dirct, filename, figname=None, titlestring=None, show=False):
+    """
 
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    '''
+    # Show the joint distribution using kernel density estimation
+    plt.figure()
+    g = sns.jointplot(
+    data=df.loc[df.km == 0.2],
+    x="meanmaxdist", y="runlength", hue="teamsize",
+    kind="kde", cmap="bright")
+    plt.show()
+    '''
+
+
+    # count plot
+    plt.figure()
+    g = sns.displot(data=df, x='force', hue='km', col='teamsize', stat='probability', multiple="stack",
+    palette="bright",
+    edgecolor=".3",
+    linewidth=.5, common_norm=False, common_bins=False)
+    g.fig.suptitle(f' {titlestring}')
+    g.set_xlabels(' ')
+    g.add_legend()
+    plt.show()
+
+    '''
+    # hue=teamsize
+    plt.figure()
+    g = sns.catplot(data=df, x="km", y="meanmaxdist", hue="teamsize", style='teamsize', marker='teamsize', kind="point")
+    g._legend.set_title('Team size n=')
+    plt.xlabel('Motor stiffness [pN/nm]')
+    plt.ylabel(' mean max dist [nm]')
+    plt.title(f'{titlestring}')
+    plt.show()
+    '''
+    return
+
+
+def plot_N_km_xm(dirct, filename, figname=None, titlestring=None, show=False):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    '''
+    # Show the joint distribution using kernel density estimation
+    plt.figure()
+    g = sns.jointplot(
+    data=df.loc[df.km == 0.2],
+    x="meanmaxdist", y="runlength", hue="teamsize",
+    kind="kde", cmap="bright")
+    plt.show()
+    '''
+
+
+    # count plot
+    plt.figure()
+    g = sns.displot(data=df, x='xm', hue='km', col='teamsize', stat='probability', multiple="stack",
+    palette="bright",
+    edgecolor=".3",
+    linewidth=.5, common_norm=False, common_bins=False)
+    g.fig.suptitle(f' {titlestring}')
+    g.set_xlabels(' ')
+    g.add_legend()
+    plt.show()
+
+    '''
+    # hue=teamsize
+    plt.figure()
+    g = sns.catplot(data=df, x="km", y="meanmaxdist", hue="teamsize", style='teamsize', marker='teamsize', kind="point")
+    g._legend.set_title('Team size n=')
+    plt.xlabel('Motor stiffness [pN/nm]')
+    plt.ylabel(' mean max dist [nm]')
+    plt.title(f'{titlestring}')
+    plt.show()
+    '''
+    return
+
+
+def plot_N_km_motor_fu(dirct, filename, figname=None, titlestring=None, show=False):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    '''
+    # Show the joint distribution using kernel density estimation
+    plt.figure()
+    g = sns.jointplot(
+    data=df.loc[df.km == 0.2],
+    x="meanmaxdist", y="runlength", hue="teamsize",
+    kind="kde", cmap="bright")
+    plt.show()
+    '''
+
+
+    # count plot
+    plt.figure()
+    g = sns.displot(data=df, x='fu', hue='km', col='teamsize', stat='probability', multiple="stack",
+    palette="bright",
+    edgecolor=".3",
+    linewidth=.5, common_norm=False, common_bins=False)
+    g.fig.suptitle(f' {titlestring}')
+    g.set_xlabels(' ')
+    g.add_legend()
+    plt.show()
+
+    '''
+    # hue=teamsize
+    plt.figure()
+    g = sns.catplot(data=df, x="km", y="meanmaxdist", hue="teamsize", style='teamsize', marker='teamsize', kind="point")
+    g._legend.set_title('Team size n=')
+    plt.xlabel('Motor stiffness [pN/nm]')
+    plt.ylabel(' mean max dist [nm]')
+    plt.title(f'{titlestring}')
+    plt.show()
+    '''
+    return
+
+
+def plot_N_km_motor_rl(dirct, filename, figname=None, titlestring=None, show=False):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    '''
+    # Show the joint distribution using kernel density estimation
+    plt.figure()
+    g = sns.jointplot(
+    data=df.loc[df.km == 0.2],
+    x="meanmaxdist", y="runlength", hue="teamsize",
+    kind="kde", cmap="bright")
+    plt.show()
+    '''
+
+
+    # count plot
+    plt.figure()
+    g = sns.displot(data=df, x='rl', hue='km', col='teamsize', stat='probability', multiple="stack",
+    palette="bright",
+    edgecolor=".3",
+    linewidth=.5, common_norm=False, common_bins=False)
+    g.fig.suptitle(f' {titlestring}')
+    g.set_xlabels(' ')
+    g.add_legend()
+    plt.show()
+
+    '''
+    # hue=teamsize
+    plt.figure()
+    g = sns.catplot(data=df, x="km", y="meanmaxdist", hue="teamsize", style='teamsize', marker='teamsize', kind="point")
+    g._legend.set_title('Team size n=')
+    plt.xlabel('Motor stiffness [pN/nm]')
+    plt.ylabel(' mean max dist [nm]')
+    plt.title(f'{titlestring}')
+    plt.show()
+    '''
+    return

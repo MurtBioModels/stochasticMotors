@@ -131,9 +131,9 @@ class MotorProtein(object):
         else:
             raise ValueError("Motor proteins can either be in an bound or unbound (initial) state")
 
-        self.xm_abs = 0
+        self.xm_abs = 0.1
         self.xm_rel = 0
-        self.x_m_abs.append([0])
+        self.x_m_abs.append([0.1])
 
         if dimension == '1D':
             self.forces.append([])

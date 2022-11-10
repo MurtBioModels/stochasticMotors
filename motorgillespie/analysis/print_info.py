@@ -1,6 +1,8 @@
 import pickle
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+from itertools import groupby
 
 
 def inspect(dirct, subdir):
@@ -119,3 +121,60 @@ def print_things_sym(subdir, family, n_motors, kt):
     print(f'antero walks first: {antero_count}, retro walks first: {retro_count}')
 
     return
+
+
+def checkinggg(dirct):
+
+        path = f'.\motor_objects\\{dirct}'
+        for root, subdirs, files in os.walk(path):
+            for subdir in subdirs:
+                if subdir == 'figures':
+                    continue
+                if subdir == 'data':
+                    continue
+                print('PRINT NAME IN SUBDIR')
+                print(os.path.join(path,subdir))
+                sub_path = os.path.join(path,subdir)
+
+                # Unpickle test_motor0 object
+                pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
+                motor0 = pickle.load(pickle_file_motor0)
+                pickle_file_motor0.close()
+                #
+                xb = motor0.x_bead
+                count_zero = []
+                for nested in xb:
+                    count_zero.append(nested.count('0'))
+                print(f'count zero x_b should be 1000: {count_zero.count(0)}')
+                #
+                # loop through motor files
+                for root2,subdir2,files2 in os.walk(sub_path):
+                    for file in files2:
+                        if file == 'motor0':
+                            continue
+                        if file == 'parameters.txt':
+                            continue
+                        if file == 'figures':
+                            continue
+                        if file == 'data':
+                            continue
+                        print('PRINT NAME IN FILES')
+                        print(os.path.join(sub_path,file))
+                        # Unpickle motor
+                        pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
+                        motor = pickle.load(pickle_file_motor)
+                        pickle_file_motor.close()
+                        #
+                        xb_list = motor.x_m_abs
+                        test1 = [[x[0], x[1]] for x in xb_list]
+                        print(test1)
+                        print(f'print nested list first two numbers unique: {np.unique(np.array(test1))}')
+                        '''
+                        #
+                        test2 = []
+                        for nested in xb_list:
+                            count = [len(list(g[1])) for g in groupby(nested) if g[0]==0]
+                            print(count)
+                            count_twos = []
+                            test2.append(count)
+                        '''

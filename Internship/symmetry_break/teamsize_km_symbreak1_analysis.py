@@ -3,10 +3,24 @@ from motorgillespie.plotting import motor_figures as mf
 import os
 import pickle
 
+# DINGEN PROBEREN HIER
+import os.path
+path='.\motor_objects\\20221101_123744_elastic_coupling_withtrap'
+for root,subdir,files in os.walk(path):
+   for name in subdir:
+       print('PRINT NAME IN SUBDIR')
+       print(os.path.join(path,name))
+       name2 = os.path.join(path,name)
+       for root,subdir2,files2 in os.walk(name2):
+           for name3 in files2:
+               print('PRINT NAME IN FILES')
+               print(os.path.join(path,name3))
+
 '''Analysis of motor objects obtained from script teamsize_km_symbreak1_init.py_init.py'''
 
+'''
 ## Simulation settings ##
-dirct = '20221031_133121_teamsize_km_symbreak1'
+#dirct = '20221031_133121_teamsize_km_symbreak1'
 team_comb = [(3,3)]
 #retro_km = [0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2]
 retro_km = [0.02]
@@ -28,11 +42,11 @@ for root, subdirs, files in os.walk(f'.\motor_objects\{dirct}'):
         print(f'subdir={subdir}')
         team = []
         for root, subdirs, files in os.walk(f'.\motor_objects\{dirct}\{subdir}'):
-            for file in files:
-                print(f'file={file}')
-                if file == 'motor0' or file == 'parameters.txt':
+            for filename in files:
+                print(f'filename={filename}')
+                if filename == 'motor0' or filename == 'parameters.txt':
                     continue
-                pickle_motor = open(f'.\motor_objects\\{dirct}\{subdir}\{file}', 'rb')
+                pickle_motor = open(f'.\motor_objects\\{dirct}\{subdir}\{filename}', 'rb')
                 motor = pickle.load(pickle_motor)
                 pickle_motor.close()
                 team.append(motor)
@@ -52,4 +66,6 @@ for root, subdirs, files in os.walk(f'.\motor_objects\{dirct}'):
 #bf.violin_xb(dirct=dirct, figname='', titlestring='', stepsize=0.001, show=False)
 #bf.violin_trace_vel(dirct, figname='', titlestring='', show=False)
 #bf.violin_fu_rl(dirct, k_t=0.0000001, figname='', titlestring='', show=False)
+
+'''
 

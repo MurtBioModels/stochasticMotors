@@ -24,7 +24,7 @@ def lineplots_kt(family, list_kt, n_motors, n_it, epsilon, file_name=None):
         data_file_name = f'SimulationOutput_{family}_{epsilon}Eps_{n_motors}motors'
     else:
         data_file_name = file_name
-    # Check if the correct data file is present in working directory
+    # Check if the correct data filename is present in working directory
     if os.path.isfile(data_file_name):
         print("File with this name already present in working directory")
     else:
@@ -67,7 +67,7 @@ def lineplots_kt(family, list_kt, n_motors, n_it, epsilon, file_name=None):
             # Update iteration number
             it += 1
 
-        # Save output array to file
+        # Save output array to filename
         np.savetxt(data_file_name, output_array, fmt='%1.3f', delimiter='\t')
 
 
@@ -113,7 +113,7 @@ def lineplots_Nmotors(family, kt, n_motors, n_it, epsilon, file_name=None):
         data_file_name = f'SimulationOutput_{family}_{epsilon}Eps_{kt}Kt_{n_it}it_{n_motors}motors'
     else:
         data_file_name = file_name
-    # Check if the correct data file is present in working directory
+    # Check if the correct data filename is present in working directory
     if os.path.isfile(data_file_name):
         print("File with this name already present in working directory")
     else:
@@ -170,7 +170,7 @@ def lineplots_Nmotors(family, kt, n_motors, n_it, epsilon, file_name=None):
             # Update iteration number
             counter += 1
 
-        # Save output array to file
+        # Save output array to filename
         np.savetxt(data_file_name, output_array, fmt='%1.3f', delimiter='\t')
 
     ### Plotting ###
@@ -231,7 +231,7 @@ def lineplots_radius(family, k_t, list_r, n_motors, n_it, file_name=None):
         data_file_name = f'SimulationOutputR_{family}_{k_t}kt_{n_motors}motors'
     else:
         data_file_name = file_name
-    # Check if the correct data file is present in working directory
+    # Check if the correct data filename is present in working directory
     if os.path.isfile(data_file_name):
         print("File with this name already present in working directory")
     else:
@@ -275,7 +275,7 @@ def lineplots_radius(family, k_t, list_r, n_motors, n_it, file_name=None):
             # Update iteration number
             it += 1
 
-        # Save output array to file
+        # Save output array to filename
         np.savetxt(data_file_name, output_array, fmt='%1.3f', delimiter='\t')
 
     ### Plotting ###
@@ -343,7 +343,7 @@ def lineplots_rl(family, k_t, radius, list_rl, n_motors, n_it, file_name=None):
         data_file_name = f'SimulationOutputRL_{radius}r_{family}_{k_t}kt_{n_motors}motors'
     else:
         data_file_name = file_name
-    # Check if the correct data file is present in working directory
+    # Check if the correct data filename is present in working directory
     if os.path.isfile(data_file_name):
         print("File with this name already present in working directory")
     else:
@@ -387,7 +387,7 @@ def lineplots_rl(family, k_t, radius, list_rl, n_motors, n_it, file_name=None):
             # Update iteration number
             it += 1
 
-        # Save output array to file
+        # Save output array to filename
         np.savetxt(data_file_name, output_array, fmt='%1.3f', delimiter='\t')
 
     ### Plotting ###

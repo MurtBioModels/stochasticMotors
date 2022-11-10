@@ -57,8 +57,8 @@ def init_run(sim_params, gill_set, *motor_params, dirct, subdir, sd=None):
     pickle.dump(motor0_out, pickleMotor0)
     pickleMotor0.close()
 
-    # Write meta data file in subdirectory
-    print('Saving metadata to .txt file...')
+    # Write meta data filename in subdirectory
+    print('Saving metadata to .txt filename...')
     with open(f".\motor_objects\{dirct}\{subdir}\parameters.txt", "w") as par_file:
         par_file.write(f"Simulation description: {sd}: \n")
         for index, dict in enumerate(motor_params):
@@ -98,7 +98,7 @@ def simpar_loop(sim_params, varsimpar, simpar, gill_set, *motor_params, dirct, s
             and contains one or multiple subdirectories containing the actual motor objects.
     subdir : string
              Subdirectory to store the the motor object simulated under specific parameter values.
-             Contains pickled motor team, pickled test_motor0, meta data file and figure directory.
+             Contains pickled motor team, pickled test_motor0, meta data filename and figure directory.
              Subdirectory name should contain the value(s) of the varied parameter(s).
              For example, the number of motors is varied, or a specific motor parameter.
     sd : string
@@ -140,7 +140,7 @@ def simpar_loop(sim_params, varsimpar, simpar, gill_set, *motor_params, dirct, s
         pickle.dump(motor0_out, pickleMotor0)
         pickleMotor0.close()
 
-        # Write meta data file in subdirectory
+        # Write meta data filename in subdirectory
         with open(f".\motor_objects\{dirct}\{t}_{sp}{sim_par}\parameters.txt", "w") as par_file:
             par_file.write(f"Simulation description: {sd}: \n")
             for index, dict in enumerate(motor_params):
