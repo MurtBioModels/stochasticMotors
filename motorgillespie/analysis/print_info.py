@@ -5,26 +5,44 @@ import os
 from itertools import groupby
 
 
-def inspect(dirct, subdir):
+def inspect(dirct):
 
-    # Unpickle motor team
-    pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\\{subdir}\motorteam', 'rb')
-    motorteam = pickle.load(pickle_file_motorteam)
-    pickle_file_motorteam.close()
-    # Unpickle test_motor0 object
-    pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
-    motor0 = pickle.load(pickle_file_motor0)
-    pickle_file_motor0.close()
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
+        for subdir in subdirs:
+            if subdir == 'figures':
+                continue
+            if subdir == 'data':
+                continue
+            print('PRINT NAME IN SUBDIR')
+            print(os.path.join(path,subdir))
+            sub_path = os.path.join(path,subdir)
+            # loop through motor files
+            for root2,subdir2,files2 in os.walk(sub_path):
+                for file in files2:
+                    if file == 'parameters.txt':
+                        continue
+                    if file == 'figures':
+                        continue
+                    if file == 'data':
+                        continue
+                    if file == 'motor0':
+                        print('motor0')
+                        pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\{file}', 'rb')
+                        motor0 = pickle.load(pickle_file_motor0)
+                        pickle_file_motor0.close()
+                        print(f'')
+                    else:
+                        print('PRINT NAME IN FILES')
+                        print(os.path.join(sub_path,file))
+                        pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
+                        motor = pickle.load(pickle_file_motor)
+                        pickle_file_motor.close()
 
-    for index, list_xb in enumerate(motor0.x_bead):
-        print(list_xb)
+                        print(f'motor_id={motor.id}, direction={motor.direction}, km={motor.k_m}')
 
-    for motor in motorteam:
-        print(motor.id)
-        print(motor.direction)
-    print(motor0.k_t)
-    print(motor0.x_m)
-    print(motor0.unbound)
+
+
     return
 
 

@@ -2,6 +2,7 @@ import motorgillespie.simulation.variable_loops as vl
 import time
 import cProfile
 import pstats
+import numpy as np
 
 ### Constants ###
 Boltzmann = 1.38064852e-23
@@ -10,7 +11,7 @@ kinesin_params = {
  'family': 'Kinesin-1',
  'member': 'antero',
  'step_size': 8,
- 'k_m': 0.2,
+ 'k_m': None,
  'v_0': 740,
  'alfa_0': 92.5,
  'f_s': 7,
@@ -26,7 +27,7 @@ dynesin_params = {
  'family': 'Kinesin-1',
  'member': 'retro',
  'step_size': 8,
- 'k_m': None,
+ 'k_m': 0.2,
  'v_0': 740,
  'alfa_0': 92.5,
  'f_s': 7,
@@ -41,12 +42,8 @@ dynesin_params = {
 
 ### Simulation parameters ###
 sim_params = {
- 'dp_v1': None,
- 'dp_v2': None,
- 'temp': None,
- 'radius': None,
- 'rest_length': None,
- 'k_t': 0.0000000000001
+ 'k_t': 0,
+ 'f_ex': 0
 }
 
 ### Simulation settings ###
@@ -58,26 +55,24 @@ gill_set = {
 }
 
 date = time.strftime("%Y%m%d_%H%M%S")
-dir = f'{date}_teamsize_km_symbreak1'
+dir = f'{date}_teamsize_km_symbreak1_antero_km'
 
-#team_comb = [(1,1), (2,2), (3,3)]
-retro_km = [0.02]
-team_comb = [(3,3)]
+team_comb = [[1,1], [2,2], [3,3], [4,4]]
 #retro_km = np.arange(0.02, 0.2, 0.02)
-#retro_km = [0.02, 0.06, 0.1, 0.14, 0.2]
+retro_km = [0.02, 0.1, 0.2]
 
 for i in team_comb:
     for j in retro_km:
         gill_set['n_motors'] = i
-        dynesin_params['k_m'] = j
+        kinesin_params['k_m'] = j
 
         ### Data storage ###
-        subdir = f'{i}_{j}'
+        subdir = f'{i}n_{j}dynkm'
         short_description = ''
 
         # Initiate motor team an run simulation n_it times for t_end seconds each
         with cProfile.Profile() as profile:
-            out = output_gillespie = vl.init_run(sim_params, gill_set, kinesin_params, dynesin_params, sd=short_description, dirct=dir, subdir=subdir)
+            out = output_gillespie = vl.init_run(sim_params, gill_set, dynesin_params,  kinesin_params,  sd=short_description, dirct=dir, subdir=subdir)
             ps = pstats.Stats(profile)
             ps.sort_stats('calls', 'cumtime')
             ps.print_stats(15)

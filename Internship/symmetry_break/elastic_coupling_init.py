@@ -16,21 +16,35 @@ kinesin_params = {
  'alfa_0': 92.5,
  'f_s': 7,
  'epsilon_0': 0.66,
+# 'init_pos': 0.1,
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'anterograde',
- 'init_state': 'bound', # bound and unbound
+ 'init_state': 'unbound',
  'calc_eps': 'exponential',
 }
-
+'''
+kinesin_params2 = {
+ 'family': 'Kinesin-1',
+ 'member': 'antero',
+ 'step_size': 8,
+ 'k_m': None,
+ 'v_0': 740,
+ 'alfa_0': 92.5,
+ 'f_s': 7,
+ 'epsilon_0': 0.66,
+ #'init_pos': 0.1,
+ 'f_d': 2.1,
+ 'bind_rate': 5,
+ 'direction': 'anterograde',
+ 'init_state': 'unbound',
+ 'calc_eps': 'exponential',
+}
+'''
 ### Simulation parameters ###
 sim_params = {
- 'dp_v1': None,
- 'dp_v2': None,
- 'temp': None,
- 'radius': None,
- 'rest_length': None,
- 'k_t': 0.03
+ 'k_t': 0.03,
+ 'f_ex': 0
 }
 
 ### Simulation settings ###
@@ -42,23 +56,21 @@ gill_set = {
 }
 
 date = time.strftime("%Y%m%d_%H%M%S")
-dirct = f'{date}_elastic_coupling_startbound0.1_withtrap'
+dirct = f'{date}_elastic_coupling_kt_unbound'
 
-#retro_km = np.arange(0.02, 0.22, 0.02)
-retro_km = [0.1]
-#team_comb = [[1], [2], [3], [4]]
-team_comb = [[5]]
-#retro_km = np.arange(0.1, 0.22, 0.02)
-
+retro_km = np.arange(0.02, 0.22, 0.02)
+team_comb = [[1], [2], [3], [4], [5]]
+#f_ex = [-0.5, 0]
 
 
 for i in team_comb:
-    for j in retro_km:
+    for k in retro_km:
         gill_set['n_motors'] = i
-        kinesin_params['k_m'] = j
+        kinesin_params['k_m'] = k
+        #kinesin_params2['k_m'] = k
 
         ### Data storage ###
-        subdir = f'{i}_{j}'
+        subdir = f'{i}n_{k}km'
         short_description = ''
 
         # Initiate motor team an run simulation n_it times for t_end seconds each

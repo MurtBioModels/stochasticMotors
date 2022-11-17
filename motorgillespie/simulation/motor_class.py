@@ -4,7 +4,7 @@ import numpy as np
 class MotorProtein(object):
 
     ### Motor protein attributes ###
-    def __init__(self, family, member, k_m, alfa_0, f_s, epsilon_0, f_d, bind_rate, step_size, direction, init_state, calc_eps, id):
+    def __init__(self, family, member, k_m, alfa_0, f_s, epsilon_0, f_d, bind_rate, step_size, direction, init_state, calc_eps, id, init_pos=None):
         """
 
         Parameters
@@ -19,7 +19,7 @@ class MotorProtein(object):
                Zero force stepping rate (1/s), v_0/size_step
         f_s = 7 : float or integer
                 Stall force (pN)
-        epsilon_0 : tuple of floats or integers or integer
+        epsilon_0 : tuple of floats or integers or integer or float
         f_d : float or integer
               Detachment force (pN)
         bind_rate : float or integer
@@ -50,6 +50,7 @@ class MotorProtein(object):
         self.init_state = init_state
         self.calc_eps = calc_eps
         self.id = int(id) + 1
+        self.init_pos = init_pos
         ## Updating variables ##
         self.unbound = None
         self.xm_abs = None
@@ -92,6 +93,8 @@ class MotorProtein(object):
         initial_options = ['bound', 'unbound']
         if self.init_state not in initial_options:
             raise ValueError("Not a valid motor: invalid initial state. Expected one of: %s." % initial_options)
+        if self.init_state == 'unbound' and self.init_pos is not None:
+            raise ValueError("An initially unbound motor cannot have a initial position")
         # Check motor direction
         direction_options = ['anterograde', 'retrograde']
         if self.direction not in direction_options:
@@ -126,14 +129,23 @@ class MotorProtein(object):
         """
         if self.init_state == 'unbound':
             self.unbound = True
+            self.xm_abs = float('nan')
+            self.xm_rel = float('nan')
+            self.x_m_abs.append([float('nan')])
         elif self.init_state == 'bound':
             self.unbound = False
+            if self.init_pos is not None:
+                self.xm_abs = self.init_pos
+                self.xm_rel = 0
+                self.x_m_abs.append([self.init_pos])
+                #print(f'init_pos={self.init_pos}') #debug
+            else:
+                self.xm_abs = 0
+                self.xm_rel = 0
+                self.x_m_abs.append([0])
+                #print(f'init_pos={self.init_pos} and xm_abs start={self.xm_abs}') #debug
         else:
             raise ValueError("Motor proteins can either be in an bound or unbound (initial) state")
-
-        self.xm_abs = 0.1
-        self.xm_rel = 0
-        self.x_m_abs.append([0.1])
 
         if dimension == '1D':
             self.forces.append([])
@@ -307,8 +319,8 @@ class MotorProtein(object):
         -------
 
         """
-        self.xm_abs = 0
-        self.xm_rel = 0
+        self.xm_abs = float('nan')
+        self.xm_rel = float('nan')
         self.unbound = True
 
         return
@@ -329,28 +341,60 @@ class MotorFixed(object):
     __unbound = False
     __x_m = 0
 
-    def __init__(self, dp_v1, dp_v2, radius, rest_length, temp, k_t):
+    def __init__(self, k_t, f_ex, dp_v1=None, dp_v2=None, radius=None, rest_length=None, temp=None):
         ## Simulation parameters ##
+        self.k_t = k_t
+        self.f_ex = f_ex
         self.dp_v1 = dp_v1
         self.dp_v2 = dp_v2
         self.radius = radius
         self.rest_length = rest_length
         self.temp = temp
-        self.k_t = k_t
+        # Calculate later
         self.angle = None
+        self.init_antero = None
+        self.init_retro = None
         ## Bead/simulation data  ##
         self.time_points = [] # list of lists
         self.x_bead = [] # list of lists
         #self.force_bead = [] # list of lists
         self.retro_motors = [] # list of lists
         self.antero_motors = [] # list of lists
-        self.bead_unbind_events = [] # list
         #self.match_events = [] # list of lists; for testing simulation
         self.runlength_bead = [] # divide bij k_t to get force
         self.stall_time = []
         #self.sum_rates = [] # for testing simulation
 
-    ### Initiate motor_0 each gillespie run (t=0) ###
+    ### Initiate ###
+
+    def init_valid_once(self, motor_team):
+        """
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+
+        """
+        antero_init_bound = 0
+        retro_init_bound = 0
+        for motor in motor_team:
+            if motor.init_state == 'bound':
+                if motor.direction == 'anterograde':
+                    antero_init_bound += 1
+                if motor.direction == 'retrograde':
+                    retro_init_bound += 1
+        #print(f'len antero bound: {antero_init_bound}') #debug
+        #print(f'len retro bound: {retro_init_bound}') #debug
+        if self.f_ex != 0 and (antero_init_bound + retro_init_bound) == 0:
+            raise ValueError(f'If an external force is added to the simulation, at least one motor has to start bound')
+        self.init_antero = antero_init_bound
+        self.init_retro = retro_init_bound
+
+        if self.k_t != 0 and self.f_ex != 0:
+            raise ValueError(f'Either add an external force or a trap stiffness to the simulation, not both.')
+
     def init(self):
         """
 
@@ -361,12 +405,13 @@ class MotorFixed(object):
         -------
 
         """
+
+        #print(f'self.init_antero, self.init_retro = {self.init_antero} {self.init_retro}') #debug
         self.time_points.append([0])
         self.x_bead.append([])
         #self.force_bead.append([])
-        self.antero_motors.append([])
-        self.retro_motors.append([])
-        self.bead_unbind_events.append(0)
+        self.antero_motors.append([self.init_antero])
+        self.retro_motors.append([self.init_retro])
         #self.match_events.append([])
 
         return
@@ -387,1022 +432,3 @@ class MotorFixed(object):
     @property
     def unbound(self):
         return self.__unbound
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -47,9 +47,11 @@ def xbead_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probab
         xb_intrpl = f(t_intrpl)
         # Remove zeroes
         xb_intrpl_nozeroes = [x for x in xb_intrpl if x != 0]
+        # Remove Nans
+        xb_intrpl_nonans = [x for x in xb_intrpl_nozeroes if np.isnan(x) == False]
 
         # Add interpolated data points to list
-        xb_ip.extend(xb_intrpl_nozeroes)
+        xb_ip.extend(xb_intrpl_nonans)
 
     ### Plotting ###
     print('Making figure..')
@@ -552,83 +554,7 @@ def violin_fu_rl(dirct, k_t, figname, titlestring, show=True):
         print('Figure saved')
     return
 
-def violin_xb(dirct, figname, titlestring, stepsize=0.001, show=True):
-    """
-    CUSTOM HARD CODED
-    Parameters
-    ----------
 
-    Returns
-    -------
-
-    """
-
-    dict_xb = {}
-    for root, subdirs, files in os.walk(f'.\motor_objects\{dirct}'):
-        for index, subdir in enumerate(subdirs):
-            if subdir == 'figures':
-                continue
-            if subdir == 'data':
-                continue
-            # Unpickle test_motor0
-            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
-            motor0 = pickle.load(pickle_file_motor0)
-            pickle_file_motor0.close()
-
-            xb_ip = []
-
-            # Loop through lists in nested list of bead locations
-            for index, list_xb in enumerate(motor0.x_bead):
-                print(f'index={index}')
-
-                # Original data
-                t = motor0.time_points[index]
-                xb = list_xb
-                # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
-                if len(t) != len(xb):
-                    t.pop()
-                # Create function
-                f = interp1d(t, xb, kind='previous')
-                # New x values, 100 seconds every second
-                interval = (0, t[-1])
-                t_intrpl = np.arange(interval[0], interval[1], stepsize)
-                # Do interpolation on new data points
-                xb_intrpl = f(t_intrpl)
-                # Remove zeroes
-                xb_intrpl_nozeroes = [x for x in xb_intrpl if x != 0]
-
-                # Add interpolated data points to list
-                xb_ip.extend(xb_intrpl_nozeroes)
-
-            # append to dictionary
-            dict_xb[subdir] = xb_ip
-        break
-
-    if not os.path.isdir(f'.\motor_objects\{dirct}\\figures'):
-        os.makedirs(f'.\motor_objects\{dirct}\\figures')
-
-    df_xb = pd.DataFrame({key:pd.Series(value) for key, value in dict_xb.items()})
-    melted_xb = pd.melt(df_xb, value_vars=df_xb.columns, var_name='settings').dropna()
-
-
-    # plotting
-    plt.figure()
-    sns.violinplot(data=melted_xb, x='settings', y='value')
-    plt.xlabel('k_m ratio')
-    plt.xlabel('0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9', '1')
-    plt.ylabel('Bead displacement [nm]')
-    plt.title(f' Distribution displacement: {titlestring}')
-    plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xb_{figname}.png', format='png', dpi=300, bbox_inches='tight')
-    if show == True:
-        plt.show()
-        plt.clf()
-        plt.close()
-    else:
-        plt.clf()
-        plt.close()
-        print('Figure saved')
-
-    return
 
 ### CDF plots ###
 
@@ -676,9 +602,11 @@ def cdf_xbead(dirct, figname, titlestring, stepsize=0.001, show=False):
                 xb_intrpl = f(t_intrpl)
                 # Remove zeroes
                 xb_intrpl_nozeroes = [x for x in xb_intrpl if x != 0]
+                # Remove Nans
+                xb_intrpl_nonans = [x for x in xb_intrpl_nozeroes if np.isnan(x) == False]
 
                 # Add interpolated data points to list
-                xb_ip.extend(xb_intrpl_nozeroes)
+                xb_ip.extend(xb_intrpl_nonans)
 
             # append to dictionary
             dict_xb[subdir] = xb_ip
@@ -872,6 +800,162 @@ def heatmap_antero_retro(dirct, figname, titlestring, show=False):
         print('Figure saved')
     return
 
+####################
+
+
+def plot_N_km_meanmaxdist(dirct, filename, figname=None, titlestring=None, show=False):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+    '''
+    #
+    # Show the joint distribution using kernel density estimation
+    plt.figure()
+    g = sns.jointplot(
+    data=df.loc[df.km == 0.2],
+    x="meanmaxdist", y="runlength", hue="teamsize",
+    kind="kde", cmap="bright")
+    plt.show()
+    '''
+    # count plot
+    km_select = ['0.1', '0.02', '0.2', 0.1, 0.2, 0.02]
+    ts_select = ['2', '3', '[2]', '[3]', 2, 3, [2], [3]]
+    plt.figure()
+    g = sns.displot(data=df[df['km'].isin(km_select)][df['teamsize'].isin(ts_select)], x='meanmaxdist', hue='km', col='teamsize', binwidth=8, stat='count', multiple="stack",
+    palette="bright",
+    edgecolor=".3",
+    linewidth=.5, common_norm=False)
+    g.fig.suptitle(f' {titlestring}')
+    g.set_xlabels(' mean max distance per run [nm]')
+    g.add_legend()
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\distplot_N_km_Fex{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # hue=teamsize
+    plt.figure()
+    g = sns.catplot(data=df[df['km'].isin(km_select)][df['teamsize'].isin(ts_select)], x="km", y="meanmaxdist", hue="teamsize", style='teamsize', marker='teamsize', kind="point")
+    g._legend.set_title('Team size n=')
+    plt.xlabel('Motor stiffness [pN/nm]')
+    plt.ylabel(' mean max dist [nm]')
+    plt.title(f'{titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    return
+
+
+def plot_N_km_boundmotors(dirct, filename, figname=None, titlestring=None, show=False):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    # hue=km
+    plt.figure()
+    g = sns.FacetGrid(data=df, hue="km", col='teamsize', style='km', marker='km', kind="point")
+    g.map(sns.catplot, x="f_ex", y="boundmotors")
+
+    g._legend.set_title('Motor stiffness [pN/nm]:')
+    plt.xlabel('external force [pN]')
+    plt.ylabel('<Xb> [nm]')
+    plt.title(f'{titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_N_huekm_fex_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # count plot
+    plt.figure()
+    g = sns.displot(data=df, x='runlength', hue='f_ex', col='teamsize', row= 'km', stat='count', multiple="stack",
+    palette="bright",
+    edgecolor=".3",
+    linewidth=.5, common_norm=False)
+    g.fig.suptitle(f'Histogram of cargo run length {titlestring}')
+    g.set_xlabels('<Xb> [nm]')
+    g.add_legend()
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\distplot_runlength_N_km_fex_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+
+    '''
+    #
+    # Add the joint and marginal histogram plots
+    plt.figure()
+    g = sns.JointGrid(data=df.loc[df.km == 0.2], x="runlength", y="boundmotors", hue='teamsize', marginal_ticks=True)
+    g.plot_joint(
+    sns.histplot, discrete=(False, False),
+    cmap="bright")
+    g.plot_marginals(sns.histplot, color="bright")
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+    '''
+
+    return
+
+#########################
 
 def plot_N_km_runlength(dirct, filename, figname, titlestring, show=False):
     """
@@ -1006,6 +1090,145 @@ def plot_N_km_runlength(dirct, filename, figname, titlestring, show=False):
         plt.close()
         print('Figure saved')
 
+    # Heatmap
+    df_pivot = pd.pivot_table(df, values='runlength', index='teamsize', columns='km', aggfunc={'runlength': np.mean})
+    print(df_pivot)
+    plt.figure()
+    sns.heatmap(df_pivot, cbar=True, cbar_kws={'label': '<Xb>'})
+    plt.xlabel('motor stiffness [pN/nm]')
+    plt.ylabel('teamsize N')
+    plt.title(f'Heatmap of average cargo run length {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\contourplot_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # count plot
+    plt.figure()
+    g = sns.displot(data=df, x='runlength', hue='km', col='teamsize', stat='count', multiple="stack",
+    palette="bright",
+    edgecolor=".3",
+    linewidth=.5, common_norm=False)
+    g.fig.suptitle(f'Histogram of cargo run length {titlestring}')
+    g.set_xlabels('<Xb> [nm]')
+    g.add_legend()
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\distplot_runlength_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+
+    # swarm plot
+    plt.figure()
+    sns.swarmplot(data=df, x="km", y="runlength", hue="teamsize", s=1, dodge=True)
+    plt.xlabel('motor stiffness [pN/nm]')
+    plt.ylabel('Xb [nm]')
+    plt.title(f' Swarmplot of cargo run length {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\swarmplot_runlength_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # box plot
+    plt.figure()
+    g = sns.catplot(data=df, x="km", y="runlength", hue='teamsize',  kind='box')
+    plt.xlabel('motor stiffness [pN/nm]')
+    plt.ylabel('<Xb> [nm]')
+    plt.title(f' Boxplot of cargo run length {titlestring}')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\boxplot_runlength_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    return
+
+
+##############################################
+
+
+def plot_fex_N_km_runlength(dirct, filename, figname, titlestring, show=False):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+
+    #
+    sns.color_palette()
+    sns.set_style("whitegrid")
+
+    # ecdf plot
+    plt.figure()
+    g = sns.FacetGrid(data=df, hue='km', col="teamsize")
+    g.map(sns.ecdfplot, 'runlength')
+    g.add_legend(title='Motor stiffness:')
+    g.fig.suptitle(f'Cumulative distribution of average cargo run length {titlestring}')
+    g.set_xlabels('<Xb> [nm]')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\ecdf_runlength_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # hue=km col=teamsize
+    plt.figure()
+    g = sns.catplot(data=df, x="f_ex", y="runlength", hue="km", col='teamsize', style='teamsize', marker='teamsize', kind="point")
+    g._legend.set_title('Team size n=')
+    plt.xlabel('Motor stiffness [pN/nm]')
+    plt.ylabel('<Xb> [nm]')
+    plt.title(f'{titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_huekm_colN_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+    '''
 
     # Heatmap
     df_pivot = pd.pivot_table(df, values='runlength', index='teamsize', columns='km', aggfunc={'runlength': np.mean})
@@ -1046,6 +1269,7 @@ def plot_N_km_runlength(dirct, filename, figname, titlestring, show=False):
         plt.close()
         print('Figure saved')
 
+
     # swarm plot
     plt.figure()
     sns.swarmplot(data=df, x="km", y="runlength", hue="teamsize", s=1, dodge=True)
@@ -1079,11 +1303,12 @@ def plot_N_km_runlength(dirct, filename, figname, titlestring, show=False):
         plt.clf()
         plt.close()
         print('Figure saved')
-
+    '''
     return
 
 
-def plot_N_km_meanmaxdist(dirct, filename, figname=None, titlestring=None, show=False):
+################
+def distplots_rl(dirct, filename, figname, titlestring, show=True):
     """
 
     Parameters
@@ -1094,6 +1319,7 @@ def plot_N_km_meanmaxdist(dirct, filename, figname=None, titlestring=None, show=
 
     """
 
+
     #
     df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
 
@@ -1101,40 +1327,62 @@ def plot_N_km_meanmaxdist(dirct, filename, figname=None, titlestring=None, show=
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
-    #
-    # Show the joint distribution using kernel density estimation
+    km_select = [1.0, 0.1, 0.5]
+    sns.set_style("whitegrid")
+    # hue=km
     plt.figure()
-    g = sns.jointplot(
-    data=df.loc[df.km == 0.2],
-    x="meanmaxdist", y="runlength", hue="teamsize",
-    kind="kde", cmap="bright")
-    plt.show()
+    sns.catplot(data=df[df['km_ratio'].isin(km_select)], x="team_size", y="run_length", hue="km_ratio", style='km_ratio', marker='km_ratio', kind="point")
 
-    # count plot
-    km_select = [0.04, 0.08, 0.2]
-    plt.figure()
-    g = sns.displot(data=df.loc[df.km.isin(km_select)], x='meanmaxdist', hue='km', col='teamsize', binwidth=8, stat='count', multiple="stack",
-    palette="bright",
-    edgecolor=".3",
-    linewidth=.5, common_norm=False)
-    g.fig.suptitle(f' {titlestring}')
-    g.set_xlabels(' mean max distance per run [nm]')
-    g.add_legend()
-    plt.show()
-
-    # hue=teamsize
-    plt.figure()
-    g = sns.catplot(data=df, x="km", y="meanmaxdist", hue="teamsize", style='teamsize', marker='teamsize', kind="point")
-    g._legend.set_title('Team size n=')
-    plt.xlabel('Motor stiffness [pN/nm]')
-    plt.ylabel(' mean max dist [nm]')
+    plt.xlabel('teamsize')
+    plt.ylabel('<run length> [nm]')
     plt.title(f'{titlestring}')
-    plt.show()
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_rl_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    plt.figure()
+    sns.boxplot(data=df[df['km_ratio'].isin(km_select)], x='km_ratio', y='run_length', hue='team_size')
+    plt.xlabel('k_m ratio')
+    plt.ylabel('Bead run length [nm]')
+    plt.title(f' {titlestring}')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\boxplot_rl_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # plotting
+    plt.figure()
+    sns.displot(data=df, x='rl', hue='km_ratio', col='teamsize', stat='probability', multiple='stack', common_norm=False, palette='bright')
+    plt.xlabel('Bead run length [nm]')
+    plt.title(f' {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_rl_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+
 
     return
 
 
-def plot_N_km_boundmotors(dirct, filename, figname=None, titlestring=None, show=False):
+def distplots_xb(dirct, filename, figname, titlestring, show=True):
     """
 
     Parameters
@@ -1145,6 +1393,7 @@ def plot_N_km_boundmotors(dirct, filename, figname=None, titlestring=None, show=
 
     """
 
+
     #
     df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
 
@@ -1152,23 +1401,52 @@ def plot_N_km_boundmotors(dirct, filename, figname=None, titlestring=None, show=
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
-    #
-    # Add the joint and marginal histogram plots
     plt.figure()
-    g = sns.JointGrid(data=df.loc[df.km == 0.2], x="runlength", y="boundmotors", hue='teamsize', marginal_ticks=True)
-    g.plot_joint(
-    sns.histplot, discrete=(False, False),
-    cmap="bright")
-    g.plot_marginals(sns.histplot, color="bright")
-    plt.show()
+    sns.boxplot(data=df, x='km_ratio', y='xb', hue='teamsize')
+    plt.xlabel('k_m ratio')
+    plt.ylabel('Bead displacement [nm]')
+    plt.title(f' Distribution displacement: {titlestring}')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\boxplot_xb_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # plotting
+    plt.figure()
+    sns.displot(df, x='xb', hue='km_ratio', col='teamsize', stat='probability', multiple='stack', common_norm=False)
+    plt.xlabel('Bead displacement [nm]')
+    plt.title(f' Distribution displacement: {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xb_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # plotting
+    plt.figure()
+    sns.ecdfplot(df, x='xb', hue='km_ratio', col='teamsize', common_norm=False)
+    plt.xlabel('Bead displacement [nm]')
+    plt.title(f' Distribution displacement: {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\ecdf_xb_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
 
     return
-
-
-
-
-
-
 
 
 

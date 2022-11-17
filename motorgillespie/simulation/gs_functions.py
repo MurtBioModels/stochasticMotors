@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def calc_force_1D(team, motor_0, k_t, x_motor0, i):
+def calc_force_1D(team, motor_0, k_t, x_motor0, f_ex, i, t):
     """
     This function updates the current force acting on each  motor protein
     in a team of multiple motors in Gillespie Stochastic Simulation gillespie_motor_team
@@ -21,23 +21,33 @@ def calc_force_1D(team, motor_0, k_t, x_motor0, i):
     -------
     None
     """
-
+   # for motor in team: debugggggggg
+       # print(f'{motor.id}: unbound is {motor.unbound}, xm list: {motor.x_m_abs[i]}, xm={motor.xm_abs}, km={motor.k_m}')
     # List of Km_i*Xm_i of motor proteins in motor team
-    xm_km_list = [(motor.xm_abs * motor.k_m) for motor in team]
+    xm_km_sum = sum([(motor.xm_abs * motor.k_m) for motor in team if not motor.unbound])
+    if f_ex != 0:
+        xm_km_sum = xm_km_sum + f_ex
 
     # List of Km's of bound motor proteins in motor team
-    km_list = [motor.k_m for motor in team if not motor.unbound]
-    km_list.append(k_t)
+    km_sum = sum([motor.k_m for motor in team if not motor.unbound])
+    if k_t != 0:
+        km_sum += k_t
 
-    # Calculate position beat/cargo
-    bead_loc = sum(xm_km_list)/sum(km_list)
+    # Calculate position bead/cargo
+    if t == 0:
+        if motor_0.antero_motors[i][-1] == 0 and motor_0.retro_motors[i][-1] == 0:
+            bead_loc = 0
+            #print('HAPPENED')
+        else:
+            bead_loc = xm_km_sum/km_sum
+    else:
+        bead_loc = xm_km_sum/km_sum
+    # Append bead location
     motor_0.x_bead[i].append(bead_loc)
-
-    if km_list == 0:
-        raise ValueError("Invalid sum of Km's. Deliminator can not be zero")
+    #print(f'it{i}: xb={motor_0.x_bead[i][-1]}')
 
     # Update forces acting on each individual motor protein
-    net_force = 0
+    net_force = f_ex
     for motor in team:
         if motor.unbound:
             f = 0
@@ -48,9 +58,10 @@ def calc_force_1D(team, motor_0, k_t, x_motor0, i):
         net_force += f
 
     # Motor0/fixed motor
-    f0 = k_t*(x_motor0 - bead_loc)
-    #motor_0.force_bead[i].append(f0)
-    net_force += f0
+    if k_t != 0:
+        f0 = k_t*(x_motor0 - bead_loc)
+        #motor_0.force_bead[i].append(f0)
+        net_force += f0
 
     # Net force should be approximately zero)
     if (net_force**2)**0.5 > 10**-10:

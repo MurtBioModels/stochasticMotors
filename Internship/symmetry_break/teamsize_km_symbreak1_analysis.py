@@ -1,71 +1,19 @@
 from motorgillespie.plotting import bead_figures as bf
 from motorgillespie.plotting import motor_figures as mf
+from motorgillespie.analysis import dataframes as df
+from motorgillespie.analysis import print_info as pi
 import os
 import pickle
 
-# DINGEN PROBEREN HIER
-import os.path
-path='.\motor_objects\\20221101_123744_elastic_coupling_withtrap'
-for root,subdir,files in os.walk(path):
-   for name in subdir:
-       print('PRINT NAME IN SUBDIR')
-       print(os.path.join(path,name))
-       name2 = os.path.join(path,name)
-       for root,subdir2,files2 in os.walk(name2):
-           for name3 in files2:
-               print('PRINT NAME IN FILES')
-               print(os.path.join(path,name3))
+dirct1 = '20221116_134017_teamsize_km_symbreak1_antero_km'
+tslist = [[1,1], [2,2], [3,3], [4,4]]
+#kmratiolist = [0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9, 0.5, 1]
+kmratiolist = [0.1, 0.5, 1]
 
-'''Analysis of motor objects obtained from script teamsize_km_symbreak1_init.py_init.py'''
+#df.xb_N_kmratio_df(dirct=dirct1, filename='', ts_list=tslist, kmratio_list=kmratiolist, stepsize=0.01)
+#df.rl_N_kmratio_df(dirct=dirct1, filename='_2', ts_list=tslist, kmratio_list=kmratiolist)
+#df.fu_motors_n_kmr(dirct1, filename='2_', ts_list=tslist, kmratio_list=kmratiolist)
+df.meanmaxdist_n_kmr(dirct=dirct1, filename='', ts_list=tslist, kmratio_list=kmratiolist, stepsize=0.01)
 
-'''
-## Simulation settings ##
-#dirct = '20221031_133121_teamsize_km_symbreak1'
-team_comb = [(3,3)]
-#retro_km = [0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2]
-retro_km = [0.02]
-
-# Create lists with
-list_fn = []
-list_ts = []
-
-for j in retro_km:
-    list_fn.append(f'(1,1)_{j}')
-    list_ts.append(f'kin,dyn=(1,1)_{j}k_m')
-
-
-for root, subdirs, files in os.walk(f'.\motor_objects\{dirct}'):
-    for index, subdir in enumerate(subdirs):
-        if subdir == 'figures':
-            continue
-        print(index)
-        print(f'subdir={subdir}')
-        team = []
-        for root, subdirs, files in os.walk(f'.\motor_objects\{dirct}\{subdir}'):
-            for filename in files:
-                print(f'filename={filename}')
-                if filename == 'motor0' or filename == 'parameters.txt':
-                    continue
-                pickle_motor = open(f'.\motor_objects\\{dirct}\{subdir}\{filename}', 'rb')
-                motor = pickle.load(pickle_motor)
-                pickle_motor.close()
-                team.append(motor)
-        print(len(team))
-        for motor in team:
-            print(f'{motor.id}_{motor.family}_{motor.direction}')
-        #bf.xbead_dist(dirct, subdir, f'{list_fn[index]}', list_ts[index], show=False)
-        #mf.xm_dist(dirct, subdir, f'{list_fn[index]}', list_ts[index], show=False)
-        #mf.forces_dist(dirct, subdir, f'{list_fn[index]}', list_ts[index], show=False)
-        #bf.trace_velocity(dirct, subdir, f'{list_fn[index]}', list_ts[index],  stat='count', show=False)
-        #bf.rl_fu_bead(dirct, subdir,  f'{list_fn[index]}', list_ts[index], k_t=0.0000001, stat='count', show=False)
-
-    break
-
-
-#bf.cdf_xbead(dirct='20221025_164036_teamsize_km_symbreak1_(1,1)', figname='', titlestring='', show=False)
-#bf.violin_xb(dirct=dirct, figname='', titlestring='', stepsize=0.001, show=False)
-#bf.violin_trace_vel(dirct, figname='', titlestring='', show=False)
-#bf.violin_fu_rl(dirct, k_t=0.0000001, figname='', titlestring='', show=False)
-
-'''
-
+#bf.distplots_xb(dirct=dirct1, filename='N_kmratio_xb.csv', figname='', titlestring='', show=True)
+#bf.distplots_rl(dirct=dirct1, filename='_2N_kmratio_rl.csv', figname='', titlestring='Retro=0.2pN/nm, antero=[0.02, 0.1, 0.2] (retro first)', show=True)

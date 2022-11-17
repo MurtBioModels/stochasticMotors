@@ -6,7 +6,7 @@ import numpy as np
 os.environ['PYTHONBREAKPOINT'] = '0'
 
 
-def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1D', one_trace=True):
+def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1D'):
     """
 
     Parameters
@@ -56,6 +56,10 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
         motor_0.calc_angle()
     k_t = motor_0.k_t
     x_motor0 = motor_0.x_m
+    f_ex = motor_0.f_ex
+
+    # Init once:
+    motor_0.init_valid_once(my_team)
 
     ## Do i Gillespie runs ##
     print('Begin simulation...')
@@ -65,7 +69,6 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
         # Save data: used during simulation
         list_tau = []
         t = 0
-        time_leaps = 0
 
         # Set motors to initial state and update lists
         motor_0.init()
@@ -77,7 +80,7 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
 
             # Update force
             if dimension == '1D':
-                gsf.calc_force_1D(my_team, motor_0, k_t, x_motor0, i)
+                gsf.calc_force_1D(my_team, motor_0, k_t, x_motor0, f_ex, i, t)
             else:
                 gsf.calc_force_2D(my_team, motor_0, k_t, rest_length, radius, i)
 
@@ -113,7 +116,6 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
                 list_tau.append(tau)
                 motor_0.time_points[i].append(motor_0.time_points[i][-1] + tau)
                 t += tau
-                time_leaps +=1
                 if t != motor_0.time_points[i][-1]:
                     print('Something wrong with time keeping')
             else:
@@ -177,7 +179,7 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
             retro_bound = 0
             for motor in my_team:
                 direction = motor.direction
-                if motor.unbound == False:
+                if not motor.unbound:
                     if direction == 'anterograde':
                         antero_bound += 1
                     else:
@@ -187,31 +189,31 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
             motor_0.retro_motors[i].append(retro_bound)
 
             # Save bead data per time step
-            if time_leaps > 1:
-                # If there are 0 anterograde and retrograde motors bound, but there was at least one motor bound last iteration, the bead has umbound.
-                if motor_0.antero_motors[i][-1] + motor_0.retro_motors[i][-1] == 0 and motor_0.antero_motors[i][-2] + motor_0.retro_motors[i][-2] != 0:
-                    #print(f'it={i}, t={t}')
-                    #print(f'bound motors = {motor_0.antero_motors[i][-1] + motor_0.retro_motors[i][-1]}')
-                    #print(f'bound motors PREVIOUS= {motor_0.antero_motors[i][-2] + motor_0.retro_motors[i][-2]}')
-                    #for motor in my_team:
-                        #print(f'{motor.id}: unbound={motor.unbound}')
 
-                    xm_km_list = [(motor.xm_abs * motor.k_m) for motor in my_team]
-                    # List of Km's of bound motor proteins in motor team
-                    km_list = [motor.k_m for motor in my_team if not motor.unbound]
-                    km_list.append(k_t)
-                    # Calculate position beat/cargo
-                    bead_loc = sum(xm_km_list)/sum(km_list)
-                    #print(f'new beadloc={bead_loc}')
-                    #print(f'old beadloc aka runlength={motor_0.x_bead[i][-1]}')
-                    motor_0.bead_unbind_events[-1] += 1 # Unbinding event +1
-                    motor_0.stall_time.append(list_tau[-1]) # Stall time before binding
-                    motor_0.runlength_bead.append(motor_0.x_bead[i][-1]) # Save current bead location; run length
-                    #print(f'len motor0_runlength{len(motor_0.runlength_bead)}')
-                    #print(f'last runlength={motor_0.runlength_bead[-1]}')
-                    # Stop this Gillespie run, if this setting is passed
-                    if one_trace == True:
-                        break
+            # If there are 0 anterograde and retrograde motors bound, but there was at least one motor bound last iteration, the bead has umbound.
+            if motor_0.antero_motors[i][-1] + motor_0.retro_motors[i][-1] == 0 and motor_0.antero_motors[i][-2] + motor_0.retro_motors[i][-2] != 0:
+                #print(f'it={i}, t={t}')
+                #print(f'bound motors = {motor_0.antero_motors[i][-1] + motor_0.retro_motors[i][-1]}')
+                #print(f'bound motors PREVIOUS= {motor_0.antero_motors[i][-2] + motor_0.retro_motors[i][-2]}')
+                #for motor in my_team:
+                    #print(f'{motor.id}: unbound={motor.unbound}')
+                #xm_km_list = [(motor.xm_abs * motor.k_m) for motor in my_team]
+                # List of Km's of bound motor proteins in motor team
+                #km_list = [motor.k_m for motor in my_team if not motor.unbound]
+                #km_list.append(k_t)
+                # Calculate position beat/cargo
+                #bead_loc = sum(xm_km_list)/sum(km_list)
+                #print(f'new beadloc={bead_loc}')
+                #print(f'old beadloc aka runlength={motor_0.x_bead[i][-1]}')
+                motor_0.stall_time.append(list_tau[-1]) # Stall time before binding
+                motor_0.runlength_bead.append(motor_0.x_bead[i][-1] - motor_0.x_bead[i][0]) # Save current bead location; run length
+                #print(f'motor_0.x_bead[i][-1]={motor_0.x_bead[i][-1]}')
+                #print(f'motor_0.x_bead[i][0]={motor_0.x_bead[i][0]}')
+                #print(motor_0.x_bead[i][-1] - motor_0.x_bead[i][0])
+                #print(f'len motor0_runlength{len(motor_0.runlength_bead)}')
+                #print(f'last runlength={motor_0.runlength_bead[-1]}')
+                # Stop this Gillespie run, if this setting is passed
+                break
 
     end = time.time()
     print(end-start)
