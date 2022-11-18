@@ -873,7 +873,7 @@ def plot_N_km_meanmaxdist(dirct, filename, figname=None, titlestring=None, show=
     return
 
 
-def plot_N_km_boundmotors(dirct, filename, figname=None, titlestring=None, show=False):
+def plot_N_km_fex_boundmotors(dirct, filename, figname=None, titlestring=None, show=False):
     """
 
     Parameters
@@ -956,7 +956,116 @@ def plot_N_km_boundmotors(dirct, filename, figname=None, titlestring=None, show=
     return
 
 #########################
+def plot_N_kmratio_boundmotors(dirct, filename1, filename2, figname=None, titlestring=None, show=False):
+    """
 
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    df1 = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename1}')
+    df2 = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename2}')
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+    #
+    km_select = [1.0, 0.1, 0.5]
+    sns.set_style("whitegrid")
+    # hue=km
+    plt.figure()
+    sns.catplot(data=df1[df1['km_ratio'].isin(km_select)], x="team_size", y="antero_bound", hue="km_ratio", style='km', marker='km', kind="point")
+    plt.xlabel('Team size N')
+    plt.ylabel('Bound antero motors n')
+    plt.title(f'{titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_anterobound_N_kmratio_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # Boxplot
+    plt.figure()
+    sns.boxplot(data=df1[df1['km_ratio'].isin(km_select)], x='km_ratio', y='antero_bound', hue='team_size')
+    plt.xlabel('k_m ratio')
+    plt.ylabel('Bound antero motors n')
+    plt.title(f' {titlestring}')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\boxplot_anterobound_Nkmratio_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+
+####################
+    # hue=km
+    plt.figure()
+    sns.catplot(data=df2[df2['km_ratio'].isin(km_select)], x="team_size", y="retro_bound", hue="km_ratio", style='km_ratio', marker='km_ratio', kind="point")
+    plt.xlabel('Team size N')
+    plt.ylabel('Bound retro motors n')
+    plt.title(f'{titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_retrobound_N_kmratio_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    # Boxplot
+    plt.figure()
+    sns.boxplot(data=df2[df2['km_ratio'].isin(km_select)], x='km_ratio', y='retro_bound', hue='team_size')
+    plt.xlabel('k_m ratio')
+    plt.ylabel('Bound retro motors n')
+    plt.title(f' {titlestring}')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\boxplot_retrobound_Nkmratio_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    '''
+    #
+    # Add the joint and marginal histogram plots
+    plt.figure()
+    g = sns.JointGrid(data=df.loc[df.km == 0.2], x="runlength", y="boundmotors", hue='teamsize', marginal_ticks=True)
+    g.plot_joint(
+    sns.histplot, discrete=(False, False),
+    cmap="bright")
+    g.plot_marginals(sns.histplot, color="bright")
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+    '''
+
+    return
 def plot_N_km_runlength(dirct, filename, figname, titlestring, show=False):
     """
 
@@ -1188,11 +1297,26 @@ def plot_fex_N_km_runlength(dirct, filename, figname, titlestring, show=False):
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
-
     #
     sns.color_palette()
     sns.set_style("whitegrid")
 
+    #
+    plt.figure()
+    sns.catplot(data=df, x='f_ex', y='run_length', hue='km', col='team_size', kind='box', col_wrap=2)
+    plt.xlabel('External force [pN]')
+    plt.ylabel('Bead run length [nm]')
+    plt.title(f' {titlestring}')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\box_rl_nfexkm_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+    '''
     # ecdf plot
     plt.figure()
     g = sns.FacetGrid(data=df, hue='km', col="teamsize")
@@ -1210,15 +1334,16 @@ def plot_fex_N_km_runlength(dirct, filename, figname, titlestring, show=False):
         plt.clf()
         plt.close()
         print('Figure saved')
-
+    '''
+    '''
     # hue=km col=teamsize
     plt.figure()
-    g = sns.catplot(data=df, x="f_ex", y="runlength", hue="km", col='teamsize', style='teamsize', marker='teamsize', kind="point")
+    g = sns.catplot(data=df, x="f_ex", y="run_length", hue="km", col='team_size', style='team_size', marker='team_size', kind="point")
     g._legend.set_title('Team size n=')
     plt.xlabel('Motor stiffness [pN/nm]')
     plt.ylabel('<Xb> [nm]')
     plt.title(f'{titlestring}')
-    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_huekm_colN_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\point_rl_Nfexkm_{figname}.png', format='png', dpi=300, bbox_inches='tight')
 
     if show == True:
         plt.show()
@@ -1228,6 +1353,7 @@ def plot_fex_N_km_runlength(dirct, filename, figname, titlestring, show=False):
         plt.clf()
         plt.close()
         print('Figure saved')
+    '''
     '''
 
     # Heatmap

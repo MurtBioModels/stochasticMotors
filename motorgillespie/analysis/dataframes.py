@@ -5,11 +5,13 @@ import pandas as pd
 import os
 
 ### N + FEX + KM >> ELASTIC C. ###
-def bound_motors_df(dirct, filename, ts_list, km_list, fex_list,  stepsize=0.01):
+
+def rl_n_fex_km(dirct, filename, ts_list, fex_list, km_list):
     """
 
     Parameters
     ----------
+    Check
 
     Returns
     -------
@@ -18,23 +20,25 @@ def bound_motors_df(dirct, filename, ts_list, km_list, fex_list,  stepsize=0.01)
     #
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
         os.makedirs(f'.\motor_objects\\{dirct}\\data')
+
     #
-    df_teamsize = ts_list
-    df_fex = fex_list
-    df_km = km_list
-    df = pd.DataFrame(columns=['runlength', 'mean_antero_bound', 'mean_retro_bound', 'teamsize', 'f_ex', 'km'])
+    dict_rl = {}
     #
     teamsize_count = 0
     km_count = 0
     fex_count = 0
     #
-    counter = 0
-    for root, subdirs, files in os.walk(f'.\motor_objects\\{dirct}'):
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
         for index, subdir in enumerate(subdirs):
             if subdir == 'figures':
                 continue
             if subdir == 'data':
                 continue
+            #
+            print('NEW SUBDIR/SIMULATION')
+            print(os.path.join(path,subdir))
+            #
             print(f'subdir={subdir}')
             print(f'teamsize_count={teamsize_count}')
             print(f'fex_count={fex_count}')
@@ -44,91 +48,143 @@ def bound_motors_df(dirct, filename, ts_list, km_list, fex_list,  stepsize=0.01)
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
             #
-            ts = df_teamsize[teamsize_count]
-            fex = df_fex[fex_count]
-            km = df_km[km_count]
+            ts = ts_list[teamsize_count]
+            fex = fex_list[fex_count]
+            km = km_list[km_count]
             print(f'tz={ts}')
             print(f'fex={fex}')
             print(f'km={km}')
             #
-            runlength = motor0.runlength_bead
-            antero_bound = motor0.antero_motors
-            retro_bound = motor0.retro_motors
-            mean_antero_bound = []
-            mean_retro_bound = []
-
-            print('Start interpolating antero bound motors')
-            for index, list_bm in enumerate(antero_bound):
-                    #print(f'index={index}')
-                    # Original data
-                    t = motor0.time_points[index]
-                    bound = list_bm
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
-                    if len(t) != len(bound):
-                        t.pop()
-                    # Create function
-                    f = interp1d(t, bound, kind='previous')
-                    # New x values, 100 seconds every second
-                    interval = (0, t[-1])
-                    t_intrpl = np.arange(interval[0], interval[1], stepsize)
-                    # Do interpolation on new data points
-                    bound_intrpl = f(t_intrpl)
-                    mean_bound = np.mean(bound_intrpl)
-                    #print(f'mean_bound={mean_bound}')
-                    mean_antero_bound.append(mean_bound)
-
-            print('Start interpolating retro bound motors')
-            for index, list_bm in enumerate(retro_bound):
-                    #print(f'index={index}')
-                    # Original data
-                    t = motor0.time_points[index]
-                    bound = list_bm
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
-                    if len(t) != len(bound):
-                        t.pop()
-                    # Create function
-                    f = interp1d(t, bound, kind='previous')
-                    # New x values, 100 seconds every second
-                    interval = (0, t[-1])
-                    t_intrpl = np.arange(interval[0], interval[1], stepsize)
-                    # Do interpolation on new data points
-                    bound_intrpl = f(t_intrpl)
-                    mean_bound = np.mean(bound_intrpl)
-                    #print(f'mean_bound={mean_bound}')
-                    mean_retro_bound.append(mean_bound)
-
-            for i, value in enumerate(runlength):
-                df.loc[counter, 'runlength'] = value
-                df.loc[counter, 'mean_antero_bound'] = mean_antero_bound[i]
-                df.loc[counter, 'mean_retro_bound'] = mean_retro_bound[i]
-                df.loc[counter, 'teamsize'] = ts
-                df.loc[counter, 'f_ex'] = fex
-                df.loc[counter, 'km'] = km
-                #print(f'df.iloc[counter]={df.iloc[counter]}')
-                counter +=1
-
+            key = (str(ts), str(fex), str(km))
+            print(f'key={key}')
             #
-            if km_count < len(df_km) - 1:
+            runlength = list(motor0.runlength_bead)
+            #
+            dict_rl[key] = runlength
+            #
+            if km_count < len(km_list) - 1:
                 km_count += 1
-            elif km_count == len(df_km) - 1:
-                if fex_count == len(df_fex) - 1:
+            elif km_count == len(km_list) - 1:
+                if fex_count == len(fex_list) - 1:
                     km_count = 0
                     fex_count = 0
                     teamsize_count += 1
-                elif fex_count < len(df_fex) - 1:
+                elif fex_count < len(fex_list) - 1:
                     km_count = 0
                     fex_count +=1
 
+    df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in dict_rl.items() ]))
     print(df)
+    df_melt = pd.melt(df, value_name='run_length', var_name=['team_size', 'f_ex', 'km']).dropna()
+    print(df_melt)
     #
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
         os.makedirs(f'.\motor_objects\\{dirct}\\data')
-    df.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_km_meanbound.csv')
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_fex_km_rl.csv')
+
+    return
+
+def bound_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0.01):
+    """
+
+    Parameters
+    ----------
+    ready
+    Returns
+    -------
+
+    """
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\data')
+    #
+    dict_boundmotors = {}
+    #
+    teamsize_count = 0
+    km_count = 0
+    fex_count = 0
+    #
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
+        for index, subdir in enumerate(subdirs):
+            if subdir == 'figures':
+                continue
+            if subdir == 'data':
+                continue
+            #
+            print('NEW SUBDIR/SIMULATION')
+            print(os.path.join(path,subdir))
+            #
+            print(f'subdir={subdir}')
+            print(f'teamsize_count={teamsize_count}')
+            print(f'fex_count={fex_count}')
+            print(f'km_count={km_count}')
+            #
+            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
+            motor0 = pickle.load(pickle_file_motor0)
+            pickle_file_motor0.close()
+            #
+            ts = ts_list[teamsize_count]
+            fex = fex_list[fex_count]
+            km = km_list[km_count]
+            print(f'tz={ts}')
+            print(f'fex={fex}')
+            print(f'km={km}')
+            #
+            key = (str(ts), str(fex), str(km))
+            print(f'key={key}')
+            #
+            #runlength = motor0.runlength_bead
+            motors_bound = motor0.antero_motors
+            mean_bound_motors = []
+
+            print('Start interpolating bound motors...')
+            for index, list_bm in enumerate(motors_bound):
+                    #print(f'index={index}')
+                    # Original data
+                    t = motor0.time_points[index]
+                    bound = list_bm
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    if len(t) != len(bound):
+                        t.pop()
+                    # Create function
+                    f = interp1d(t, bound, kind='previous')
+                    # New x values, 100 seconds every second
+                    interval = (0, t[-1])
+                    t_intrpl = np.arange(interval[0], interval[1], stepsize)
+                    # Do interpolation on new data points
+                    bound_intrpl = f(t_intrpl)
+                    mean_bound = np.mean(bound_intrpl)
+                    #print(f'mean_bound={mean_bound}')
+                    mean_bound_motors.append(mean_bound)
+            #
+            dict_boundmotors[key] = mean_bound_motors
+            #
+            if km_count < len(km_list) - 1:
+                km_count += 1
+            elif km_count == len(km_list) - 1:
+                if fex_count == len(fex_list) - 1:
+                    km_count = 0
+                    fex_count = 0
+                    teamsize_count += 1
+                elif fex_count < len(fex_list) - 1:
+                    km_count = 0
+                    fex_count +=1
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\data')
+    #
+    df_boundmotors = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in dict_boundmotors.items() ]))
+    print(df_boundmotors)
+    df_bound_melt = pd.melt(df_boundmotors, value_name='bound_motors', var_name=['team_size', 'f_ex', 'km']).dropna()
+    print(df_bound_melt)
+    df_bound_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_fex_km_boundmotors.csv')
 
     return
 
 
-def meanmaxdist_n_fex_km(dirct, filename, ts_list, km_list, fex_list, stepsize=0.01):
+def meanmaxdist_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0.01):
     """
 
     Parameters
@@ -270,7 +326,7 @@ def meanmaxdist_n_fex_km(dirct, filename, ts_list, km_list, fex_list, stepsize=0
                     mean_maxdistance = sum(maxdistance)/len(maxdistance)
                     meanmax_distances.append(mean_maxdistance)
                 else:
-                    meanmax_distances.append('NaN')
+                    meanmax_distances.append(float("nan"))
             #
             print(f'len meanmaxdistances should be approx 1000: {len(meanmax_distances)}')
 
@@ -854,7 +910,7 @@ def meanmaxdist_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
 
     Parameters
     ----------
-    check
+    NOT READY IN CALCULATIONS
 
     Returns
     -------
@@ -897,7 +953,7 @@ def meanmaxdist_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
             key = (str(ts), str(km_ratio))
             print(f'key={key}')
             #
-            runlengths = motor0.runlength_bead
+            time =  motor0.time_points
             meanmax_distances = [] # this will get 1000 entries
             #
             motor_team = []
@@ -926,30 +982,15 @@ def meanmaxdist_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
 
             #
             print('Start interpolating distances...')
-            for i, value in enumerate(runlengths):
+            for i, value in enumerate(time):
                 list_of_lists = [] # one run, so one nested list per motor
                 for motor in motor_team:
-                    # time points of run i
-                    t = motor0.time_points[i]
-                    # locations of motors
-                    xm = motor.x_m_abs[i]
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
-                    if len(t) != len(xm):
-                        t.pop()
-                    # Create function
-                    f = interp1d(t, xm, kind='previous')
-                    # New x values, 100 seconds every second
-                    interval = (0, t[-1])
-                    t_intrpl = np.arange(interval[0], interval[1], stepsize)
-                    # Do interpolation on new data points
-                    xb_intrpl = f(t_intrpl)
-                    # add nested list
-                    list_of_lists.append(list(xb_intrpl))
+                    list_of_lists.append(motor.x_m_abs[i])
 
                 # check nested list
                 print('BEGIN EDITING')
                 test = [len(x) for x in list_of_lists]
-                print(f'lists in listoflists should be of equal size: {test}')
+                print(f'lists in listoflists should be of equal size (1000): {test}')
                 print(f'len(listoflists) should be {length_motorteam}: {len(list_of_lists)}')
 
                 # zip nested list
@@ -958,17 +999,19 @@ def meanmaxdist_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
                 #print(f'print zipped: {zipped}')
                 # check zipped list
                 test2 = [len(x) for x in zipped]
-                print(f'lists of zippedlists should be of equal size, namely {length_motorteam}: unqiue values= {np.unique(np.array(test2))}')
-                print(f'len(zipped) should be same as {test}: {len(zipped)}')
+                print(f'lists of zippedlists should be of equal size, namely {length_motorteam}: unqiue values= {np.unique(np.array(test2))} , type = {type(zipped[0])}')
+                print(f'len(zipped) should be same as {test} (1000): {len(zipped)}')
                 # remove nans
-                print('Remove NaNs and lists that are smaller then 2...')
-                nonans = [[y for y in x if np.isnan(y) == False] for x in zipped]
-                nonans = [x for x in nonans if len(x) > 1]
+                print('Remove NaNs...')
+                nonans = []
+                for x in zipped:
+                    nonans.append([y for y in x if y == y])
+                #nonans = [list(filter(lambda x: x == x, inner_list)) for inner_list in zipped]
                 if len(nonans) > 0:
                     #print(f'print nozeroes: {nozeroes}')
                     # check if any zeroes
-                    test3 = [x for sublist in nonans for x in sublist]
-                    print(f'are there any NaNs? should not be: {test3.count(np.NaN)}')
+                    test3 = [x for sublist in nonans for x in sublist if x != x]
+                    print(f'are there any NaNs? should not be: {len(test3)}')
                     # check equal sizes
                     test4 = [len(x) for x in nonans]
                     print(f'nozeroes lists should NOT be of equal size, unqiue values: {np.unique(np.array(test4))}')
@@ -981,15 +1024,17 @@ def meanmaxdist_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
                     print('Calculate distance between leading and legging motor (max distance)...')
                     maxdistance = [x[-1]- x[0] for x in sortedlists]
                     #test if integer/floatL
-                    print(f'check type first entry: {type(maxdistance[0])}')
+                    print(f'check type first entry: {type(maxdistance[0])}, and lenght: {len(maxdistance)}')
                     # check len maxdistance
                     print('Calculate mean of the max distances...')
-                    mean_maxdistance = sum(maxdistance)/len(maxdistance)
+                    t = np.diff(value)
+                    print(f'len(diff(t)): {len(t)}')
+                    mean_maxdistance = sum([a*b for a,b in zip(maxdistance,t)])/value[-1]
                     meanmax_distances.append(mean_maxdistance)
                 else:
-                    meanmax_distances.append('NaN')
+                    meanmax_distances.append(float('nan'))
             #
-            print(f'len meanmaxdistances should be approx 1000: {len(meanmax_distances)}')
+            print(f'len meanmaxdistances (approx 1000) : {len(meanmax_distances)}')
 
             #
             dict_meanmaxdist[key] = meanmax_distances
@@ -1019,6 +1064,7 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
 
     Parameters
     ----------
+    check
 
     Returns
     -------
@@ -1044,7 +1090,6 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
             #
             print('NEW SUBDIR/SIMULATION')
             print(os.path.join(path,subdir))
-            sub_path = os.path.join(path,subdir)
             #
             print(f'subdir={subdir}')
             print(f'teamsize_count={teamsize_count}')
@@ -1107,9 +1152,10 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
                     mean_bound = np.mean(bound_intrpl)
                     #print(f'mean_bound={mean_bound}')
                     mean_retro_bound.append(mean_bound)
-
+            #
             dict_anterobound[key] = mean_antero_bound
             dict_retrobound[key] = mean_retro_bound
+            #
             if km_ratio_count < len(kmratio_list) - 1:
                 km_ratio_count += 1
             elif km_ratio_count == len(kmratio_list) - 1:

@@ -521,6 +521,8 @@ def plot_N_km_motor_fu(dirct, filename, figname=None, titlestring=None, show=Fal
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
+    km_select = [1.0, 0.1, 0.5]
+    sns.set_style("whitegrid")
     '''
     # Show the joint distribution using kernel density estimation
     plt.figure()
@@ -530,18 +532,57 @@ def plot_N_km_motor_fu(dirct, filename, figname=None, titlestring=None, show=Fal
     kind="kde", cmap="bright")
     plt.show()
     '''
+    plt.figure()
+    sns.catplot(data=df[df['km_ratio'].isin(km_select)], x="team_size", y="fu_motors", hue="km_ratio", style='km_ratio', marker='km_ratio', kind="point")
 
+    plt.xlabel('teamsize')
+    plt.ylabel('Motor unbinding force [pN]')
+    plt.title(f'{titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_fu_motors_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    plt.figure()
+    sns.boxplot(data=df[df['km_ratio'].isin(km_select)], x='km_ratio', y='fu_motors', hue='team_size')
+    plt.xlabel('k_m ratio')
+    plt.ylabel('Motor unbinding force [pN]')
+    plt.title(f' {titlestring}')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\boxplot_fu_motors_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
 
     # count plot
     plt.figure()
-    g = sns.displot(data=df, x='fu', hue='km', col='teamsize', stat='probability', multiple="stack",
+    g = sns.displot(data=df, x='fu_motors', hue='km_ratio', col='team_size', stat='probability', multiple="stack",
     palette="bright",
     edgecolor=".3",
     linewidth=.5, common_norm=False, common_bins=False)
     g.fig.suptitle(f' {titlestring}')
     g.set_xlabels(' ')
     g.add_legend()
-    plt.show()
+    plt.title(f'{titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_fu_motors_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
 
     '''
     # hue=teamsize
