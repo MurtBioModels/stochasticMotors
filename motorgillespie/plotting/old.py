@@ -1,4 +1,3 @@
-
 import pickle
 import matplotlib.pyplot as plt
 import os.path
@@ -532,7 +531,6 @@ def lineplots_rl(family, k_t, radius, list_rl, n_motors, n_it, file_name=None):
     plt.show()
     '''
     return
-
 
 ##### motor figures #####
 

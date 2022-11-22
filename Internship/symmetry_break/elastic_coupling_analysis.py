@@ -18,6 +18,7 @@ fexlist = [-0.5, -1, -2, -3, 0]
 #df.fu_n_fex_km(dirct=dirct1, filename='', ts_list=tslist, fex_list=fexlist, km_list=kmlist)
 #df.bound_n_fex_km(dirct=dirct1, filename='', ts_list=tslist, fex_list=fexlist, km_list=kmlist, stepsize=0.01)
 df.motorforces_n_fex_km(dirct=dirct1, filename='', ts_list=tslist, fex_list=fexlist, km_list=kmlist, stepsize=0.01)
+
 # Plotting
 #bf.plot_fex_N_km_runlength(dirct=dirct1, filename='N_fex_km_rl.csv', figname='se_', titlestring='', show=True)
 #mf.plot_fex_N_km_fu_motors(dirct=dirct1, filename='N_fex_km_fu_motors.csv', figname='', titlestring='', show=True)
