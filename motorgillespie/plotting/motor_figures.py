@@ -6,9 +6,8 @@ import seaborn as sns
 import pandas as pd
 import os
 
-
-def furl(dirct, subdir, figname, titlestring, stat='probability'):
-
+### N + FEX + KM >> ELASTIC C. ###
+def plot_fex_N_km_fu_motors(dirct, filename, figname, titlestring, show=False):
     """
 
     Parameters
@@ -18,71 +17,105 @@ def furl(dirct, subdir, figname, titlestring, stat='probability'):
     -------
 
     """
+
     #
-    if not os.path.isdir(f'.\motor_objects\{dirct}\{subdir}\\figures'):
-        os.makedirs(f'.\motor_objects\{dirct}\{subdir}\\figures')
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
 
-    # Dictionaries storing data (=values) per number of motors (=key)
-    dict_fu = {}
-    dict_run_lengths = {}
-    # Loop over range of trap stifnesses
-    for kt in list_kt:
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
-        # Unpickle motor team
-        pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\{subdir}\motorteam', 'rb')
-        motorteam = pickle.load(pickle_file_motorteam)
-        pickle_file_motorteam.close()
+    #
+    sns.color_palette()
+    sns.set_style("whitegrid")
+    km_select = [0.02, 0.1, 0.2]
+    n_select = [1, 2, 3, 4]
+    #
+    for i in n_select:
+        df2 = df[df['team_size'].isin([i])]
+        df3 = df2[df2['km_'].isin(km_select)]
+        plt.figure()
+        sns.catplot(data=df3, x='f_ex', y='fu_motors', hue='km_', kind='box')
+        plt.xlabel('External force [pN]')
+        plt.ylabel('Motor unbinding force [pN]')
+        plt.title(f' Teamsize = {i} {titlestring}')
+        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\box_fu_motor_nfexkm_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
 
-        # Create lists with unbinding forces and run lengths for whole motor team
-        fu_list = []
-        run_length_list = []
-        for motor in motorteam:
-            fu_list.extend(motor.forces_unbind)
-            run_length_list.extend(motor.run_lengths)
-        # Add lists to dictionary at key = number of motor proteins
-        dict_fu[kt] = fu_list
-        dict_run_lengths[kt] = run_length_list
+        # hue=km
+        plt.figure()
+        sns.catplot(data=df3, x="f_ex", y="fu_motors", hue="km_", style='km_', marker='km_', kind="point")
+        plt.xlabel('teamsize')
+        plt.ylabel('<motor unbinding force> [pN]')
+        plt.title(f'Teamsize = {i} {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_fu_motors_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
 
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
 
-    # Transform dictionary to Pandas dataframe with equal dimensions
-    df_run_length = pd.DataFrame({key:pd.Series(value) for key, value in dict_run_lengths.items()})
-    df_force_unbinding = pd.DataFrame({key:pd.Series(value) for key, value in dict_fu.items()})
-    # Melt columns
-    melted_run_length = pd.melt(df_run_length, value_vars=df_run_length.columns, var_name='Kt').dropna()
-    melted_force_unbinding = pd.melt(df_force_unbinding, value_vars=df_force_unbinding.columns, var_name='Kt').dropna()
-
-    # Plot distributions per size of motor team (N motors)
+    '''
+    # ecdf plot
     plt.figure()
-    sns.displot(melted_run_length, x='value', hue='Kt', stat=stat, binwidth=8, common_norm=False, palette="bright")
-    plt.title(f'Run Length (X) distribution')
-    plt.xlabel('Distance [nm]')
-    plt.savefig(f'.\motor_objects\{dirct}\{subdir}\\figures\\{figname}.png')
-    plt.show()
+    g = sns.FacetGrid(data=df, hue='km', col="teamsize")
+    g.map(sns.ecdfplot, 'runlength')
+    g.add_legend(title='Motor stiffness:')
+    g.fig.suptitle(f'Cumulative distribution of average cargo run length {titlestring}')
+    g.set_xlabels('<Xb> [nm]')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\ecdf_runlength_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
 
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+    '''
+    '''
+    # hue=km col=teamsize
     plt.figure()
-    sns.displot(melted_force_unbinding, x='value', hue='Kt', multiple="stack", stat=stat, binwidth=1, common_norm=False, palette="bright")
-    plt.title(f'Unbinding force (Fu) distribution')
-    plt.xlabel('Unbinding force [pN]')
-    plt.savefig(f'.\motor_objects\{dirct}\{subdir}\\{figname}.png')
-    plt.show()
+    g = sns.catplot(data=df, x="f_ex", y="run_length", hue="km", col='team_size', style='team_size', marker='team_size', kind="point")
+    g._legend.set_title('Team size n=')
+    plt.xlabel('Motor stiffness [pN/nm]')
+    plt.ylabel('<Xb> [nm]')
+    plt.title(f'{titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\point_rl_Nfexkm_{figname}.png', format='png', dpi=300, bbox_inches='tight')
 
-    # Using FaceGrid
-    plt.figure()
-    g = sns.FacetGrid(melted_run_length, col="Kt", col_wrap=5)
-    g.map(sns.histplot, "value", stat=stat, binwidth=8, common_norm=False)
-    g.set_axis_labels('Distance [nm]')
-    g.set_titles("{col_name}")
-    g.fig.suptitle(f'{family}: Run Length (X) distribution per Trap Stiffness (Kt)')
-    plt.savefig(f'.\motor_objects\{subject}\{subdir}\\figures\\FGdist_runlength_{calc_eps}eps_{kt}varvalue.png')
-    plt.show()
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+    '''
+    '''
 
+    # Heatmap
+    df_pivot = pd.pivot_table(df, values='runlength', index='teamsize', columns='km', aggfunc={'runlength': np.mean})
+    print(df_pivot)
     plt.figure()
-    g = sns.FacetGrid(melted_force_unbinding, col="Kt", col_wrap=5)
-    g.map(sns.histplot, "value", stat=stat, common_norm=False)
-    g.set_axis_labels('Unbinding force [pN]')
-    g.set_titles("{col_name}")
-    g.fig.suptitle(f'{family}: Unbinding force (Fu) distribution per Trap Stiffness (Kt)')
-    plt.savefig(f'.\motor_objects\{subject}\{subdir}\\figures\FGdist_fu_{calc_eps}eps_{kt}varvalue.png')
+    sns.heatmap(df_pivot, cbar=True, cbar_kws={'label': '<Xb>'})
+    plt.xlabel('motor stiffness [pN/nm]')
+    plt.ylabel('teamsize N')
+    plt.title(f'Heatmap of average cargo run length {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\contourplot_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
     if show == True:
         plt.show()
         plt.clf()
@@ -92,85 +125,17 @@ def furl(dirct, subdir, figname, titlestring, stat='probability'):
         plt.close()
         print('Figure saved')
 
-    return
-
-
-def furl2(dirct, subdir, figname, titlestring, stat='probability'):
-
-    """
-
-    Parameters
-    ----------
-
-    Returns
-    -------
-
-    """
-    #
-    if not os.path.isdir(f'.\motor_objects\{dirct}\{subdir}\\figures'):
-        os.makedirs(f'.\motor_objects\{dirct}\{subdir}\\figures')
-
-    # Dictionaries storing data (=values) per number of motors (=key)
-    dict_fu = {}
-    dict_run_lengths = {}
-    # Loop over range of trap stifnesses
-    for kt in list_kt:
-
-        # Unpickle motor team
-        pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\{subdir}\motorteam', 'rb')
-        motorteam = pickle.load(pickle_file_motorteam)
-        pickle_file_motorteam.close()
-
-        # Create lists with unbinding forces and run lengths for whole motor team
-        fu_list = []
-        run_length_list = []
-        for motor in motorteam:
-            fu_list.extend(motor.forces_unbind)
-            run_length_list.extend(motor.run_lengths)
-        # Add lists to dictionary at key = number of motor proteins
-        dict_fu[kt] = fu_list
-        dict_run_lengths[kt] = run_length_list
-
-
-    # Transform dictionary to Pandas dataframe with equal dimensions
-    df_run_length = pd.DataFrame({key:pd.Series(value) for key, value in dict_run_lengths.items()})
-    df_force_unbinding = pd.DataFrame({key:pd.Series(value) for key, value in dict_fu.items()})
-    # Melt columns
-    melted_run_length = pd.melt(df_run_length, value_vars=df_run_length.columns, var_name='Kt').dropna()
-    melted_force_unbinding = pd.melt(df_force_unbinding, value_vars=df_force_unbinding.columns, var_name='Kt').dropna()
-
-    # Plot distributions per size of motor team (N motors)
+    # count plot
     plt.figure()
-    sns.displot(melted_run_length, x='value', hue='Kt', stat=stat, binwidth=8, common_norm=False, palette="bright")
-    plt.title(f'Run Length (X) distribution')
-    plt.xlabel('Distance [nm]')
-    plt.savefig(f'.\motor_objects\{dirct}\{subdir}\\figures\\{figname}.png')
-    plt.show()
+    g = sns.displot(data=df, x='runlength', hue='km', col='teamsize', stat='count', multiple="stack",
+    palette="bright",
+    edgecolor=".3",
+    linewidth=.5, common_norm=False)
+    g.fig.suptitle(f'Histogram of cargo run length {titlestring}')
+    g.set_xlabels('<Xb> [nm]')
+    g.add_legend()
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\distplot_runlength_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
 
-    plt.figure()
-    sns.displot(melted_force_unbinding, x='value', hue='Kt', multiple="stack", stat=stat, binwidth=1, common_norm=False, palette="bright")
-    plt.title(f'Unbinding force (Fu) distribution')
-    plt.xlabel('Unbinding force [pN]')
-    plt.savefig(f'.\motor_objects\{dirct}\{subdir}\\{figname}.png')
-    plt.show()
-
-    # Using FaceGrid
-    plt.figure()
-    g = sns.FacetGrid(melted_run_length, col="Kt", col_wrap=5)
-    g.map(sns.histplot, "value", stat=stat, binwidth=8, common_norm=False)
-    g.set_axis_labels('Distance [nm]')
-    g.set_titles("{col_name}")
-    g.fig.suptitle(f'{family}: Run Length (X) distribution per Trap Stiffness (Kt)')
-    plt.savefig(f'.\motor_objects\{subject}\{subdir}\\figures\\FGdist_runlength_{calc_eps}eps_{kt}varvalue.png')
-    plt.show()
-
-    plt.figure()
-    g = sns.FacetGrid(melted_force_unbinding, col="Kt", col_wrap=5)
-    g.map(sns.histplot, "value", stat=stat, common_norm=False)
-    g.set_axis_labels('Unbinding force [pN]')
-    g.set_titles("{col_name}")
-    g.fig.suptitle(f'{family}: Unbinding force (Fu) distribution per Trap Stiffness (Kt)')
-    plt.savefig(f'.\motor_objects\{subject}\{subdir}\\figures\FGdist_fu_{calc_eps}eps_{kt}varvalue.png')
     if show == True:
         plt.show()
         plt.clf()
@@ -180,75 +145,15 @@ def furl2(dirct, subdir, figname, titlestring, stat='probability'):
         plt.close()
         print('Figure saved')
 
-    return
 
-
-def forces_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probability', cn=False, show=True):
-    """
-
-    Parameters
-    ----------
-
-    Returns
-    -------
-
-    """
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\{subdir}\\figures'):
-        os.makedirs(f'.\motor_objects\\{dirct}\{subdir}\\figures')
-
-    # Unpickle motor team
-    pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\{subdir}\motorteam', 'rb')
-    motorteam = pickle.load(pickle_file_motorteam)
-    pickle_file_motorteam.close()
-    # Unpickle test_motor0 object
-    pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
-    motor0 = pickle.load(pickle_file_motor0)
-    pickle_file_motor0.close()
-
-    dict_ip_forces = {}
-    # Loop through motors in team
-    for motor in motorteam:
-        forces_ip = []
-        # Loop through lists in nested list of bead locations
-        for index, list_forces in enumerate(motor.forces):
-            print(f'index={index}')
-
-            # Original data
-            t = motor0.time_points[index]
-            print(len(t))
-            forces = list_forces
-            print(len(forces))
-            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
-            if len(t) != len(forces):
-                t.pop()
-            # Create function
-            f = interp1d(t, forces, kind='previous')
-            # New x values, 100 seconds every second
-            interval = (0, t[-1])
-            t_intrpl = np.arange(interval[0], interval[1], stepsize)
-            # Do interpolation on new data points
-            forces_intrpl = f(t_intrpl)
-            # Remove zeroes
-            forces_intrpl_nozero = [x for x in forces_intrpl if x != 0]
-            if 0 in forces_intrpl_nozero:
-                print(f'something went wrong with the zeroes')
-            # Add interpolated data points to list of all forces of one motor
-            forces_ip.extend(forces_intrpl_nozero)
-
-        # Add list to dictionary with motor family+id as key
-        dict_ip_forces[f'{motor.family}_id={motor.id}'] = forces_ip
-
-    # Plotting
-    df_forces = pd.DataFrame({key:pd.Series(value) for key, value in dict_ip_forces.items()})
-    melted_forces = pd.melt(df_forces, value_vars=df_forces.columns, var_name='id').dropna()
-
-    print('Making figure..')
+    # swarm plot
     plt.figure()
-    sns.displot(melted_forces, x='value', hue='id', stat=stat, common_norm=cn, palette="bright")
-    plt.title(f'Individual motor forces (interpolated), coloured by indv. motors, common_norm={cn}, {titlestring}')
-    plt.xlabel('Force [pN]')
-    plt.savefig(f'.\motor_objects\{dirct}\{subdir}\\figures\\dist_motor_forces_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    sns.swarmplot(data=df, x="km", y="runlength", hue="teamsize", s=1, dodge=True)
+    plt.xlabel('motor stiffness [pN/nm]')
+    plt.ylabel('Xb [nm]')
+    plt.title(f' Swarmplot of cargo run length {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\swarmplot_runlength_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
     if show == True:
         plt.show()
         plt.clf()
@@ -258,74 +163,14 @@ def forces_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='proba
         plt.close()
         print('Figure saved')
 
-    return
-
-
-def xm_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probability', cn=False, show=True):
-    """
-
-    Parameters
-    ----------
-
-    Returns
-    -------
-
-    """
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\{subdir}\\figures'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\{subdir}\\figures')
-
-    # Unpickle motor team
-    pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\\{subdir}\motorteam', 'rb')
-    motorteam = pickle.load(pickle_file_motorteam)
-    pickle_file_motorteam.close()
-    # Unpickle test_motor0 object
-    pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
-    motor0 = pickle.load(pickle_file_motor0)
-    pickle_file_motor0.close()
-
-    dict_ip_xb = {}
-    # Loop through motors in team
-    for motor in motorteam:
-        xb_ip = []
-        # Loop through lists in nested list of bead locations
-        for index, list_xm in enumerate(motor.x_m_abs):
-            print(f'index={index}')
-
-            # Original data
-            t = motor0.time_points[index]
-            print(f't={len(t)}')
-            print(f'xm={len(list_xm)}')
-            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
-            if len(t) != len(list_xm):
-                t.pop()
-            # Create function
-            f = interp1d(t, list_xm, kind='previous')
-            # New x values, 100 seconds every second
-            interval = (0, t[-1])
-            t_intrpl = np.arange(interval[0], interval[1], stepsize)
-            # Do interpolation on new data points
-            xm_intrpl = f(t_intrpl)
-            # Remove zeroes
-            xm_intrpl_nozero = [x for x in xm_intrpl if x != 0]
-            if 0 in xm_intrpl_nozero:
-                print(f'something went wrong with the zeroes')
-            # Add interpolated data points to list of all forces of one motor
-            xb_ip.extend(xm_intrpl_nozero)
-
-        # Add list to dictionary with motor family+id as key
-        dict_ip_xb[f'{motor.family}_id={motor.id}'] = xb_ip
-
-    # Plotting
-    df_xb = pd.DataFrame({key:pd.Series(value) for key, value in dict_ip_xb.items()})
-    melted_xb = pd.melt(df_xb, value_vars=df_xb.columns, var_name='id').dropna()
-
-    print('Making figure..')
+    # box plot
     plt.figure()
-    sns.displot(melted_xb, x='value', hue='id', stat=stat, common_norm={cn}, palette="bright")
-    plt.title(f'Individual motor distance (interpolated), coloured by indv. motors, common_norm={cn}, {titlestring}')
-    plt.xlabel('Distance from x=0 [nM]')
-    plt.savefig(f'.\motor_objects\\{dirct}\\{subdir}\\figures\\dist_xm_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    g = sns.catplot(data=df, x="km", y="runlength", hue='teamsize',  kind='box')
+    plt.xlabel('motor stiffness [pN/nm]')
+    plt.ylabel('<Xb> [nm]')
+    plt.title(f' Boxplot of cargo run length {titlestring}')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\boxplot_runlength_N_km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
     if show == True:
         plt.show()
         plt.clf()
@@ -334,69 +179,10 @@ def xm_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probabili
         plt.clf()
         plt.close()
         print('Figure saved')
-
+    '''
     return
 
-
-def forces_dist_notintrpl(subdir, family, n_motors, kt, calc_eps, subject='varvalue', stat='probability'):
-    """
-
-    Parameters
-    ----------
-
-    Returns
-    -------
-
-    """
-    #
-    if not os.path.isdir(f'.\motor_objects\\{subject}\{subdir}\\figures'):
-        os.makedirs(f'.\motor_objects\\{subject}\{subdir}\\figures')
-    #
-    print(f'varvalue={kt}')
-    # Unpickle motor team
-    pickle_file_motorteam = open(f'.\motor_objects\\{subject}\{subdir}\motorteam', 'rb')
-    motorteam = pickle.load(pickle_file_motorteam)
-    pickle_file_motorteam.close()
-    # Unpickle motor0_Kinesin-1_0.0kt_1motors object
-    pickle_file_motor0 = open(f'.\motor_objects\\{subject}\{subdir}\motor0', 'rb')
-    motor0 = pickle.load(pickle_file_motor0)
-    pickle_file_motor0.close()
-
-    dict_ip_forces = {}
-    # Loop through motors in team
-    for motor in motorteam:
-        f_nip = []
-    # Loop through lists in nested list of bead locations
-        for index, list_forces in enumerate(motor.forces):
-            print(f'index={index}')
-
-            f_nip.extend(list_forces)
-
-        # Add list to dictionary with motor family+id as key
-        dict_ip_forces[f'{motor.family}_id={motor.id}'] = f_nip
-
-    # Plotting
-    df_forces = pd.DataFrame({key:pd.Series(value) for key, value in dict_ip_forces.items()})
-    melted_forces = pd.melt(df_forces, value_vars=df_forces.columns, var_name='id').dropna()
-
-    print('Making figure..')
-    plt.figure()
-    sns.displot(melted_forces, x='value', hue='id', stat=stat, common_norm=True, palette="bright")
-    plt.title(f'Individual motor forces (interpolated), coloured by indv. motors, common_norm=True, varvalue={kt}')
-    plt.xlabel('Force [pN]')
-    plt.savefig(f'.\motor_objects\{subject}\{subdir}\\figures\\NOTintrpl_dist_forces_{calc_eps}eps_{kt}varvalue.png')
-    if show == True:
-        plt.show()
-        plt.clf()
-        plt.close()
-    else:
-        plt.clf()
-        plt.close()
-        print('Figure saved')
-
-    return
-
-
+### N + KM >> ELASTIC C. ###
 def plot_N_km_motorforces(dirct, filename, figname=None, titlestring=None, show=False):
     """
 
@@ -648,3 +434,6 @@ def plot_N_km_motor_rl(dirct, filename, figname=None, titlestring=None, show=Fal
     plt.show()
     '''
     return
+
+
+

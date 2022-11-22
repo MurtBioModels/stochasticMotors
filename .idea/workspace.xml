@@ -6,9 +6,12 @@
       <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/h.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/h.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/testing.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/dataframes.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/dataframes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/bead_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/bead_figures.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/lineplots.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/motor_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/motor_figures.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/old.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/old.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -197,8 +200,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.elastic_coupling_analysis" />
-        <item itemvalue="Python.elastic_coupling_init" />
         <item itemvalue="Python.teamsize_km_symbreak1_analysis" />
+        <item itemvalue="Python.elastic_coupling_init" />
         <item itemvalue="Python.teamsize_km_symbreak1_init" />
         <item itemvalue="Python.test (1)" />
       </list>
