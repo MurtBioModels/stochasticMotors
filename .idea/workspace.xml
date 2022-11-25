@@ -2,10 +2,64 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d599fbad-a598-4a0a-a323-4384fad44ad1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_COUNT_[1, 1]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_COUNT_[2, 2]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_COUNT_[3, 3]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_COUNT_[4, 4]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_LAYER_[1, 1]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_LAYER_[2, 2]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_LAYER_[3, 3]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_LAYER_[4, 4]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_[1, 1]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_[2, 2]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_[3, 3]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_CBTRUE_[4, 4]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_LAYER_[1, 1]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_LAYER_[2, 2]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_LAYER_[3, 3]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_LAYER_[4, 4]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_STACK_SBFALSE_PROB_[1, 1]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_STACK_SBFALSE_PROB_[2, 2]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_STACK_SBFALSE_PROB_[3, 3]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_STACK_SBFALSE_PROB_[4, 4]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION_0.1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION_0.5kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION_1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION_CBTrue_0.1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION_CBTrue_0.5kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION_CBTrue_1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION_CBTrue_density_0.1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION_CBTrue_density_0.5kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION_CBTrue_density_1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION__density_0.1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION__density_0.5kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_TEAMSIZESELECTION__density_1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr__0.1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr__0.5kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr__1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr__[1, 1]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr__[2, 2]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr__[3, 3]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr__[4, 4]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_col_prob_cbtrue_[1, 1]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_col_prob_cbtrue_[2, 2]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_col_prob_cbtrue_[3, 3]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_col_prob_cbtrue_[4, 4]N.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_prob_cbfalse_layer_0.1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_prob_cbfalse_layer_0.5kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_prob_cbfalse_layer_1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_prob_cbtrue_layer_0.1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_prob_cbtrue_layer_0.5kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/displot_setting_testing_20221114_190539_teamsize_km_symbreak1/dist_fmotors_Nkmr_prob_cbtrue_layer_1kmr.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Internship/symmetry_break/statistics_N_kmratio_rldists.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/dataframes.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/dataframes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/old.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/old.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/statistics.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/statistics.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/bead_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/bead_figures.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/motor_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/motor_figures.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +99,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../testing" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
@@ -57,14 +111,14 @@
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation\unbiased_model2\motor_objects" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\20221114_190539_teamsize_km_symbreak1" />
-      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\20221114_133645_elastic_coupling_fex" />
-      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\20221114_114529_elastic_coupling_firsttryTEST_kt" />
+      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\motorgillespie\analysis" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break" />
-      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\20221114_104810_elastic_coupling_firsttryTEST" />
+      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\20221114_190539_teamsize_km_symbreak1\figures" />
+      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\20221114_190539_teamsize_km_symbreak1\figures\displot_Setting_testing" />
+      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\20221114_190539_teamsize_km_symbreak1" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.elastic_coupling_analysis">
+  <component name="RunManager" selected="Python.teamsize_km_symbreak1_analysis">
     <configuration name="elastic_coupling_analysis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="2Dsimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -170,7 +224,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="2Dsimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -182,7 +236,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Internship/symmetry_break/test.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\myrth\PycharmProjects\2Dsimulation\motorgillespie\analysis\test.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -193,8 +247,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.elastic_coupling_analysis" />
         <item itemvalue="Python.teamsize_km_symbreak1_analysis" />
+        <item itemvalue="Python.elastic_coupling_analysis" />
         <item itemvalue="Python.elastic_coupling_init" />
         <item itemvalue="Python.teamsize_km_symbreak1_init" />
         <item itemvalue="Python.test (1)" />
