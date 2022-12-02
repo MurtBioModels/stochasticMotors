@@ -45,17 +45,30 @@ def init_run(sim_params, gill_set, *motor_params, dirct, subdir, sd=None):
     print('Call Gillespie simulation...')
     team_out, motor0_out = gsim.gillespie_2D_walk(motor_team, motor0, t_max, n_it, dimension=dimension)
     print('Done simulating')
+    #print(motor0 is motor0_out)
+    #print(motor_team is team_out)
+    #print(motor0.time_points[0] is motor0_out.time_points[0])
+    del motor0
+    del motor_team
 
     print('Pickling motor team...')
-    for motor in motor_team:
-        pickleTeam = open(f'.\motor_objects\{dirct}\{subdir}\{motor.id}_{motor.family}_{motor.direction}', 'wb')
-        pickle.dump(motor, pickleTeam)
+    while team_out:
+        print(f'{team_out[-1].id}_{team_out[-1].family}_{team_out[-1].direction}')
+        pickleTeam = open(f'.\motor_objects\{dirct}\{subdir}\{team_out[-1].id}_{team_out[-1].family}_{team_out[-1].direction}', 'wb')
+        pickle.dump(team_out[-1], pickleTeam)
         pickleTeam.close()
+        team_out.pop()
     # Motor0/fixed motor: holds data about the 'bead'
     print('Pickling motor0...')
     pickleMotor0 = open(f'.\motor_objects\{dirct}\{subdir}\motor0', 'wb')
     pickle.dump(motor0_out, pickleMotor0)
     pickleMotor0.close()
+    del motor0_out
+    #for motor in team_out:
+    #    pickleTeam = open(f'.\motor_objects\{dirct}\{subdir}\{motor.id}_{motor.family}_{motor.direction}', 'wb')
+    #    pickle.dump(motor, pickleTeam)
+    #    pickleTeam.close()
+
 
     # Write meta data filename in subdirectory
     print('Saving metadata to .txt filename...')

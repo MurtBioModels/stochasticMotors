@@ -29,7 +29,7 @@ def plot_fex_N_km_fu_motors(dirct, filename, figname, titlestring, show=False):
     sns.color_palette()
     sns.set_style("whitegrid")
     km_select = [0.02, 0.1, 0.2]
-    n_select = [1, 2, 3, 4]
+    n_select = [1, 2, 3, 4, 5]
     #
     for i in n_select:
         df2 = df[df['team_size'].isin([i])]
@@ -182,7 +182,7 @@ def plot_fex_N_km_fu_motors(dirct, filename, figname, titlestring, show=False):
     '''
     return
 
-def plot_fex_N_km_forces_motors(dirct, filename, figname, titlestring, show=False):
+def plot_fex_N_km_forces_motors(dirct, filename1=None, filename2=None, figname='', titlestring='', total=True, show=False):
     """
 
     Parameters
@@ -194,21 +194,51 @@ def plot_fex_N_km_forces_motors(dirct, filename, figname, titlestring, show=Fals
     """
 
     #
-    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
-
+    if total == False:
+        df1 = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename1}')
+        df1_nozeroes = df1[df1['motor_forces'] != 0 ]
+        df2 = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename2}')
+        df2_nozeroes = df2[df2['motor_forces'] != 0 ]
+        df_total = pd.concat([df1_nozeroes, df2_nozeroes], ignore_index=True)
+        df_total.to_csv(f'.\motor_objects\\{dirct}\\data\\N_fex_km_motorforces_total.csv')
+    else:
+        df_total = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\N_fex_km_motorforces_total.csv')
     #
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
     # plotting
     sns.set_style("whitegrid")
-    km_select = [0.02, 0.08, 0.1, 0.2]
-    teamsize_select = [1, 2, 3, 4]
 
+    fexlist =  [-4, -5, -6, -7]
     #
-    for i in teamsize_select:
-        df2 = df[df['team_size'] == i]
+
+    for i in fexlist:
+        df2 = df_total[df_total['f_ex'] == i]
         print(df2)
+        #forces = list(df3['motor_forces'])
+
+        # Bins
+        #q25, q75 = np.percentile(forces, [25, 75])
+        #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
+        #bins_forces = round((max(forces) - min(forces)) / bin_width)
+        plt.figure()
+        sns.displot(df2, x='motor_forces', col='team_size', stat='probability',binwidth=0.2, palette='bright', common_norm=False, common_bins=False)
+        plt.xlabel('Motor forces [pN]')
+        plt.title(f' Distribution motor forces fex={i} {titlestring}')
+        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\dist_fmotors_n_fex_km_{figname}_{i}fex.png', format='png', dpi=300, bbox_inches='tight')
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
+    #
+    '''
+    for i in teamsize_select:
+        df2 = df_total[df_total['team_size'] == i]
         df3 = df2[df2['km'].isin(km_select)]
         print(df3)
         #forces = list(df3['motor_forces'])
@@ -218,10 +248,10 @@ def plot_fex_N_km_forces_motors(dirct, filename, figname, titlestring, show=Fals
         #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
         #bins_forces = round((max(forces) - min(forces)) / bin_width)
         plt.figure()
-        sns.displot(df3, x='motor_forces', col='km', hue='f_ex', stat='probability',binwidth=0.2, multiple='stack', col_wrap=2 ,common_norm=False, common_bins=False)
+        sns.displot(df3, x='motor_forces', hue='f_ex', col='km', stat='probability',binwidth=0.2, palette='bright', common_norm=False, common_bins=True)
         plt.xlabel('Motor forces [pN]')
-        plt.title(f' Distribution motor forces: {titlestring}')
-        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_fmotors_Nkmfex_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
+        plt.title(f' Distribution motor forces N={i} {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_fmotors_n_fex_km_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
         if show == True:
             plt.show()
             plt.clf()
@@ -230,7 +260,164 @@ def plot_fex_N_km_forces_motors(dirct, filename, figname, titlestring, show=Fals
             plt.clf()
             plt.close()
             print('Figure saved')
+    '''
+    return
 
+def plot_fex_N_km_mf_plusminus(dirct, filename1=None, filename2=None, figname='', titlestring='', total=True, show=False):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    if total == False:
+        df1 = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename1}')
+        df1_nozeroes = df1[df1['motor_forces'] != 0 ]
+        df2 = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename2}')
+        df2_nozeroes = df2[df2['motor_forces'] != 0 ]
+        df_total = pd.concat([df1_nozeroes, df2_nozeroes], ignore_index=True)
+        df_total.to_csv(f'.\motor_objects\\{dirct}\\data\\N_fex_km_motorforces_total.csv')
+    else:
+        df_total = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\N_fex_km_motorforces_total.csv')
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    # plotting
+    sns.set_style("whitegrid")
+
+    fexlist = [-4, -5, -6, -7]
+    #
+
+    for i in fexlist:
+        df2 = df_total[df_total['f_ex'] == i]
+        print(df2)
+        #forces = list(df3['motor_forces'])
+
+        # Bins
+        #q25, q75 = np.percentile(forces, [25, 75])
+        #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
+        #bins_forces = round((max(forces) - min(forces)) / bin_width)
+        plt.figure()
+        sns.displot(df2, x='motor_forces', col='team_size', stat='probability',binwidth=0.2, palette='bright', common_norm=False, common_bins=False)
+        plt.xlabel('Motor forces [pN]')
+        plt.title(f' Distribution motor forces fex={i} {titlestring}')
+        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\dist_fmotors_n_fex_km_{figname}_{i}fex.png', format='png', dpi=300, bbox_inches='tight')
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
+    #
+    '''
+    for i in teamsize_select:
+        df2 = df_total[df_total['team_size'] == i]
+        df3 = df2[df2['km'].isin(km_select)]
+        print(df3)
+        #forces = list(df3['motor_forces'])
+
+        # Bins
+        #q25, q75 = np.percentile(forces, [25, 75])
+        #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
+        #bins_forces = round((max(forces) - min(forces)) / bin_width)
+        plt.figure()
+        sns.displot(df3, x='motor_forces', hue='f_ex', col='km', stat='probability',binwidth=0.2, palette='bright', common_norm=False, common_bins=True)
+        plt.xlabel('Motor forces [pN]')
+        plt.title(f' Distribution motor forces N={i} {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_fmotors_n_fex_km_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
+    '''
+    return
+
+
+def plot_fex_N_km_xm(dirct, filename, figname='', titlestring='', show=False):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+
+    df_total = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    # plotting
+    sns.set_style("whitegrid")
+
+    fexlist =  [-4, -5, -6, -7]
+    #
+
+    for i in fexlist:
+        df2 = df_total[df_total['f_ex'] == i]
+        print(df2)
+        #forces = list(df3['motor_forces'])
+
+        # Bins
+        #q25, q75 = np.percentile(forces, [25, 75])
+        #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
+        #bins_forces = round((max(forces) - min(forces)) / bin_width)
+        plt.figure()
+        sns.displot(df2, x='xm', col='team_size', stat='probability',binwidth=0.2, palette='bright', common_norm=False, common_bins=False)
+        plt.xlabel('Distance [nm]')
+        plt.title(f' Distribution Xm fex={i} {titlestring}')
+        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\dist_xm_n_fex_km_{figname}_{i}fex.png', format='png', dpi=300, bbox_inches='tight')
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
+    #
+    '''
+    for i in teamsize_select:
+        df2 = df_total[df_total['team_size'] == i]
+        df3 = df2[df2['km'].isin(km_select)]
+        print(df3)
+        #forces = list(df3['motor_forces'])
+
+        # Bins
+        #q25, q75 = np.percentile(forces, [25, 75])
+        #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
+        #bins_forces = round((max(forces) - min(forces)) / bin_width)
+        plt.figure()
+        sns.displot(df3, x='motor_forces', hue='f_ex', col='km', stat='probability',binwidth=0.2, palette='bright', common_norm=False, common_bins=True)
+        plt.xlabel('Motor forces [pN]')
+        plt.title(f' Distribution motor forces N={i} {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_fmotors_n_fex_km_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
+    '''
+    return
 
 ### N + KM >> ELASTIC C. ###
 def plot_N_km_motorforces(dirct, filename, figname=None, titlestring=None, show=False):
@@ -286,7 +473,7 @@ def plot_N_km_motorforces(dirct, filename, figname=None, titlestring=None, show=
     return
 
 
-def plot_N_km_xm(dirct, filename, figname=None, titlestring=None, show=False):
+def plot_N_km_xm(dirct, filename, figname, titlestring, show=False):
     """
 
     Parameters
@@ -533,32 +720,6 @@ def plot_N_kmr_forces_motors(dirct, filename, figname, titlestring, show=False):
             plt.clf()
             plt.close()
             print('Figure saved')
-
-    return
-
-def plot_N_kmr_forces_motors2(dirct, filename, figname, titlestring, show=False):
-    """
-
-    Parameters
-    ----------
-
-    Returns
-    -------
-
-    """
-
-    #
-    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
-    df_nozeroes = df[df['motor_forces'] !=0 ]
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
-
-    # plotting
-    sns.set_style("whitegrid")
-    km_select = [0.1, 0.5, 1]
-    teamsize_select =[str([1,1]), str([2,2]), str([3,3]), str([4,4])]
-
     #
     for i in teamsize_select:
         df2 = df_nozeroes[df_nozeroes['team_size'] == i]
@@ -576,6 +737,86 @@ def plot_N_kmr_forces_motors2(dirct, filename, figname, titlestring, show=False)
         plt.xlabel('Motor forces [pN]')
         plt.title(f' Distribution motor forces N={i} {titlestring}')
         plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_fmotors_Nkmr_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
+
+    return
+
+
+
+
+
+
+def plot_N_kmr_xm(dirct, filename, figname, titlestring, show=False):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+    df_nozeroes = df[df['xm'] !=0 ]
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    # plotting
+    sns.set_style("whitegrid")
+    km_select = [0.1, 0.5, 1]
+    teamsize_select =[str([1,1]), str([2,2]), str([3,3]), str([4,4])]
+    #
+    for i in km_select:
+        df2 = df_nozeroes[df_nozeroes['km_ratio'] == i]
+        df3 = df2[df2['team_size'].isin(teamsize_select)]
+        print(df3)
+        #forces = list(df3['motor_forces'])
+
+        # Bins
+        #q25, q75 = np.percentile(forces, [25, 75])
+        #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
+        #bins_forces = round((max(forces) - min(forces)) / bin_width)
+        # plotting
+        plt.figure()
+        sns.displot(df3, x='xm', col='team_size', stat='probability', binwidth=4, palette='bright', common_norm=False, common_bins=False)
+        plt.xlabel('Displacement[nm]')
+        plt.title(f' Distribution displacement motors: {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xm_colN_{figname}_{i}kmr.png', format='png', dpi=300, bbox_inches='tight')
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
+
+    #
+    for i in teamsize_select:
+        df2 = df_nozeroes[df_nozeroes['team_size'] == i]
+        df3 = df2[df2['km_ratio'].isin(km_select)]
+        print(df3)
+        #forces = list(df3['motor_forces'])
+
+        # Bins
+        #q25, q75 = np.percentile(forces, [25, 75])
+        #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
+        #bins_forces = round((max(forces) - min(forces)) / bin_width)
+        plt.figure()
+        sns.displot(df3, x='xm', col='km_ratio', stat='probability', binwidth=0.2, palette='bright', common_norm=False, common_bins=False)
+        plt.xlabel('Displacement [nm]')
+        plt.title(f' Distribution displacement motors {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xm_colkmr_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
         if show == True:
             plt.show()
             plt.clf()

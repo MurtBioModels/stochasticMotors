@@ -66,10 +66,13 @@ def plot_n_fex_km_rl(dirct, filename, figname, titlestring, show=False):
     sns.set_style("whitegrid")
     km_select = [0.02, 0.1, 0.2]
     n_select = [1,2,3,4]
+    #f_ex = [-4, -5, -6, -7]
+    f_ex = [-0.5, -1, -2, -3, 0]
+    #f_ex = [0]
     #
-    for i in n_select:
+    for i in f_ex:
 
-        df2 = df[df['team_size'].isin([i])]
+        df2 = df[df['f_ex'].isin([i])]
         df3 = df2[df2['km'].isin(km_select)]
         '''
         plt.figure()
@@ -89,11 +92,11 @@ def plot_n_fex_km_rl(dirct, filename, figname, titlestring, show=False):
         '''
         #
         plt.figure()
-        sns.catplot(data=df3, x="f_ex", y="run_length", hue="km", style='km_ratio', marker='km_ratio', kind="point", errornar='se')
+        sns.catplot(data=df3, x="team_size", y="run_length", hue="km", style='km', marker='km', kind="point", errornar='se')
         plt.xlabel('teamsize')
         plt.ylabel('<run length> [nm]')
-        plt.title(f'Teamsize = {i} {titlestring}')
-        plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_rl_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
+        plt.title(f'f_ex = {i} {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_rl_{figname}_{i}fex.png', format='png', dpi=300, bbox_inches='tight')
 
         if show == True:
             plt.show()
@@ -519,11 +522,12 @@ def plot_N_kmr_xb(dirct, filename, figname, titlestring, show=False):
     sns.set_style("whitegrid")
     km_select = [0.1, 0.5, 1]
     teamsize_select =[str([1,1]), str([2,2]), str([3,3]), str([4,4])]
+    '''
     #
     for i in km_select:
         df2 = df_nozeroes[df_nozeroes['km_ratio'] == i]
         df3 = df2[df2['team_size'].isin(teamsize_select)]
-        print(df2)
+        print(df3)
         #forces = list(df3['motor_forces'])
 
         # Bins
@@ -533,8 +537,8 @@ def plot_N_kmr_xb(dirct, filename, figname, titlestring, show=False):
         # plotting
         plt.figure()
         sns.displot(df3, x='xb', col='team_size', stat='probability', binwidth=4, palette='bright', common_norm=False, common_bins=False)
-        plt.xlabel('Bead displacement [nm]')
-        plt.title(f' Distribution displacement: {titlestring}')
+        plt.xlabel('Displacement [nm]')
+        plt.title(f' Distribution displacement cargo: {titlestring}')
         plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xb_colN_{figname}_{i}kmr.png', format='png', dpi=300, bbox_inches='tight')
         if show == True:
             plt.show()
@@ -545,33 +549,49 @@ def plot_N_kmr_xb(dirct, filename, figname, titlestring, show=False):
             plt.close()
             print('Figure saved')
 
-        #
-        for i in teamsize_select:
-            df2 = df_nozeroes[df_nozeroes['team_size'] == i]
-            print(df2)
-            df3 = df2[df2['km_ratio'].isin(km_select)]
-            print(df3)
-            #forces = list(df3['motor_forces'])
+    #
+    for i in teamsize_select:
+        df2 = df_nozeroes[df_nozeroes['team_size'] == i]
+        df3 = df2[df2['km_ratio'].isin(km_select)]
+        print(df3)
+        #forces = list(df3['motor_forces'])
 
-            # Bins
-            #q25, q75 = np.percentile(forces, [25, 75])
-            #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
-            #bins_forces = round((max(forces) - min(forces)) / bin_width)
-            plt.figure()
-            sns.displot(df3, x='xb', col='km_ratio', stat='probability', binwidth=0.2, palette='bright', common_norm=False, common_bins=False)
-            plt.xlabel('Bead displacement [nm]')
-            plt.title(f' Distribution displacement {titlestring}')
-            plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xb_colkmr_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
-            if show == True:
-                plt.show()
-                plt.clf()
-                plt.close()
-            else:
-                plt.clf()
-                plt.close()
-                print('Figure saved')
+        # Bins
+        #q25, q75 = np.percentile(forces, [25, 75])
+        #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
+        #bins_forces = round((max(forces) - min(forces)) / bin_width)
+        plt.figure()
+        sns.displot(df3, x='xb', col='km_ratio', stat='probability', binwidth=0.2, palette='bright', common_norm=False, common_bins=False)
+        plt.xlabel('Displacement [nm]')
+        plt.title(f' Distribution displacement cargo {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xb_colkmr_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
+        '''
+    plt.figure()
+    sns.catplot(data=df_nozeroes[df_nozeroes['km_ratio'].isin(km_select)], x="team_size", y="xb", hue="km_ratio", style='km_ratio', marker='km_ratio', kind="point")
 
-        return
+    plt.xlabel('teamsize')
+    plt.ylabel(' <bead displacement> [nm]')
+    plt.title(f'{titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_xb_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    return
 
 
 
@@ -671,17 +691,17 @@ def plot_n_kmratio_boundmotors(dirct, filename, figname=None, titlestring=None, 
     #
     sns.color_palette()
     sns.set_style("whitegrid")
-    km_select = [0.1, 0.5, 1]
+    ts_select = [[1,1], [2,2], [3,3], [4,4]]
 
     #
-    for i in km_select:
-        df2 = df[df['km_ratio'].isin([i])]
+    for i in ts_select:
+        df2 = df[df['team_size'].isin([str(i)])]
         plt.figure()
-        sns.catplot(data=df2, x='team_size', y='motors_bound', hue='direction', kind='box')
-        plt.xlabel('Team Size N')
+        sns.catplot(data=df2, x='direction', y='motors_bound', hue='km_ratio', kind='box')
+        plt.xlabel('direction')
         plt.ylabel('Bound Motors n')
         plt.title(f'km={i} {titlestring}')
-        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\box_boundmotors_Nkmratio_{figname}_{i}km.png', format='png', dpi=300, bbox_inches='tight')
+        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\box_boundmotors_Nkmratio_{figname}_{i}ts.png', format='png', dpi=300, bbox_inches='tight')
         if show == True:
             plt.show()
             plt.clf()
@@ -693,11 +713,11 @@ def plot_n_kmratio_boundmotors(dirct, filename, figname=None, titlestring=None, 
 
         #
         plt.figure()
-        sns.barplot(data=df2, x="team_size", y="motors_bound", hue="direction", ci=95)
-        plt.xlabel('Team size N')
+        sns.barplot(data=df2, x="direction", y="motors_bound", hue="km_ratio", ci=95)
+        plt.xlabel('direction')
         plt.ylabel('<Bound motors>')
         plt.title(f'km={i} {titlestring}')
-        plt.savefig(f'.\motor_objects\{dirct}\\figures\\barplot_boundmotors_Nkmratio{figname}_{i}km.png', format='png', dpi=300, bbox_inches='tight')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\barplot_boundmotors_Nkmratio{figname}_{i}ts.png', format='png', dpi=300, bbox_inches='tight')
 
         if show == True:
             plt.show()

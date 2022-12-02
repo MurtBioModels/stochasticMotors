@@ -4,6 +4,85 @@ import numpy as np
 import os
 from itertools import groupby
 
+def time_scale(dirct):
+
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
+        for subdir in subdirs:
+            if subdir == 'figures':
+                continue
+            if subdir == 'data':
+                continue
+            print('PRINT NAME IN SUBDIR')
+            print(os.path.join(path,subdir))
+            sub_path = os.path.join(path,subdir)
+            # loop through motor files
+            for root2,subdir2,files2 in os.walk(sub_path):
+                for file in files2:
+                    if file == 'parameters.txt':
+                        continue
+                    if file == 'figures':
+                        continue
+                    if file == 'data':
+                        continue
+                    if file == 'motor0':
+                        print('motor0')
+                        pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\{file}', 'rb')
+                        motor0 = pickle.load(pickle_file_motor0)
+                        pickle_file_motor0.close()
+                        time = motor0.time_points
+                        endtime_mean = []
+                        len_mean = []
+                        for i in time:
+                            endtime_mean.append(i[-1])
+                            len_mean.append(len(i))
+                        print(f'mean endtime = {sum(endtime_mean)/len(endtime_mean)}')
+                        print(f'mean len(time) = {sum(len_mean)/len(len_mean)}')
+
+    return
+
+
+
+def inspect(dirct):
+
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
+        for subdir in subdirs:
+            if subdir == 'figures':
+                continue
+            if subdir == 'data':
+                continue
+            print('PRINT NAME IN SUBDIR')
+            print(os.path.join(path,subdir))
+            sub_path = os.path.join(path,subdir)
+            # loop through motor files
+            for root2,subdir2,files2 in os.walk(sub_path):
+                for file in files2:
+                    if file == 'parameters.txt':
+                        continue
+                    if file == 'figures':
+                        continue
+                    if file == 'data':
+                        continue
+                    if file == 'motor0':
+                        print('motor0')
+                        pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\{file}', 'rb')
+                        motor0 = pickle.load(pickle_file_motor0)
+                        pickle_file_motor0.close()
+                        print(f'')
+                    else:
+                        print('PRINT NAME IN FILES')
+                        print(os.path.join(sub_path,file))
+                        pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
+                        motor = pickle.load(pickle_file_motor)
+                        pickle_file_motor.close()
+
+                        print(f'motor_id={motor.id}, direction={motor.direction}, km={motor.k_m}')
+
+
+
+    return
+
 
 def inspect(dirct):
 

@@ -61,6 +61,7 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=100, dimension='1
     # Init once:
     motor_0.init_valid_once(my_team)
 
+    print(motor_0.time_points)
     ## Do i Gillespie runs ##
     print('Begin simulation...')
     for i in range(0, n_iteration):

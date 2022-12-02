@@ -55,9 +55,9 @@ gill_set = {
 }
 
 date = time.strftime("%Y%m%d_%H%M%S")
-dir = f'{date}_teamsize_km_symbreak1_antero_km'
+dir = f'{date}_teamsize_km_symbreak1_antero_kmTEST2'
 
-team_comb = [[1,1], [2,2], [3,3], [4,4]]
+team_comb = [[1,1]]
 #retro_km = np.arange(0.02, 0.2, 0.02)
 retro_km = [0.02, 0.1, 0.2]
 

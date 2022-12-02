@@ -817,7 +817,7 @@ def motorforces_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0
                     #
                     #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
                     #
-                    print('Start interpolating distances...')
+                    print('Start interpolating forces...')
                     for i, value in enumerate(time):
                         #print(f'index={i}')
                         # time points of run i
@@ -868,15 +868,15 @@ def motorforces_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0
     print(f'multi_column[:mid_index]={multi_column[:mid_index]}')
     print(f'multi_column[mid_index:]={multi_column[mid_index:]}')
     #
-    df1 = pd.DataFrame(nested_motorforces[:mid_index], index=multi_column[:mid_index])
+    df1 = pd.DataFrame(nested_motorforces[:mid_index], index=multi_column[:mid_index]).T
     print(df1)
-    df2 = pd.DataFrame(nested_motorforces[mid_index:], index=multi_column[mid_index:])
+    df2 = pd.DataFrame(nested_motorforces[mid_index:], index=multi_column[mid_index:]).T
     print(df2)
     del nested_motorforces
-    df3 = pd.concat([df1, df2]).T
-    del df1
-    del df2
-    print(df3)
+    #df3 = pd.concat([df1, df2]).T
+    #del df1
+    #del df2
+    #print(df3)
 
     '''
     #
@@ -884,15 +884,19 @@ def motorforces_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0
     df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in nested_motorforces.items() ]))
     print(df)
     '''
-    print('Melt dataframe... ')
-    df_melt = pd.melt(df3, value_name='motor_forces', var_name=['team_size', 'f_ex', 'km']).dropna()
-    print(df_melt)
+    print('Melt dataframes... ')
+    df_melt1 = pd.melt(df1, value_name='motor_forces', var_name=['team_size', 'f_ex', 'km']).dropna()
+    print(df_melt1)
+    del df1
+    df_melt2 = pd.melt(df2, value_name='motor_forces', var_name=['team_size', 'f_ex', 'km']).dropna()
+    print(df_melt2)
+    del df2
     #
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
         os.makedirs(f'.\motor_objects\\{dirct}\\data')
     print('Save dataframe... ')
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_fex_km_motorforces.csv')
-
+    df_melt1.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_fex_km_motorforces_tmTS3.csv')
+    df_melt2.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_fex_km_motorforces_TS4.csv')
 
     return
 
@@ -1188,9 +1192,21 @@ def xm_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.1):
     print(multi_column)
     del key_tuples
     #
-    df1 = pd.DataFrame(nested_xm, index=multi_column)
+    mid_index = 15
+    print(f'mid_index={mid_index}')
+    print(f'multi_column[:mid_index]={multi_column[:mid_index]}')
+    print(f'multi_column[mid_index:]={multi_column[mid_index:]}')
+    #
+    #
+    df1 = pd.DataFrame(nested_xm[:mid_index], index=multi_column[:mid_index])
     print(df1)
-
+    df2 = pd.DataFrame(nested_xm[mid_index:], index=multi_column[mid_index:])
+    print(df2)
+    del nested_xm
+    df3 = pd.concat([df1, df2]).T
+    del df1
+    del df2
+    #print(df3)
     '''
     #
     print('Make dataframe from dictionary... ')
@@ -1198,11 +1214,9 @@ def xm_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.1):
     print(df)
     '''
     print('Melt dataframe... ')
-    df_melt = pd.melt(df1, value_name='xm', var_name=['team_size', 'km_ratio']).dropna()
+    df_melt = pd.melt(df3, value_name='xm', var_name=['team_size', 'km_ratio']).dropna()
     print(df_melt)
     #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\data')
     print('Save dataframe... ')
     df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_kmratio_xm.csv')
 

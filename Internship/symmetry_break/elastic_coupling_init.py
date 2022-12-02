@@ -20,7 +20,7 @@ kinesin_params = {
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'anterograde',
- 'init_state': 'unbound',
+ 'init_state': 'bound',
  'calc_eps': 'exponential',
 }
 '''
@@ -43,8 +43,8 @@ kinesin_params2 = {
 '''
 ### Simulation parameters ###
 sim_params = {
- 'k_t': 0.03,
- 'f_ex': 0
+ 'k_t': 0,
+ 'f_ex': None
 }
 
 ### Simulation settings ###
@@ -56,28 +56,32 @@ gill_set = {
 }
 
 date = time.strftime("%Y%m%d_%H%M%S")
-dirct = f'{date}_elastic_coupling_kt_unbound'
+dirct = f'{date}_elastic_coupling'
 
-retro_km = np.arange(0.02, 0.22, 0.02)
-team_comb = [[1], [2], [3], [4], [5]]
-#f_ex = [-0.5, 0]
+#retro_km = np.arange(0.02, 0.22, 0.02)
+retro_km = [0.02, 0.1, 0.2]
+team_comb = [[1],[2],[3],[4]]
+f_ex = [-4, -5, -6, -7]
+
 
 
 for i in team_comb:
-    for k in retro_km:
-        gill_set['n_motors'] = i
-        kinesin_params['k_m'] = k
-        #kinesin_params2['k_m'] = k
+    for j in f_ex:
+        for k in retro_km:
+            gill_set['n_motors'] = i
+            sim_params['f_ex'] = j
+            kinesin_params['k_m'] = k
+            #kinesin_params2['k_m'] = k
 
-        ### Data storage ###
-        subdir = f'{i}n_{k}km'
-        short_description = ''
+            ### Data storage ###
+            subdir = f'{i}n_{j}fex_{k}km'
+            short_description = ''
 
-        # Initiate motor team an run simulation n_it times for t_end seconds each
-        with cProfile.Profile() as profile:
-            out = output_gillespie = vl.init_run(sim_params, gill_set, kinesin_params, sd=short_description, dirct=dirct, subdir=subdir)
-            ps = pstats.Stats(profile)
-            ps.sort_stats('calls', 'cumtime')
-            ps.print_stats(15)
+            # Initiate motor team an run simulation n_it times for t_end seconds each
+            with cProfile.Profile() as profile:
+                out = output_gillespie = vl.init_run(sim_params, gill_set, kinesin_params, sd=short_description, dirct=dirct, subdir=subdir)
+                ps = pstats.Stats(profile)
+                ps.sort_stats('calls', 'cumtime')
+                ps.print_stats(15)
 
 
