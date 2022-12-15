@@ -47,11 +47,11 @@ def init_mixed_team(mnr, *motor_params):
 '''
     mnr: tuple
         This tuple contains the desired number of each motor species, in the order
-        that the associated kinesin_params dictionaries are parsed.
+        that the associated plus_params dictionaries are parsed.
         Example: If you want two Kinesin-1 and three Kinesin-3, and first the Kinesin-1 dictionary is parsed
         and the Kinesin-3 dictionary second: tuple = (2,3)
 
-    kinesin_params: dictionary
+    plus_params: dictionary
                 Dictionary(ies) of the desired motor species, one dictionary per species.
                 The order of the dictionaries influences the mnr argument.
 '''

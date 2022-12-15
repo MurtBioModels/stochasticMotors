@@ -301,6 +301,73 @@ def traj_kt_intrpl(subdir, family, n_motors, list_kt, calc_eps, interval=(0, 90)
 
     return
 
+########
+
+def traj_kmratio(dirct, subdir, figname, titlestring, it=0, show=True):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    # Unpickle motor0 object
+    pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\\motor0', 'rb')
+    motor0 = pickle.load(pickle_file_motor0)
+    pickle_file_motor0.close()
+
+    motor0.time_points[it].pop()
+    x = motor0.time_points[it][0:750]
+    y = motor0.x_bead[it][0:750]
+    plt.step(x, y, where='post')
+    #plt.scatter(x,y)
+    plt.title(f'Trajectory: {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\traj_kmr_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    return
 
 
+def traj_fex(dirct, subdir, figname, titlestring, it=0, show=True):
+    """
 
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    # Unpickle motor0 object
+    pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\\motor0', 'rb')
+    motor0 = pickle.load(pickle_file_motor0)
+    pickle_file_motor0.close()
+
+    motor0.time_points[it].pop()
+    x = motor0.time_points[it]
+    y = motor0.x_bead[it]
+    plt.step(x, y, where='post')
+    #plt.scatter(x,y)
+    plt.title(f'Trajectory: {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\traj_fex_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    return

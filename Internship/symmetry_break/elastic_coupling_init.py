@@ -16,7 +16,7 @@ kinesin_params = {
  'alfa_0': 92.5,
  'f_s': 7,
  'epsilon_0': 0.66,
-# 'init_pos': 0.1,
+# 'init_pos': 0.1,  
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'anterograde',

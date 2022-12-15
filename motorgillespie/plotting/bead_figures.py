@@ -67,14 +67,36 @@ def plot_n_fex_km_rl(dirct, filename, figname, titlestring, show=False):
     km_select = [0.02, 0.1, 0.2]
     n_select = [1,2,3,4]
     #f_ex = [-4, -5, -6, -7]
-    f_ex = [-0.5, -1, -2, -3, 0]
+    #f_ex = [-0.5, -1, -2, -3, 0]
     #f_ex = [0]
     #
+    for i in n_select:
+
+        df2 = df[df['team_size'].isin([i])]
+        df3 = df2[df2['km'].isin(km_select)]
+
+        #
+        plt.figure()
+        sns.catplot(data=df3, x="km", y="run_length", hue="f_ex", style='km', marker='km', kind="point", errornar='se')
+        plt.xlabel('km [pN/nm]')
+        plt.ylabel('<run length> [nm]')
+        plt.title(f' team size N = {i} {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_rl_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
+
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
+    '''           
     for i in f_ex:
 
         df2 = df[df['f_ex'].isin([i])]
         df3 = df2[df2['km'].isin(km_select)]
-        '''
+
         plt.figure()
         sns.catplot(data=df3, x='f_ex', y='run_length', hue='km', kind='box')
         plt.xlabel('External force [pN]')
@@ -89,7 +111,7 @@ def plot_n_fex_km_rl(dirct, filename, figname, titlestring, show=False):
             plt.clf()
             plt.close()
             print('Figure saved')
-        '''
+
         #
         plt.figure()
         sns.catplot(data=df3, x="team_size", y="run_length", hue="km", style='km', marker='km', kind="point", errornar='se')
@@ -107,7 +129,7 @@ def plot_n_fex_km_rl(dirct, filename, figname, titlestring, show=False):
             plt.close()
             print('Figure saved')
 
-    '''
+
     # ecdf plot
     plt.figure()
     g = sns.FacetGrid(data=df, hue='km', col="teamsize")
@@ -125,8 +147,8 @@ def plot_n_fex_km_rl(dirct, filename, figname, titlestring, show=False):
         plt.clf()
         plt.close()
         print('Figure saved')
-    '''
-    '''
+
+ 
     # hue=km col=teamsize
     plt.figure()
     g = sns.catplot(data=df, x="f_ex", y="run_length", hue="km", col='team_size', style='team_size', marker='team_size', kind="point")
@@ -144,9 +166,7 @@ def plot_n_fex_km_rl(dirct, filename, figname, titlestring, show=False):
         plt.clf()
         plt.close()
         print('Figure saved')
-    '''
-    '''
-
+  
     # Heatmap
     df_pivot = pd.pivot_table(df, values='runlength', index='teamsize', columns='km', aggfunc={'runlength': np.mean})
     print(df_pivot)
@@ -522,6 +542,7 @@ def plot_N_kmr_xb(dirct, filename, figname, titlestring, show=False):
     sns.set_style("whitegrid")
     km_select = [0.1, 0.5, 1]
     teamsize_select =[str([1,1]), str([2,2]), str([3,3]), str([4,4])]
+
     '''
     #
     for i in km_select:
@@ -574,14 +595,29 @@ def plot_N_kmr_xb(dirct, filename, figname, titlestring, show=False):
             plt.close()
             print('Figure saved')
         '''
+    '''
     plt.figure()
-    sns.catplot(data=df_nozeroes[df_nozeroes['km_ratio'].isin(km_select)], x="team_size", y="xb", hue="km_ratio", style='km_ratio', marker='km_ratio', kind="point")
-
+    sns.catplot(data=df[df['km_ratio'].isin(km_select)], x="team_size", y="xb", hue="km_ratio", style='km_ratio', marker='km_ratio', kind="point")
     plt.xlabel('teamsize')
     plt.ylabel(' <bead displacement> [nm]')
     plt.title(f'{titlestring}')
-    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_xb_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_xb_nozeroes_{figname}.png', format='png', dpi=300, bbox_inches='tight')
 
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+    '''
+    plt.figure()
+    sns.boxplot(data=df[df['km_ratio'].isin(km_select)], x='km_ratio', y='xb', hue='team_size')
+    plt.xlabel('teamsize')
+    plt.ylabel(' <bead displacement> [nm]')
+    plt.title(f' {titlestring}')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\boxplot_xb_{figname}.png', format='png', dpi=300, bbox_inches='tight')
     if show == True:
         plt.show()
         plt.clf()
@@ -616,6 +652,26 @@ def plot_n_kmratio_rl(dirct, filename, figname, titlestring, show=True):
 
     km_select = [1.0, 0.1, 0.5]
     sns.set_style("whitegrid")
+
+    # hue=km
+    plt.figure()
+    sns.catplot(data=df, x="km_ratio", y="rl", hue="teamsize", style='km_ratio', marker='km_ratio', kind="point")
+
+    plt.xlabel('km ratio')
+    plt.ylabel('<run length> [nm]')
+    plt.title(f'{titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_rl_kmrxaxis_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    '''
     # hue=km
     plt.figure()
     sns.catplot(data=df[df['km_ratio'].isin(km_select)], x="team_size", y="run_length", hue="km_ratio", style='km_ratio', marker='km_ratio', kind="point")
@@ -668,8 +724,10 @@ def plot_n_kmratio_rl(dirct, filename, figname, titlestring, show=True):
         plt.clf()
         plt.close()
         print('Figure saved')
+    '''
 
     return
+
 
 def plot_n_kmratio_boundmotors(dirct, filename, figname=None, titlestring=None, show=False):
     """
