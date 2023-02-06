@@ -7,6 +7,7 @@ import pandas as pd
 import os
 
 ### N + FEX + KM >> ELASTIC C. ###
+
 def plot_fex_N_km_fu_motors(dirct, filename, figname, titlestring, show=False):
     """
 
@@ -263,8 +264,6 @@ def plot_fex_N_km_forces_motors(dirct, filename1=None, filename2=None, figname='
     '''
     return
 
-
-
 def plot_fex_N_km_xm(dirct, filename, figname='', titlestring='', show=False):
     """
 
@@ -340,6 +339,7 @@ def plot_fex_N_km_xm(dirct, filename, figname='', titlestring='', show=False):
     return
 
 ### N + KM >> ELASTIC C. ###
+
 def plot_N_km_motorforces(dirct, filename, figname=None, titlestring=None, show=False):
     """
 
@@ -392,7 +392,6 @@ def plot_N_km_motorforces(dirct, filename, figname=None, titlestring=None, show=
     '''
     return
 
-
 def plot_N_km_xm(dirct, filename, figname, titlestring, show=False):
     """
 
@@ -444,7 +443,6 @@ def plot_N_km_xm(dirct, filename, figname, titlestring, show=False):
     plt.show()
     '''
     return
-
 
 def plot_N_km_motor_fu(dirct, filename, figname=None, titlestring=None, show=False):
     """
@@ -539,7 +537,6 @@ def plot_N_km_motor_fu(dirct, filename, figname=None, titlestring=None, show=Fal
     '''
     return
 
-
 def plot_N_km_motor_rl(dirct, filename, figname=None, titlestring=None, show=False):
     """
 
@@ -593,7 +590,6 @@ def plot_N_km_motor_rl(dirct, filename, figname=None, titlestring=None, show=Fal
     return
 
 ### N + KMRATIO >> SYMMETRY BREAK ###
-
 
 def plot_N_kmr_forces_motors(dirct, filename, figname, titlestring, show=False):
     """
@@ -736,7 +732,6 @@ def plot_N_kmr_forces_motors(dirct, filename, figname, titlestring, show=False):
     '''
     return
 
-
 def plot_Nkmr_mf_plusminus(dirct, filename, figname='', titlestring='', show=False):
     """
 
@@ -822,8 +817,6 @@ def plot_Nkmr_mf_plusminus(dirct, filename, figname='', titlestring='', show=Fal
 
 
     return
-
-
 
 def plot_N_kmr_xm(dirct, filename, figname, titlestring, show=False):
     """

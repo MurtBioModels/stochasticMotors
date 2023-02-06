@@ -104,8 +104,8 @@ def kstest_nkmratio_rl(dirct, data_file, filename_out, team_size, km_ratio):
 
     return
 
-
-def trying(dirct, data_file, team_size, km_ratio):
+#### with tool ####
+def ks_stat_fig(dirct, data_file, team_size, km_ratio):
     """
 
     Parameters
@@ -179,7 +179,7 @@ def trying(dirct, data_file, team_size, km_ratio):
 
     return
 
-def trying_hueN(dirct, data_file, team_size, km_ratio):
+def ks_stat_fig_hueN(dirct, data_file, team_size, km_ratio):
     """
 
     Parameters
@@ -253,7 +253,8 @@ def trying_hueN(dirct, data_file, team_size, km_ratio):
 
     return
 
-def ttest(dirct, data_file, team_size, km_ratio):
+
+def ttest_stat_fig(dirct, data_file, team_size, km_ratio):
     """
 
     Parameters

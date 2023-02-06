@@ -16,7 +16,7 @@ class MotorProtein(object):
         k_m : float or integer
              Motor protein stiffness (pN/nm)
         alfa_0 : float or integer
-               Zero force stepping rate (1/s), v_0/size_step
+               Zero force stepping rate (1/s), v_0/size_step"Not a valid motor: invalid polarity. Expected one of: %s." % direction_options
         f_s = 7 : float or integer
                 Stall force (pN)
         epsilon_0 : tuple of floats or integers or integer or float
@@ -25,9 +25,9 @@ class MotorProtein(object):
         bind_rate : float or integer
                    Binding rate (1/s)
         direction : string
-                    Retrograde or anterograde
+                    retrograde or anterograde
         init_state : string
-                     Bound or unbound
+                     bound or unbound
         calc_eps : string
         id : integer
              Numerical id for bookkeeping during simulation
@@ -67,11 +67,12 @@ class MotorProtein(object):
         self.forces_unbind = [] # 1D
         self.fx_unbind = [] # 2D
         self.fz_unbind = [] # 2D
+        #self.alfas = [] # lis of lists
+        #self.epsilons = [] # lis of lists
 
     ### Print info ###
-    def info(self):
-        print(f'Motor number {self.id} is {self.member} member of the Motor Protein family {self.family}')
-        return
+    def __str__(self):
+        return f'Motor number {self.id} is {self.member} member of the Motor Protein family {self.family}'
 
     ### Check parameter values are correct ###
     def valid_motor(self, dimension):
@@ -154,25 +155,6 @@ class MotorProtein(object):
             self.f_z.append([])
         else:
             raise ValueError(f"The simulation settings except only 1D or 2D, not {dimension}")
-
-        return
-
-    ### Manipulate motor ###
-    def optogenetics(self):
-        """
-
-        Parameters
-        ----------
-
-
-        Returns
-        -------
-
-        """
-
-        # maybe make a functionality that you can make motors start at a specific place within stalk length rest length
-        # optogenetics would be more for during the simulation runs but this could be another function ^
-
 
         return
 
@@ -357,11 +339,13 @@ class MotorFixed(object):
         ## Bead/simulation data  ##
         self.time_points = [] # list of lists
         self.x_bead = [] # list of lists
-        #self.force_bead = [] # list of lists
-        self.retro_motors = [] # list of lists
         self.antero_motors = [] # list of lists
+        self.retro_motors = [] # list of lists
+        self.antero_unbinds = [] # list
+        self.retro_unbinds = [] # list
         #self.match_events = [] # list of lists; for testing simulation
-        self.runlength_bead = [] # divide bij k_t to get force
+        self.runlength_bead = [] # list of lists, divide bij k_t to get force (of optical trap)
+        self.time_unbind = [] # list of lists
         self.stall_time = []
         #self.sum_rates = [] # for testing simulation
 
@@ -409,9 +393,12 @@ class MotorFixed(object):
         #print(f'self.init_antero, self.init_retro = {self.init_antero} {self.init_retro}') #debug
         self.time_points.append([0])
         self.x_bead.append([])
-        #self.force_bead.append([])
+        self.runlength_bead.append([])
+        self.time_unbind.append([])
         self.antero_motors.append([self.init_antero])
         self.retro_motors.append([self.init_retro])
+        self.retro_unbinds.append(0)
+        self.antero_unbinds.append(0)
         #self.match_events.append([])
 
         return

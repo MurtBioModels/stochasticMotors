@@ -1,4 +1,4 @@
-from motorgillespie.plotting import bead_figures as bf
+from motorgillespie.plotting import cargo_figures as bf
 from motorgillespie.plotting import motor_figures as mf
 import os
 

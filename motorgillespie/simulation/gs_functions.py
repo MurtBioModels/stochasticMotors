@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def calc_force_1D(team, motor_0, k_t, x_motor0, f_ex, i, t):
+def calc_force_1D(team, motor_0, k_t, x_motor0, f_ex, i, t, end_run):
     """
     This function updates the current force acting on each  motor protein
     in a team of multiple motors in Gillespie Stochastic Simulation gillespie_motor_team
@@ -23,10 +23,11 @@ def calc_force_1D(team, motor_0, k_t, x_motor0, f_ex, i, t):
     """
    # for motor in team: debugggggggg
        # print(f'{motor.id}: unbound is {motor.unbound}, xm list: {motor.x_m_abs[i]}, xm={motor.xm_abs}, km={motor.k_m}')
+
     # List of Km_i*Xm_i of motor proteins in motor team
     xm_km_sum = sum([(motor.xm_abs * motor.k_m) for motor in team if not motor.unbound])
     if f_ex != 0:
-        xm_km_sum = xm_km_sum + f_ex
+        xm_km_sum += f_ex
 
     # List of Km's of bound motor proteins in motor team
     km_sum = sum([motor.k_m for motor in team if not motor.unbound])
@@ -34,28 +35,54 @@ def calc_force_1D(team, motor_0, k_t, x_motor0, f_ex, i, t):
         km_sum += k_t
 
     # Calculate position bead/cargo
-    if t == 0:
-        if motor_0.antero_motors[i][-1] == 0 and motor_0.retro_motors[i][-1] == 0:
+    if f_ex == 0:
+        net_force = 0
+        if t == 0: # Start iteration, dependent on initial state parameter cargo can be bound or unbound
+            if motor_0.antero_motors[i][-1] == 0 and motor_0.retro_motors[i][-1] == 0:
+                bead_loc = 0
+                #print(f't=0 no motors bound happend, xb={bead_loc}')
+            else:
+                bead_loc = xm_km_sum/km_sum
+                #print(f't=0 motors BOUND happend, xb={bead_loc}')
+        elif end_run is True: # Cargo detached last time step
             bead_loc = 0
-            #print('HAPPENED')
+            #print(f'end_run=True happend, xb={bead_loc}')
         else:
             bead_loc = xm_km_sum/km_sum
     else:
-        bead_loc = xm_km_sum/km_sum
+        if t == 0: # Start iteration, dependent on initial state parameter cargo can be bound or unbound
+            net_force = f_ex
+            bead_distance = xm_km_sum/km_sum
+            bead_loc = 0
+            for motor in team:
+                motor.xm_abs = 0 - bead_distance
+            #print(f't==0, bead_distance={bead_distance}')
+        elif end_run is True: # Cargo detached last time step
+            net_force = 0
+            bead_loc = 0
+            #print(f'end_run=True happend, xb={bead_loc}')
+        else:
+            net_force = f_ex
+            bead_loc = xm_km_sum/km_sum
+            #print(f'else happened, bead_loc={bead_loc}')
+
+
     # Append bead location
     motor_0.x_bead[i].append(bead_loc)
     #print(f'it{i}: xb={motor_0.x_bead[i][-1]}')
 
     # Update forces acting on each individual motor protein
-    net_force = f_ex
     for motor in team:
         if motor.unbound:
-            f = 0
+            f = float('nan')
         else:
             f = motor.k_m * (motor.xm_abs - bead_loc)
+            #print(f'f={f}')
+            net_force += f
+
         motor.f_current = f
         motor.forces[i].append(f)
-        net_force += f
+
 
     # Motor0/fixed motor
     if k_t != 0:

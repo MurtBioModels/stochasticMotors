@@ -1,4 +1,4 @@
-from motorgillespie.plotting import bead_figures as bf
+from motorgillespie.plotting import cargo_figures as bf
 from motorgillespie.plotting import motor_figures as mf
 from motorgillespie.analysis import dataframes as df
 from motorgillespie.analysis import print_info as pi
@@ -13,7 +13,7 @@ tslist = [1, 2, 3, 4, 5]
 kmlist = [0.02, 0.04, 0.06, 0.08, 0.12, 0.14, 0.16, 0.18, 0.2, 0.1] # HAS TO BE THE RIGHT ORDER!!!!
 fexlist = [0]
 
-# making dataframes
+# making dataframes_figures
 #df.rl_bead_n_fex_km(dirct=dirct1, filename='', ts_list=tslist, fex_list=fexlist, km_list=kmlist)
 #df.fu_motors_n_fex_km(dirct=dirct1, filename='', ts_list=tslist, fex_list=fexlist, km_list=kmlist)
 #df.bound_n_fex_km(dirct=dirct1, filename='', ts_list=tslist, fex_list=fexlist, km_list=kmlist, stepsize=0.01)

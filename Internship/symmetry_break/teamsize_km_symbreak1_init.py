@@ -11,7 +11,7 @@ kinesin_params = {
  'family': 'Kinesin-1',
  'member': 'antero',
  'step_size': 8,
- 'k_m': None,
+ 'k_m': 0.2,
  'v_0': 740,
  'alfa_0': 92.5,
  'f_s': 7,
@@ -27,7 +27,7 @@ dynesin_params = {
  'family': 'Kinesin-1',
  'member': 'retro',
  'step_size': 8,
- 'k_m': 0.2,
+ 'k_m': None,
  'v_0': 740,
  'alfa_0': 92.5,
  'f_s': 7,
@@ -50,21 +50,21 @@ sim_params = {
 gill_set = {
     'n_motors': None,
     'n_it': 1000,
-    't_max': 100,
+    't_max': None,
     'dimension': '1D'
 }
 
 date = time.strftime("%Y%m%d_%H%M%S")
-dir = f'{date}_teamsize_km_symbreak1_antero_kmTEST2'
+dir = f'{date}_teamsize_km_symbreak1_no_endtime'
 
-team_comb = [[1,1]]
+team_comb = [[4,4]]
 #retro_km = np.arange(0.02, 0.2, 0.02)
 retro_km = [0.02, 0.1, 0.2]
 
 for i in team_comb:
     for j in retro_km:
         gill_set['n_motors'] = i
-        kinesin_params['k_m'] = j
+        dynesin_params['k_m'] = j
 
         ### Data storage ###
         subdir = f'{i}n_{j}dynkm'

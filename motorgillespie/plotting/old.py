@@ -726,7 +726,7 @@ def forces_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='proba
     pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\{subdir}\motorteam', 'rb')
     motorteam = pickle.load(pickle_file_motorteam)
     pickle_file_motorteam.close()
-    # Unpickle test_motor0 object
+    # Unpickle test_motor0_1 object
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -803,7 +803,7 @@ def xm_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probabili
     pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\\{subdir}\motorteam', 'rb')
     motorteam = pickle.load(pickle_file_motorteam)
     pickle_file_motorteam.close()
-    # Unpickle test_motor0 object
+    # Unpickle test_motor0_1 object
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -935,7 +935,7 @@ def xbead_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probab
     if not os.path.isdir(f'.\motor_objects\{dirct}\{subdir}\\figures'):
         os.makedirs(f'.\motor_objects\{dirct}\{subdir}\\figures')
 
-    # Unpickle test_motor0
+    # Unpickle test_motor0_1
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -1103,7 +1103,7 @@ def dist_act_motors1(dirct, subdir, figname, titlestring, stepsize=0.001, stat='
     if not os.path.isdir(f'.\motor_objects\{dirct}\{subdir}\\figures'):
         os.makedirs(f'.\motor_objects\{dirct}\{subdir}\\figures')
 
-    # Unpickle test_motor0
+    # Unpickle test_motor0_1
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -1252,7 +1252,7 @@ def segmented_velocity(dirct, subdir, figname, titlestring, stat='probability', 
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\{subdir}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\{subdir}\\figures')
 
-    # Unpickle test_motor0
+    # Unpickle test_motor0_1
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -1436,7 +1436,7 @@ def cdf_xbead(dirct, figname, titlestring, stepsize=0.001, show=False):
                 continue
             if subdir == 'data':
                 continue
-            # Unpickle test_motor0
+            # Unpickle test_motor0_1
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()

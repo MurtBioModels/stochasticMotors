@@ -31,6 +31,7 @@ def time_scale(dirct):
                         motor0 = pickle.load(pickle_file_motor0)
                         pickle_file_motor0.close()
                         time = motor0.time_points
+                        rl = motor0.runlength_bead
                         endtime_mean = []
                         len_mean = []
                         for i in time:
@@ -38,6 +39,8 @@ def time_scale(dirct):
                             len_mean.append(len(i))
                         print(f'mean endtime = {sum(endtime_mean)/len(endtime_mean)}')
                         print(f'mean len(time) = {sum(len_mean)/len(len_mean)}')
+                        #print(f'rl = {rl}')
+                        print(f'mean len(RL) = {len(rl)}')
 
     return
 
@@ -233,7 +236,7 @@ def checkinggg(dirct):
                 print(os.path.join(path,subdir))
                 sub_path = os.path.join(path,subdir)
 
-                # Unpickle test_motor0 object
+                # Unpickle test_motor0_1 object
                 pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
                 motor0 = pickle.load(pickle_file_motor0)
                 pickle_file_motor0.close()

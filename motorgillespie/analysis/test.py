@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.interpolate import interp1d
 import numpy
-from motorgillespie.plotting import bead_figures as bf
+from motorgillespie.plotting import cargo_figures as bf
 from motorgillespie.plotting import motor_figures as mf
 from motorgillespie.analysis import dataframes as df
 from motorgillespie.analysis import print_info as pi
@@ -82,7 +82,7 @@ def test_xb(dirct, ts_list, kmratio_list):
             print(f'subdir={subdir}')
             print(f'teamsize_count={teamsize_count}')
             print(f'km_ratio_count={km_ratio_count}')
-            # Unpickle test_motor0 object
+            # Unpickle test_motor0_1 object
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()

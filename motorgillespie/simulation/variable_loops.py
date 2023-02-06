@@ -25,9 +25,10 @@ def init_run(sim_params, gill_set, *motor_params, dirct, subdir, sd=None):
     """
 
     n_motors = gill_set['n_motors']
-    n_it = gill_set['n_it']
     t_max = gill_set['t_max']
+    n_it = gill_set['n_it']
     dimension = gill_set['dimension']
+    single_run = gill_set['single_run']
 
     # Directory created in current working directory
     if not os.path.isdir(f'.\motor_objects\{dirct}'):
@@ -43,13 +44,14 @@ def init_run(sim_params, gill_set, *motor_params, dirct, subdir, sd=None):
     motor0 = im.init_motor_0(sim_params)
     # Simulate motor dynamics with Gillespie
     print('Call Gillespie simulation...')
-    team_out, motor0_out = gsim.gillespie_2D_walk(motor_team, motor0, t_max, n_it, dimension=dimension)
+    team_out, motor0_out = gsim.gillespie_2D_walk(my_team=motor_team, motor_0=motor0, t_max=t_max, n_iteration=n_it, dimension=dimension, single_run=single_run)
     print('Done simulating')
     #print(motor0 is motor0_out)
     #print(motor_team is team_out)
     #print(motor0.time_points[0] is motor0_out.time_points[0])
-    del motor0
     del motor_team
+    del motor0
+
 
     print('Pickling motor team...')
     while team_out:
@@ -111,7 +113,7 @@ def simpar_loop(sim_params, varsimpar, simpar, gill_set, *motor_params, dirct, s
             and contains one or multiple subdirectories containing the actual motor objects.
     subdir : string
              Subdirectory to store the the motor object simulated under specific parameter values.
-             Contains pickled motor team, pickled test_motor0, meta data filename and figure directory.
+             Contains pickled motor team, pickled test_motor0_1, meta data filename and figure directory.
              Subdirectory name should contain the value(s) of the varied parameter(s).
              For example, the number of motors is varied, or a specific motor parameter.
     sd : string

@@ -51,18 +51,17 @@ sim_params = {
 gill_set = {
     'n_motors': None,
     'n_it': 1000,
-    't_max': 100,
+    't_max': None,
     'dimension': '1D'
 }
 
 date = time.strftime("%Y%m%d_%H%M%S")
-dirct = f'{date}_elastic_coupling'
+dirct = f'{date}_elastic_coupling_no_endtime'
 
-#retro_km = np.arange(0.02, 0.22, 0.02)
-retro_km = [0.02, 0.1, 0.2]
-team_comb = [[1],[2],[3],[4]]
-f_ex = [-4, -5, -6, -7]
-
+retro_km = [0.02, 0.04, 0.08, 0.1, 0.2]
+team_comb = [[3],[4]]
+#f_ex = [-4, -5, -6, -7]
+f_ex = [-3, -2, -1, 0]
 
 
 for i in team_comb:
