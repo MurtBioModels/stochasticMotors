@@ -304,9 +304,7 @@ def plot_n_fex_km_boundmotors(dirct, filename, figname, titlestring, show=False)
 
     return
 
-
 ### N + KM_RATIO >> SYM BREAK ###
-
 def plot_N_kmr_xb(dirct, filename, figname, titlestring, show=False):
     """
 
@@ -513,7 +511,7 @@ def plot_n_kmratio_rl(dirct, filename, figname, titlestring, show=True):
 
     return
 
-def plot_n_kmratio_boundmotors(dirct, filename, figname=None, titlestring=None, show=False):
+def plot_n_kmratio_boundmotors2(dirct, filename, figname=None, titlestring=None, show=False):
     """
 
     Parameters
@@ -572,8 +570,70 @@ def plot_n_kmratio_boundmotors(dirct, filename, figname=None, titlestring=None, 
 
     return
 
-### N + parameter_RATIO >> SYM BREAK ###
+def plot_n_kmratio_boundmotors(dirct, filename, figname='', titlestring='', n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True):
+    """
 
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+    print(df)
+    df2 = df[df['team_size'].isin(list(n_include))]
+    print(df2)
+    df3 = df2[df2['km_ratio'].isin(list(km_include))]
+    print(df3)
+
+
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    ### Plotting ###
+    sns.color_palette()
+    sns.set_style("whitegrid")
+    print('Making figure...')
+    plt.figure()
+    sns.catplot(data=df2, x='direction', y='motors_bound', hue='km_ratio', kind='box')
+    plt.xlabel('direction')
+    plt.ylabel('Bound Motors n')
+    plt.title(f'km={i} {titlestring}')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\box_boundmotors_Nkmratio_{figname}_{i}ts.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+        #
+        plt.figure()
+        sns.barplot(data=df2, x="direction", y="motors_bound", hue="km_ratio", ci=95)
+        plt.xlabel('direction')
+        plt.ylabel('<Bound motors>')
+        plt.title(f'km={i} {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\barplot_boundmotors_Nkmratio{figname}_{i}ts.png', format='png', dpi=300, bbox_inches='tight')
+
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
+
+    return
+
+### N + parameter_RATIO >> SYM BREAK ###
 def plot_n_parratio_rl(dirct, filename, parname, figname, titlestring, show=True):
     """
 
@@ -686,3 +746,9 @@ def plot_n_parratio_rl(dirct, filename, parname, figname, titlestring, show=True
         print('Figure saved')
 
     return
+
+
+
+
+
+

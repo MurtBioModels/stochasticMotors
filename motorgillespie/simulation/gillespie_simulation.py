@@ -6,7 +6,7 @@ import numpy as np
 os.environ['PYTHONBREAKPOINT'] = '0'
 
 
-def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=1000, dimension='1D', single_run=True):
+def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=1000, dimension='1D', single_run=False):
     """
 
     Parameters
@@ -148,15 +148,17 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=1000, dimension='
                         if dimension == '1D':
                             motor.forces_unbind.append(motor.f_current) # 1D
                             motor.run_length.append(motor.xm_rel)
-                            if motor.direction == 'antero':
+                            if motor.direction == 'anterograde':
                                 motor_0.antero_unbinds[i] += 1
-                            else:
+                            elif motor.direction == 'retrograde':
                                 motor_0.retro_unbinds[i] += 1
+                            else:
+                                raise AssertionError('Something wrong with motor direction')
                         else:
                             motor.fx_unbind.append(motor.f_x[i][-1]) # 2D
                             motor.fz_unbind.append(motor.f_z[i][-1]) # 2D
                             motor.run_length.append(motor.xm_rel)
-                        # Initiate event
+                        ### Initiate event ###
                         motor.unbinding_event()
                         #print(f'unbind event at t={t}')
                         #if time_leaps > 1:
@@ -164,11 +166,11 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=1000, dimension='
                             #print(f'retro bound before this event: {motor_0.retro_motors[i][-1]}')
                     elif list_rates[index] == motor.alfa:
                         event_match += 1
-                        # Initiate event
+                        ### Initiate event ###
                         motor.stepping_event()
                     elif list_rates[index] == motor.binding_rate:
                         event_match += 1
-                        # Initiate event
+                        ### Initiate event ###
                         if f_ex != 0:
                             if motor_0.antero_motors[i][-1] + motor_0.retro_motors[i][-1] == 0:
                                 bead_distance = f_ex/motor.k_m
@@ -198,12 +200,13 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=1000, dimension='
             antero_bound = 0
             retro_bound = 0
             for motor in my_team:
-                direction = motor.direction
                 if not motor.unbound:
-                    if direction == 'anterograde':
+                    if motor.direction == 'anterograde':
                         antero_bound += 1
-                    else:
+                    elif motor.direction == 'retrograde':
                         retro_bound += 1
+                    else:
+                        raise AssertionError('Something wrong with motor direction')
 
             motor_0.antero_motors[i].append(antero_bound)
             motor_0.retro_motors[i].append(retro_bound)

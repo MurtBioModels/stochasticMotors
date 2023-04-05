@@ -18,7 +18,7 @@ plus_params = {
  'bind_rate': 5,
  'direction': 'anterograde',
  'init_state': 'unbound',
- 'calc_eps': 'exponential', # exponential and gaussian
+ 'calc_eps': 'exponential'
 }
 
 minus_params = {

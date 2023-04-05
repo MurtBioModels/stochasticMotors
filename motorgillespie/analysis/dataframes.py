@@ -935,14 +935,13 @@ def motorforces_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0
 
     return
 
-
 ### N + KM_RATIO >> SYM BREAK ###
-def rl_bead_n_kmr(dirct, filename, ts_list, kmratio_list):
+def rl_cargo_n_kmr(dirct, filename, ts_list, kmminus_list):
     """
-
+    DONE
     Parameters
     ----------
-    Check
+
 
     Returns
     -------
@@ -956,7 +955,7 @@ def rl_bead_n_kmr(dirct, filename, ts_list, kmratio_list):
     dict_rl = {}
     #
     teamsize_count = 0
-    km_ratio_count = 0
+    kmminus_count = 0
     #
     path = f'.\motor_objects\\{dirct}'
     for root, subdirs, files in os.walk(path):
@@ -971,38 +970,40 @@ def rl_bead_n_kmr(dirct, filename, ts_list, kmratio_list):
             #
             print(f'subdir={subdir}')
             print(f'teamsize_count={teamsize_count}')
-            print(f'km_ratio_count={km_ratio_count}')
+            print(f'km_minus_count={kmminus_count}')
             #
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
             #
             ts = ts_list[teamsize_count]
-            km_ratio = kmratio_list[km_ratio_count]
-            print(f'tz={ts}')
-            print(f'km_ratio={km_ratio}')
+            km_minus = kmminus_list[kmminus_count]
+            print(f'team_size={ts}')
+            print(f'km_minus={km_minus}')
             #
-            key = (str(ts), str(km_ratio))
+            key = (str(ts), str(km_minus))
             print(f'key={key}')
             #
             runlength = list(motor0.runlength_bead)
+            flat_rl = [element for sublist in runlength for element in sublist]
+            #print(flat_rl)
             #
-            dict_rl[key] = runlength
+            dict_rl[key] = flat_rl
             #
-            if km_ratio_count < len(kmratio_list) - 1:
-                km_ratio_count += 1
-            elif km_ratio_count == len(kmratio_list) - 1:
-                km_ratio_count = 0
+            if kmminus_count < len(kmminus_list) - 1:
+                kmminus_count += 1
+            elif kmminus_count == len(kmminus_list) - 1:
+                kmminus_count = 0
                 teamsize_count += 1
             else:
                 print('This cannot be right')
 
     df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in dict_rl.items() ]))
     print(df)
-    df_melt = pd.melt(df, value_name='run_length', var_name=['team_size', 'km_ratio']).dropna()
+    df_melt = pd.melt(df, value_name='run_length', var_name=['team_size', 'km_minus']).dropna()
     print(df_melt)
     #
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_kmratio_rl.csv')
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_km_minus_rl.csv', index=False)
 
     return
 
@@ -1191,7 +1192,7 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
 
     Parameters
     ----------
-    check
+
 
     Returns
     -------
@@ -1201,8 +1202,10 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
         os.makedirs(f'.\motor_objects\\{dirct}\\data')
     #
-    dict_anterobound = {}
-    dict_retrobound = {}
+    nested_anterobound = []
+    nested_retrobound = []
+    keys_anterobound = []
+    keys_retrobound = []
     #
     teamsize_count = 0
     km_ratio_count = 0
@@ -1221,7 +1224,7 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
             print(f'subdir={subdir}')
             print(f'teamsize_count={teamsize_count}')
             print(f'km_ratio_count={km_ratio_count}')
-            # Unpickle test_motor0_1 object
+            # Unpickle test_motor0 object
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
@@ -1233,10 +1236,11 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
             #
             key_antero = (str(ts), str(km_ratio), 'antero')
             key_retro = (str(ts), str(km_ratio), 'retro')
-            print(f'key={key_antero}')
-            print(f'key={key_retro}')
+            print(f'key_antero={key_antero}')
+            print(f'key_retro={key_retro}')
+            keys_anterobound.append(key_antero)
+            keys_retrobound.append(key_retro)
             #
-            #runlength = motor0.runlength_bead
             antero_bound = motor0.antero_motors
             retro_bound = motor0.retro_motors
             mean_antero_bound = []
@@ -1259,8 +1263,8 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
                     # Do interpolation on new data points
                     bound_intrpl = f(t_intrpl)
                     mean_bound = np.mean(bound_intrpl)
-                    #print(f'mean_bound={mean_bound}')
                     mean_antero_bound.append(mean_bound)
+
 
             print('Start interpolating retro bound motors...')
             for index, list_bm in enumerate(retro_bound):
@@ -1282,8 +1286,9 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
                     #print(f'mean_bound={mean_bound}')
                     mean_retro_bound.append(mean_bound)
             #
-            dict_anterobound[key_antero] = mean_antero_bound
-            dict_retrobound[key_retro] = mean_retro_bound
+            nested_anterobound.append(mean_antero_bound)
+            nested_retrobound.append(mean_retro_bound)
+
             #
             if km_ratio_count < len(kmratio_list) - 1:
                 km_ratio_count += 1
@@ -1295,25 +1300,44 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
     #
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
         os.makedirs(f'.\motor_objects\\{dirct}\\data')
+    # ANTERO
+    print(f'len(nested_nested_xb) should be {len(key_antero)}: {len(nested_anterobound)}')
     #
-    df_antero = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in dict_anterobound.items() ]))
+    multi_column_antero = pd.MultiIndex.from_tuples(key_antero, names=['team_size', 'km_ratio', 'direction'])
+    print(multi_column_antero)
+    del key_antero
+    #
+    df_antero = pd.DataFrame(nested_anterobound, index=multi_column_antero).T
     print(df_antero)
-    df_antero_melt = pd.melt(df_antero, value_name='motors_bound', var_name=['team_size', 'km_ratio', 'direction']).dropna()
-    print(df_antero_melt)
-    df_antero_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}_N_kmratio_anterobound.csv')
+    del nested_anterobound
     #
-    df_retro = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in dict_retrobound.items() ]))
-    print(df_retro)
-    df_retro_melt = pd.melt(df_retro, value_name='motors_bound', var_name=['team_size', 'km_ratio', 'direction']).dropna()
-    print(df_retro_melt)
-    df_retro_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}_N_kmratio_retrobound.csv')
+    print('Melt antero dataframe... ')
+    melt_antero = pd.melt(df_antero, value_name='motors_bound', var_name=['team_size', 'km_ratio', 'direction']).dropna()
+    print(melt_antero)
+    del df_antero
 
+    # RETRO
+    print(f'len(nested_nested_xb) should be {len(key_retro)}: {len(nested_retrobound)}')
+    #
+    multi_column_retro = pd.MultiIndex.from_tuples(key_retro, names=['team_size', 'km_ratio', 'direction'])
+    print(multi_column_retro)
+    del key_retro
+    #
+    df_retro = pd.DataFrame(nested_retrobound, index=multi_column_retro).T
+    print(df_retro)
+    del nested_retrobound
+    #
+    print('Melt retro dataframe... ')
+    melt_retro = pd.melt(df_retro, value_name='motors_bound', var_name=['team_size', 'km_ratio', 'direction']).dropna()
+    print(melt_retro)
+    del df_retro
     # Merge two dataframes_figures
     print('Begin merging...')
-    concat_df = pd.concat([df_antero_melt, df_retro_melt])
+    concat_df = pd.concat([melt_antero, melt_retro])
     print('Done')
     print(concat_df)
     concat_df.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}_N_kmratio_anteroretrobound.csv')
+
     return
 
 def meanmaxdist_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
@@ -1625,8 +1649,8 @@ def segment_parratio_desc(dirct, filename, ts_list, parratio_list, processive):
 
     return
 
-## motors ##
 
+## motors ##
 def xm_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.1):
     """
 
@@ -1783,6 +1807,153 @@ def xm_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.1):
 
     return
 
+def xm_n_kmr_2(dirct, filename, ts_list, kmratio_list, stepsize=0.1):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\data')
+    #
+    nested_xm = []
+    key_tuples = []
+    #
+    teamsize_count = 0
+    km_ratio_count = 0
+    #
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
+        for subdir in subdirs:
+            if subdir == 'figures':
+                continue
+            if subdir == 'data':
+                continue
+            #
+            print('NEW SUBDIR/SIMULATION')
+            print(os.path.join(path,subdir))
+            sub_path = os.path.join(path,subdir)
+            #
+            print(f'subdir={subdir}')
+            print(f'teamsize_count={teamsize_count}')
+            print(f'km_ratio_count={km_ratio_count}')
+            # Unpickle motor_0 object
+            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
+            motor0 = pickle.load(pickle_file_motor0)
+            pickle_file_motor0.close()
+            #
+            time = motor0.time_points
+            del motor0
+            print(f'len time should be 1000: {len(time)}')
+            #
+            ts = ts_list[teamsize_count]
+            km_ratio = kmratio_list[km_ratio_count]
+            print(f'ts={ts}')
+            print(f'km_ratio={km_ratio}')
+            #
+            key = (str(ts), str(km_ratio))
+            print(f'key={key}')
+            key_tuples.append(key)
+            #
+            xm_interpolated = [] # not nested
+            # loop through motor files
+            for root2,subdir2,files2 in os.walk(sub_path):
+                for file in files2:
+                    if file == 'motor0':
+                        continue
+                    if file == 'parameters.txt':
+                        continue
+                    if file == 'figures':
+                        continue
+                    if file == 'data':
+                        continue
+                    print('PRINT NAME IN FILES')
+                    print(os.path.join(sub_path,file))
+
+                    # Unpickle motor
+                    print('Open pickle file...')
+                    pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
+                    print('Done')
+                    motor = pickle.load(pickle_file_motor)
+                    print('Close pickle file...')
+                    pickle_file_motor.close()
+                    print('Done')
+                    xm = motor.x_m_abs
+                    print(f'len forces should be 1000: {len(xm)}')
+                    del motor
+                    #
+                    #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
+                    #
+                    print('Start interpolating distances...')
+                    for i, value in enumerate(time):
+                        #print(f'index={i}')
+                        # time points of run i
+                        t = value
+                        #print(f't={t}')
+                        # locations of motors
+                        xm_i = xm[i]
+                        if len(xm_i) < 2:
+                            continue
+                        #print(f'nf={mf}')
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        if len(t) != len(xm_i):
+                            t.pop()
+                        # Create function
+                        f = interp1d(t, xm_i, kind='previous')
+                        # New x values, 100 seconds every second
+                        interval = (0, t[-1])
+                        #print(f'interval time: {interval}')
+                        t_intrpl = np.arange(interval[0], interval[1], stepsize)
+                        # Do interpolation on new data points
+                        xm_intrpl = f(t_intrpl)
+                        # Random sampling
+                        xm_sampled = random.sample(list(xm_intrpl), 50)
+                        # add nested list
+                        xm_interpolated.extend(xm_sampled)
+
+            nested_xm.append(tuple(xm_interpolated))
+            del xm_interpolated
+
+            #
+            if km_ratio_count < len(kmratio_list) - 1:
+                km_ratio_count += 1
+            elif km_ratio_count == len(kmratio_list) - 1:
+                km_ratio_count = 0
+                teamsize_count += 1
+            else:
+                print('This cannot be right')
+    #
+    print(f'len(nested_xm) should be {len(key_tuples)}: {len(nested_xm)}')
+    #
+    multi_column = pd.MultiIndex.from_tuples(key_tuples, names=['team_size', 'km_ratio'])
+    print(multi_column)
+    del key_tuples
+    #
+    df = pd.DataFrame(nested_xm, index=multi_column)
+    print(df)
+    del nested_xm
+
+    '''
+    #
+    print('Make dataframe from dictionary... ')
+    df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in nested_motorforces.items() ]))
+    print(df)
+    '''
+    print('Melt dataframe... ')
+    df_melt = pd.melt(df, value_name='xm', var_name=['team_size', 'km_ratio']).dropna()
+    print(df_melt)
+    #
+    print('Save dataframe... ')
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\N_kmratio_xm_{filename}.csv')
+
+    return
+
 def motorforces_n_kmr(dirct, filename, ts_list, parratio_list, stepsize=0.1):
     """
 
@@ -1819,7 +1990,7 @@ def motorforces_n_kmr(dirct, filename, ts_list, parratio_list, stepsize=0.1):
             print(f'subdir={subdir}')
             print(f'teamsize_count={teamsize_count}')
             print(f'km_ratio_count={km_ratio_count}')
-            # Unpickle test_motor0_1 object
+            # Unpickle motor_0 object
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
@@ -1850,7 +2021,7 @@ def motorforces_n_kmr(dirct, filename, ts_list, parratio_list, stepsize=0.1):
                     if file == 'data':
                         continue
                     print('PRINT NAME IN FILES')
-                    print(os.path.join(sub_path,file))
+                    print(os.path.join(sub_path, file))
 
                     # Unpickle motor
                     print('Open pickle file...')
@@ -1863,7 +2034,6 @@ def motorforces_n_kmr(dirct, filename, ts_list, parratio_list, stepsize=0.1):
                     forces = motor.forces
                     print(f'len forces should be 1000: {len(forces)}')
                     del motor
-                    #
                     #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
                     #
                     print('Start interpolating distances...')
@@ -1903,6 +2073,9 @@ def motorforces_n_kmr(dirct, filename, ts_list, parratio_list, stepsize=0.1):
             else:
                 print('This cannot be right')
     #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\data')
+    #
     print(f'len(nested_motorforces) should be {len(key_tuples)}: {len(nested_motorforces)}')
     #
     multi_column = pd.MultiIndex.from_tuples(key_tuples, names=['team_size', 'km_ratio'])
@@ -1933,12 +2106,160 @@ def motorforces_n_kmr(dirct, filename, ts_list, parratio_list, stepsize=0.1):
     print('Melt dataframe... ')
     df_melt = pd.melt(df3, value_name='motor_forces', var_name=['team_size', 'km_ratio']).dropna()
     print(df_melt)
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\data')
+
     print('Save dataframe... ')
     df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_kmratio_motorforces.csv')
 
     return
+
+def motorforces_n_kmr_2(dirct, filename, ts_list, parratio_list, stepsize=0.1):
+    """
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\data')
+    #
+    nested_motorforces = []
+    key_tuples = []
+    #
+    teamsize_count = 0
+    km_ratio_count = 0
+    #
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
+        for subdir in subdirs:
+            if subdir == 'figures':
+                continue
+            if subdir == 'data':
+                continue
+            #
+            print('NEW SUBDIR/SIMULATION')
+            print(os.path.join(path,subdir))
+            sub_path = os.path.join(path,subdir)
+            #
+            print(f'subdir={subdir}')
+            print(f'teamsize_count={teamsize_count}')
+            print(f'km_ratio_count={km_ratio_count}')
+            # Unpickle motor_0 object
+            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
+            motor0 = pickle.load(pickle_file_motor0)
+            pickle_file_motor0.close()
+            #
+            time = motor0.time_points
+            del motor0
+            print(f'len time should be 1000: {len(time)}')
+            #
+            ts = ts_list[teamsize_count]
+            km_ratio = parratio_list[km_ratio_count]
+            print(f'ts={ts}')
+            print(f'km_ratio={km_ratio}')
+            #
+            key = (str(ts), str(km_ratio))
+            print(f'key={key}')
+            key_tuples.append(key)
+            #
+            motor_interpolated_forces = [] # not nested
+            # loop through motor files
+            for root2,subdir2,files2 in os.walk(sub_path):
+                for file in files2:
+                    if file == 'motor0':
+                        continue
+                    if file == 'parameters.txt':
+                        continue
+                    if file == 'figures':
+                        continue
+                    if file == 'data':
+                        continue
+                    print('PRINT NAME IN FILES')
+                    print(os.path.join(sub_path, file))
+
+                    # Unpickle motor
+                    print('Open pickle file...')
+                    pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
+                    print('Done')
+                    motor = pickle.load(pickle_file_motor)
+                    print('Close pickle file...')
+                    pickle_file_motor.close()
+                    print('Done')
+                    forces = motor.forces
+                    print(f'len forces should be 1000: {len(forces)}')
+                    del motor
+                    #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
+                    #
+                    print('Start interpolating distances...')
+                    for i, value in enumerate(time):
+                        #print(f'index={i}')
+                        # time points of run i
+                        t = value
+                        #print(f't={t}')
+                        # locations of motors
+                        mf = forces[i]
+                        if len(mf) < 2:
+                            continue
+                        #print(f'nf={mf}')
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        if len(t) != len(mf):
+                            t.pop()
+                        # Create function
+                        f = interp1d(t, mf, kind='previous')
+                        # New x values, 100 seconds every second
+                        interval = (0, t[-1])
+                        #print(f'interval time: {interval}')
+                        t_intrpl = np.arange(interval[0], interval[1], stepsize)
+                        # Do interpolation on new data points
+                        mf_intrpl = f(t_intrpl)
+                        # Random sampling
+                        mf_sampled = random.sample(list(mf_intrpl), 50)
+                        # add nested list
+                        motor_interpolated_forces.extend(mf_sampled)
+
+            nested_motorforces.append(tuple(motor_interpolated_forces))
+            del motor_interpolated_forces
+
+            #
+            if km_ratio_count < len(parratio_list) - 1:
+                km_ratio_count += 1
+            elif km_ratio_count == len(parratio_list) - 1:
+                km_ratio_count = 0
+                teamsize_count += 1
+            else:
+                print('This cannot be right')
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\data')
+    #
+    print(f'len(nested_motorforces) should be {len(key_tuples)}: {len(nested_motorforces)}')
+    #
+    multi_column = pd.MultiIndex.from_tuples(key_tuples, names=['team_size', 'km_ratio'])
+    print(multi_column)
+    del key_tuples
+    #
+    df = pd.DataFrame(nested_motorforces, index=multi_column).T
+    print(df)
+    del nested_motorforces
+
+    '''
+    #
+    print('Make dataframe from dictionary... ')
+    df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in nested_motorforces.items() ]))
+    print(df)
+    '''
+    print('Melt dataframe... ')
+    df_melt = pd.melt(df, value_name='motor_forces', var_name=['team_size', 'km_ratio']).dropna()
+    print(df_melt)
+
+    print('Save dataframe... ')
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_kmratio_motorforces.csv')
+
+    return
+
 
 

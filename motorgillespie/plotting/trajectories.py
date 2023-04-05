@@ -38,7 +38,6 @@ def traj_kt(subdir, family, list_kt, n_motors, time_frame, it=1, file_name=None)
 
     return
 
-
 def traj_team_size(subdir, family, n_motors, time_frame, it=1, file_name=None):
     """
 
@@ -72,7 +71,6 @@ def traj_team_size(subdir, family, n_motors, time_frame, it=1, file_name=None):
         plt.show()
 
     return
-
 
 def traj_radii(subdir, family, list_r, n_motors, time_frame, it=1, file_name=None, all_traj=False):
     """
@@ -122,7 +120,6 @@ def traj_radii(subdir, family, list_r, n_motors, time_frame, it=1, file_name=Non
 
     return
 
-
 def traj_restlength(subdir, family, list_rl, n_motors, time_frame, it=1, file_name=None, all_traj=False):
     """
 
@@ -164,7 +161,6 @@ def traj_restlength(subdir, family, list_rl, n_motors, time_frame, it=1, file_na
             plt.show()
 
     return
-
 
 def traj_sym(subdir, family, it=1, file_name=None, all_traj=False):
     """

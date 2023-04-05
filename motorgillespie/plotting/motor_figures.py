@@ -1,6 +1,3 @@
-from scipy.interpolate import interp1d
-import pickle
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
@@ -589,9 +586,10 @@ def plot_N_km_motor_rl(dirct, filename, figname=None, titlestring=None, show=Fal
     '''
     return
 
+
 ### N + KMRATIO >> SYMMETRY BREAK ###
 
-def plot_N_kmr_forces_motors(dirct, filename, figname, titlestring, show=False):
+def plot_N_kmr_forces_motors(dirct, filename, figname='', titlestring='', n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True):
     """
 
     Parameters
@@ -604,32 +602,28 @@ def plot_N_kmr_forces_motors(dirct, filename, figname, titlestring, show=False):
 
     #
     df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
-    df_nozeroes = df[df['motor_forces'] != 0]
+    print(df)
+    df2 = df[df['team_size'].isin(list(n_include))]
+    print(df2)
+    df3 = df2[df2['km_ratio'].isin(list(km_include))]
+    print(df3)
 
     #
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
     # plotting
+    sns.color_palette()
     sns.set_style("whitegrid")
-    km_select = [0.1, 0.5, 1]
-    teamsize_select = [str([1,1]), str([2,2]), str([3,3]), str([4,4])]
-
+    print('Making figure...')
     #
-    for i in km_select:
-        df2 = df[df['km_ratio'] == i]
-        df3 = df2[df2['team_size'].isin(teamsize_select)]
-        #forces = list(df3['motor_forces'])
-
-        # Bins
-        #q25, q75 = np.percentile(forces, [25, 75])
-        #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
-        #bins_forces = round((max(forces) - min(forces)) / bin_width)
+    for i in n_include:
+        df2 = df[df['team_size'] == i]
         plt.figure()
-        sns.displot(df3, x='motor_forces', col='team_size', stat='probability',binwidth=0.2, palette='bright', common_norm=False, common_bins=False)
+        sns.displot(df2, x='motor_forces', col='team_size', stat='probability', binwidth=0.5, palette='bright', common_norm=False, common_bins=False)
         plt.xlabel('Motor forces [pN]')
         plt.title(f'Distribution motor forces km = {i} {titlestring}')
-        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\dist_fmotors_Nkmr-WITHZEROES_{figname}_{i}kmr.png', format='png', dpi=300, bbox_inches='tight')
+        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\dist_fmotors_Nkmr_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
         if show == True:
             plt.show()
             plt.clf()
@@ -818,7 +812,7 @@ def plot_Nkmr_mf_plusminus(dirct, filename, figname='', titlestring='', show=Fal
 
     return
 
-def plot_N_kmr_xm(dirct, filename, figname, titlestring, show=False):
+def plot_N_kmr_xm(dirct, filename, figname='', titlestring='', n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True):
     """
 
     Parameters
@@ -831,57 +825,27 @@ def plot_N_kmr_xm(dirct, filename, figname, titlestring, show=False):
 
     #
     df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
-    df_nozeroes = df[df['xm'] !=0 ]
+    print(df)
+    df2 = df[df['team_size'].isin(list(n_include))]
+    print(df2)
+    df3 = df2[df2['km_ratio'].isin(list(km_include))]
+    print(df3)
     #
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
     # plotting
+    sns.color_palette()
     sns.set_style("whitegrid")
-    km_select = [0.1, 0.5, 1]
-    teamsize_select =[str([1,1]), str([2,2]), str([3,3]), str([4,4])]
+    print('Making figure...')
     #
-    for i in km_select:
-        df2 = df_nozeroes[df_nozeroes['km_ratio'] == i]
-        df3 = df2[df2['team_size'].isin(teamsize_select)]
-        print(df3)
-        #forces = list(df3['motor_forces'])
-
-        # Bins
-        #q25, q75 = np.percentile(forces, [25, 75])
-        #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
-        #bins_forces = round((max(forces) - min(forces)) / bin_width)
-        # plotting
+    for i in n_include:
+        df2 = df[df['team_size'] == i]
         plt.figure()
-        sns.displot(df3, x='xm', col='team_size', stat='probability', binwidth=4, palette='bright', common_norm=False, common_bins=False)
-        plt.xlabel('Displacement[nm]')
-        plt.title(f' Distribution displacement motors: {titlestring}')
-        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xm_colN_{figname}_{i}kmr.png', format='png', dpi=300, bbox_inches='tight')
-        if show == True:
-            plt.show()
-            plt.clf()
-            plt.close()
-        else:
-            plt.clf()
-            plt.close()
-            print('Figure saved')
-
-    #
-    for i in teamsize_select:
-        df2 = df_nozeroes[df_nozeroes['team_size'] == i]
-        df3 = df2[df2['km_ratio'].isin(km_select)]
-        print(df3)
-        #forces = list(df3['motor_forces'])
-
-        # Bins
-        #q25, q75 = np.percentile(forces, [25, 75])
-        #bin_width = 2 * (q75 - q25) * len(forces) ** (-1/3)
-        #bins_forces = round((max(forces) - min(forces)) / bin_width)
-        plt.figure()
-        sns.displot(df3, x='xm', col='km_ratio', stat='probability', binwidth=0.2, palette='bright', common_norm=False, common_bins=False)
+        sns.displot(df2, x='xm', col='km_ratio', stat='probability', binwidth=4, palette='bright', common_norm=False, common_bins=False)
         plt.xlabel('Displacement [nm]')
-        plt.title(f' Distribution displacement motors {titlestring}')
-        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xm_colkmr_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
+        plt.title(f' Distribution displacement motors: {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xm_colN_{i}kmr_{figname}.png', format='png', dpi=300, bbox_inches='tight')
         if show == True:
             plt.show()
             plt.clf()
@@ -892,3 +856,4 @@ def plot_N_kmr_xm(dirct, filename, figname, titlestring, show=False):
             print('Figure saved')
 
     return
+
