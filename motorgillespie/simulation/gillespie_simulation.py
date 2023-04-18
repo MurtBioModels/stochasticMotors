@@ -150,21 +150,23 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=1000, dimension='
                             motor.forces_unbind.append(motor.f_current) # 1D
                             motor.run_length.append(motor.xm_rel)
                             if motor.direction == 'anterograde':
-                                motor_0.antero_unbinds[i] += 1
+                                motor_0.antero_unbind_events[i] += 1
                             elif motor.direction == 'retrograde':
-                                motor_0.retro_unbinds[i] += 1
+                                motor_0.retro_unbind_events[i] += 1
                             else:
                                 raise AssertionError('Something wrong with motor direction')
-                        else:
+                        elif dimension == '2D':
                             motor.fx_unbind.append(motor.f_x[i][-1]) # 2D
                             motor.fz_unbind.append(motor.f_z[i][-1]) # 2D
                             motor.run_length.append(motor.xm_rel)
+                        else:
+                            raise AssertionError('Something wrong with dimension settings')
                         ### Initiate event ###
                         motor.unbinding_event()
                         #print(f'unbind event at t={t}')
                         #if time_leaps > 1:
-                            #print(f'antero bound before this event: {motor_0.antero_motors[i][-1]}')
-                            #print(f'retro bound before this event: {motor_0.retro_motors[i][-1]}')
+                            #print(f'antero bound before this event: {motor_0.antero_bound[i][-1]}')
+                            #print(f'retro bound before this event: {motor_0.retro_bound[i][-1]}')
                     elif list_rates[index] == motor.alfa:
                         event_match += 1
                         ### Initiate event ###
@@ -174,15 +176,15 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=1000, dimension='
                         ### Initiate event ###
                         if f_ex != 0:
                             # Make sure the cargo starts at X0
-                            if motor_0.antero_motors[i][-1] + motor_0.retro_motors[i][-1] == 0:
+                            if motor_0.antero_bound[i][-1] + motor_0.retro_bound[i][-1] == 0:
                                 cargo_distance = f_ex/motor.k_m
                                 motor_bind = 0 - cargo_distance
                                 motor.binding_event(motor_bind)
-                                #print(f'First binding after cargo unbinding, motor_bind={motor_bind} = bead_distance={bead_distance}')
+                                #print(f'First binding after cargo unbinding, motor_bind={motor_bind} = cargo_distance={cargo_distance}')
                             else:
-                                motor.binding_event(motor_0.x_bead[i][-1])
+                                motor.binding_event(motor_0.x_cargo[i][-1])
                         else:
-                            motor.binding_event(motor_0.x_bead[i][-1])
+                            motor.binding_event(motor_0.x_cargo[i][-1])
                     else:
                         raise AssertionError('Event index not found')
                 else:
@@ -210,15 +212,15 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=1000, dimension='
                     else:
                         raise AssertionError('Something wrong with motor direction')
 
-            motor_0.antero_motors[i].append(antero_bound)
-            motor_0.retro_motors[i].append(retro_bound)
+            motor_0.antero_bound[i].append(antero_bound)
+            motor_0.retro_bound[i].append(retro_bound)
 
             # If there are currently 0 anterograde and retrograde motors bound, the cargo has detached from the microtubile
             if antero_bound + retro_bound == 0:
                 #print(f'no motors bound happened')
                 #print(f'it={i}, t={t}')
-                #print(f'bound motors = {motor_0.antero_motors[i][-1] + motor_0.retro_motors[i][-1]}')
-                #print(f'bound motors PREVIOUS= {motor_0.antero_motors[i][-2] + motor_0.retro_motors[i][-2]}')
+                #print(f'bound motors = {motor_0.antero_bound[i][-1] + motor_0.retro_bound[i][-1]}')
+                #print(f'bound motors PREVIOUS= {motor_0.antero_bound[i][-2] + motor_0.retro_bound[i][-2]}')
                 #for motor in my_team:
                     #print(f'{motor.id}: unbound={motor.unbound}')
                 #xm_km_list = [(motor.xm_abs * motor.k_m) for motor in my_team]
@@ -226,18 +228,18 @@ def gillespie_2D_walk(my_team, motor_0, t_max=100, n_iteration=1000, dimension='
                 #km_list = [motor.k_m for motor in my_team if not motor.unbound]
                 #km_list.append(k_t)
                 # Calculate position beat/cargo
-                #bead_loc = sum(xm_km_list)/sum(km_list)
-                #print(f'new beadloc={bead_loc}')
-                #print(f'old beadloc aka runlength={motor_0.x_bead[i][-1]}')
-                motor_0.stall_time.append(tau) # Stall time before binding
-                motor_0.runlength_bead[i].append(motor_0.x_bead[i][-1]) # Save current bead location; run length
+                #cargo_loc = sum(xm_km_list)/sum(km_list)
+                #print(f'new cargo_loc={cargo_loc}')
+                #print(f'old cargo_loc aka runlength={motor_0.x_cargo[i][-1]}')
+                motor_0.stall_time.append(tau) # Stall time before cargo binding
+                motor_0.runlength_cargo[i].append(motor_0.x_cargo[i][-1]) # Save current cargo location = run length
                 motor_0.time_unbind[i].append(t)
                 end_run = True
-                #print(f'motor_0.x_bead[i][-1]={motor_0.x_bead[i][-1]}')
-                #print(f'motor_0.x_bead[i][0]={motor_0.x_bead[i][0]}')
-                #print(motor_0.x_bead[i][-1] - motor_0.x_bead[i][0])
-                #print(f'len motor0_runlength{len(motor_0.runlength_bead)}')
-                #print(f'last runlength={motor_0.runlength_bead[-1]}')
+                #print(f'motor_0.x_cargo[i][-1]={motor_0.x_cargo[i][-1]}')
+                #print(f'motor_0.x_cargo[i][0]={motor_0.x_cargo[i][0]}')
+                #print(motor_0.x_cargo[i][-1] - motor_0.x_cargo[i][0])
+                #print(f'len motor0_runlength{len(motor_0.runlength_cargo)}')
+                #print(f'last runlength={motor_0.runlength_cargo[-1]}')
                 # Stop this Gillespie run, if this setting is passed
                 #detach = True
                 #print(f'detach={detach}')

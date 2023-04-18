@@ -31,7 +31,7 @@ def time_scale(dirct):
                         motor0 = pickle.load(pickle_file_motor0)
                         pickle_file_motor0.close()
                         time = motor0.time_points
-                        rl = motor0.runlength_bead
+                        rl = motor0.runlength_cargo
                         endtime_mean = []
                         len_mean = []
                         for i in time:
@@ -241,7 +241,7 @@ def checkinggg(dirct):
                 motor0 = pickle.load(pickle_file_motor0)
                 pickle_file_motor0.close()
                 #
-                xb = motor0.x_bead
+                xb = motor0.x_cargo
                 count_zero = []
                 for nested in xb:
                     count_zero.append(nested.count('0'))

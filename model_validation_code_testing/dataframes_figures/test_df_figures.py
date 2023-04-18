@@ -6,11 +6,11 @@ import os
 import motorgillespie.simulation.motor_class as mc
 
 motor0_1 = mc.MotorFixed(k_t=0, f_ex=0)
-motor0_1.runlength_bead = [[1,1,1], [2], [3,4]]
+motor0_1.runlength_cargo = [[1, 1, 1], [2], [3, 4]]
 motor0_2 = mc.MotorFixed(k_t=0, f_ex=0)
-motor0_2.runlength_bead = [[2,2,2], [3], [4,5]]
+motor0_2.runlength_cargo = [[2, 2, 2], [3], [4, 5]]
 motor0_3 = mc.MotorFixed(k_t=0, f_ex=0)
-motor0_3.runlength_bead = [[3,3,3], [4], [5,6]]
+motor0_3.runlength_cargo = [[3, 3, 3], [4], [5, 6]]
 
 list = [motor0_1, motor0_2, motor0_3]
 ts = '1'
@@ -20,7 +20,7 @@ dict_rl = {}
 
 for index, m in enumerate(list):
         #
-        rl = m.runlength_bead
+        rl = m.runlength_cargo
         print(rl)
         rl_flat = [element for sublist in rl for element in sublist]
         print(rl_flat)
@@ -127,7 +127,7 @@ def TEST_xm_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0.01)
                         t = value
                         # locations of motors
                         xm_i = xm[i]
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(xm):
                             t.pop()
                         # Create function

@@ -16,7 +16,7 @@ def bead_symmetry(dirct, subdir):
     # Loop through lists in nested list of bead locations
     dict_total = {}
     xb_total = []
-    for index, list_xb in enumerate(motor0.x_bead):
+    for index, list_xb in enumerate(motor0.x_cargo):
 
         # Calculate how long the bead is positioned at every location
         durations = np.diff(motor0.time_points[index])
@@ -45,11 +45,11 @@ def intrpl_bead_symmetry(dirct, subdir, printstring):
     xb_ip = []
 
     # Loop through lists in nested list of bead locations
-    for index, list_xb in enumerate(motor0.x_bead):
+    for index, list_xb in enumerate(motor0.x_cargo):
 
         # Original data
         x = motor0.time_points[index]
-        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
         #print(len(x))
         y = list_xb
         #print(len(y))
@@ -93,13 +93,13 @@ def xbead_ks_qq(dirct, subdir, interval=(0, 95), stepsize=0.001, hypothesis='nor
     xb_ip = []
 
     # Loop through lists in nested list of bead locations
-    for index, list_xb in enumerate(motor0.x_bead):
+    for index, list_xb in enumerate(motor0.x_cargo):
         print(f'index={index}')
 
         # Original data
         t = motor0.time_points[index]
         xb = list_xb
-        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
         if len(t) != len(xb):
             t.pop()
         # Create function
@@ -218,13 +218,13 @@ def fair_first_step(dirct, subdir, interval=(0, 95), stepsize=0.001, n_exp=1000,
         # List per experiment
         xb_ip = []
         # Loop through lists in nested list of bead locations
-        for index, list_xb in enumerate(motor0.x_bead):
+        for index, list_xb in enumerate(motor0.x_cargo):
             print(f'index={index}')
 
             # Original data
             t = motor0.time_points[index]
             xb = list_xb
-            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
             if len(t) != len(xb):
                 t.pop()
             # Create function

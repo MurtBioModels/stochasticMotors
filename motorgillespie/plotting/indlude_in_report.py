@@ -13,18 +13,18 @@ import random
 '''Cargo RL pdf, cdf and lineplot/barplot <>'''
 def rl_bead_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     """
-    DONE
+    DONEE
     Parameters
     ----------
     dirct : str
-            Name of the subdirectory within the 'motor_object'
-    ts_list : list of float,
-                  Values of the team size N within dirct
-    fex_list : list of floats,
-                  Values of the external force f_ex within dirct
-    km_list : list of floats,
-                  Values of the motor stiffness km within dirct
-    filename : string, optional
+            Name of the subdirectory within the `motor_object` directory
+    ts_list : list of int or list of float
+                  Values of the team size N within `dirct`
+    fex_list : list of int or list of float
+                  Values of the external force f_ex within `dirct`
+    km_list : list of int or list of float
+                  Values of the motor stiffness km within `dirct`
+    filename : str, optional
             Addition to include into the default file name
 
     Returns
@@ -72,7 +72,7 @@ def rl_bead_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
             key = (str(ts), str(fex), str(km))
             print(f'key={key}')
             #
-            runlength = list(motor0.runlength_bead)
+            runlength = list(motor0.runlength_cargo)
             flat_rl = [element for sublist in runlength for element in sublist]
             #
             dict_rl[key] = flat_rl
@@ -95,23 +95,23 @@ def rl_bead_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     df_melt = pd.melt(df, value_name='run_length', var_name=['team_size', 'f_ex', 'km']).dropna()
     print(df_melt)
     #
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}_N_fex_km_rl.csv')
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\rl_cargo_N_fex_km_{filename}.csv')
 
     return
-def plot_n_fex_km_rl(dirct, filename, n_include=(1, 2, 3, 4), fex_include=(0, -1, -2, -3, -4, -5, -6), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True, figname=''):
+def plot_n_fex_km_rl(dirct, filename, n_include, fex_include, km_include, show=True, figname=''):
     """
-    DONE
+    DONEE
     Parameters
     ----------
     dirct : string
             Name of the subsubdirectory within the 'motor_object' subdirectory within the current working directory
     filename : string
             Name of the dataframe file
-    n_include : tuple of strings,  default = ('1', '2', '3', '4')
+    n_include : list of int or list of float
                   Which values of the team size N to include
-    fex_include : tuple of strings,  default = ('0', '-1', '-2', '-3', '-4', '-5', '-6', '-7')
+    fex_include : list of int or list of float
                   Which values of the external force f_ex to include
-    km_include : tuple of strings,  default = ('0.1', '0.12', '0.14', '0.16', '0.18', '0.2')
+    km_include : list of int or list of float
                   Which values of the  motor stiffness km to include
     show : boolean,  default = True
                   If True, display all figures and blocks until the figures have been closed
@@ -424,7 +424,7 @@ def xb_n_fex_km(dirct, ts_list, fex_list, km_list, stepsize=0.1, filename=''):
             print(f'key={key}')
             key_tuples.append(key)
             #
-            xb = motor0.x_bead
+            xb = motor0.x_cargo
             time = motor0.time_points
             del motor0
             xb_total_interpl = []
@@ -434,7 +434,7 @@ def xb_n_fex_km(dirct, ts_list, fex_list, km_list, stepsize=0.1, filename=''):
                     # Original data
                     t_i = time[index]
                     xb_i = list_xb
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t_i) != len(xb_i):
                         t_i.pop()
                     # Create function
@@ -606,7 +606,7 @@ def traj_n_fex_km(dirct, ts_list, fex_list, km_list, show=True):
             for i in random_index:
                 motor0.time_points[i].pop()
                 x = motor0.time_points[i]
-                y = motor0.x_bead[i]
+                y = motor0.x_cargo[i]
                 # Plotting
                 if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
                     os.makedirs(f'.\motor_objects\\{dirct}\\figures')
@@ -706,11 +706,11 @@ def bound_n_fex_km(dirct, ts_list, fex_list, km_list, stepsize=0.01, filename=''
             print(f'key={key}')
             keys_bound.append(key)
             #
-            retro = motor0.retro_motors
+            retro = motor0.retro_bound
             if retro != 0:
                 print(f'There should be no minus motors, check simulation settings')
             #
-            motors_bound = motor0.antero_motors
+            motors_bound = motor0.antero_bound
             mean_bound_motors = []
             #
             print('Start interpolating bound motors...')
@@ -719,7 +719,7 @@ def bound_n_fex_km(dirct, ts_list, fex_list, km_list, stepsize=0.01, filename=''
                     # Original data
                     t = motor0.time_points[index]
                     bound = list_bm
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t) != len(bound):
                         t.pop()
                     # Create function
@@ -894,14 +894,14 @@ def unbindevent_bead_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
             print(f'fex={fex}')
             print(f'km={km}')
             #
-            retro = motor0.retro_unbinds
+            retro = motor0.retro_unbind_events
             if retro != 0:
                 print(f'There should be no minus motors, check simulation settings')
             #
             key = (str(ts), str(fex), str(km))
             print(f'key={key}')
             key_tuples.append(key)
-            nested_unbind.append(list(motor0.antero_unbinds))
+            nested_unbind.append(list(motor0.antero_unbind_events))
 
             #
             if km_count < len(km_list) - 1:
@@ -947,7 +947,7 @@ def plot_n_fex_km_unbindevent(dirct, filename, n_include=(1, 2, 3, 4), fex_inclu
             Name of the subsubdirectory within the 'motor_object' subdirectory within the current working directory
     filename : string
             Name of the dataframe file
-    n_include : tuple of strings,  default = ('1', '2', '3', '4')
+    n_include : tuple of strings,  default  ('1', '2', '3', '4')
                   Which values of the team size N to include
     fex_include : tuple of strings,  default = ('0', '-1', '-2', '-3', '-4', '-5', '-6', '-7')
                   Which values of the external force f_ex to include
@@ -1005,18 +1005,18 @@ def plot_n_fex_km_unbindevent(dirct, filename, n_include=(1, 2, 3, 4), fex_inclu
 '''segments or x vs v segments >> eventueel RL opsplitsen en dan segmenten'''
 def segment_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     """
-
+    DONEE
     Parameters
     ----------
-    dirct : string
-            Name of the subdirectory within the 'motor_object'
-    ts_list : list of lists,
-                  Values of the team size N within dirct
-    fex_list : list of floats,
-                  Values of the external force f_ex within dirct
-    km_list : list of floats,
-                  Values of the motor stiffness km within dirct
-    filename : string, optional
+    dirct : str
+            Name of the subdirectory within the `motor_object` directory
+    ts_list : list of int or list of float
+                  Values of the team size N within `dirct`
+    fex_list : list of int or list of float
+                  Values of the external force f_ex within `dirct`
+    km_list : list of int or list of float
+                  Values of the motor stiffness km within `dirct`
+    filename : str, optional
             Addition to include into the default file name
 
     Returns
@@ -1045,9 +1045,8 @@ def segment_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
             #
             print('NEW SUBDIR/SIMULATION')
             print(os.path.join(path,subdir))
-            print(os.path.join(path,subdir))
-            #
             print(f'subdir={subdir}')
+            #
             print(f'teamsize_count={teamsize_count}')
             print(f'km_count={km_count}')
             print(f'fex_count={fex_count}')
@@ -1056,7 +1055,7 @@ def segment_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
             #
-            xb = motor0.x_bead
+            xb = motor0.x_bead #x_cargo
             t = motor0.time_points
             del motor0
             #
@@ -1096,42 +1095,44 @@ def segment_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     print(multi_column)
     del key_tuples
     #
-    mid_index = len_tuples/2
+    mid_index = int(len_tuples/2)
     print(f'mid_index={mid_index}')
     print(f'multi_column[:mid_index]={multi_column[:mid_index]}')
     print(f'multi_column[mid_index:]={multi_column[mid_index:]}')
     #
-    #
-    df1 = pd.DataFrame(nested_seg[:mid_index], index=multi_column[:mid_index])
+    df1 = pd.DataFrame(nested_seg[:mid_index], index=multi_column[:mid_index]).T
     print(df1)
-    df2 = pd.DataFrame(nested_seg[mid_index:], index=multi_column[mid_index:])
-    print(df2)
-    del nested_seg
-    df3 = pd.concat([df1, df2]).T
+    print('Melt dataframe 1... ')
+    df1_melt = pd.melt(df1, value_name='segments', var_name=['team_size', 'f_ex', 'km']).dropna()
+    print(df1_melt)
     del df1
+    df2 = pd.DataFrame(nested_seg[mid_index:], index=multi_column[mid_index:]).T
+    print(df2)
+    print('Melt dataframe 2... ')
+    df2_melt = pd.melt(df2, value_name='segments', var_name=['team_size', 'f_ex', 'km']).dropna()
+    print(df2_melt)
     del df2
-    #print(df3)
-    print('Melt dataframe... ')
-    df_melt = pd.melt(df3, value_name='segments', var_name=['team_size', 'f_ex', 'km']).dropna()
-    print(df_melt)
+    df3 = pd.concat([df1_melt, df2_melt], axis=0)
+    del df1_melt, df2_melt
+    print(df3)
     #
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\segments_{filename}.csv')
+    df3.to_csv(f'.\motor_objects\\{dirct}\\data\\segments_{filename}.csv')
 
     return
-def plot_n_fex_km_seg(dirct, filename, n_include=(1, 2, 3, 4), fex_include=(0, -1, -2, -3, -4, -5, -6), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True, figname=''):
+def plot_n_fex_km_seg(dirct, filename, n_include, fex_include, km_include, show=True, figname=''):
     """
-
+    DONEE
     Parameters
     ----------
     dirct : string
             Name of the subsubdirectory within the 'motor_object' subdirectory within the current working directory
     filename : string
             Name of the dataframe file
-    n_include : tuple of strings,  default = ('1', '2', '3', '4')
+    n_include : list of int or list of float
                   Which values of the team size N to include
-    fex_include : tuple of strings,  default = ('0', '-1', '-2', '-3', '-4', '-5', '-6', '-7')
+    fex_include : list of int or list of float
                   Which values of the external force f_ex to include
-    km_include : tuple of strings,  default = ('0.1', '0.12', '0.14', '0.16', '0.18', '0.2')
+    km_include : list of int or list of float
                   Which values of the  motor stiffness km to include
     show : boolean,  default = True
                   If True, display all figures and blocks until the figures have been closed
@@ -1145,11 +1146,11 @@ def plot_n_fex_km_seg(dirct, filename, n_include=(1, 2, 3, 4), fex_include=(0, -
     #
     df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
     print(df)
-    df2 = df[df['team_size'].isin(list(n_include))]
+    df2 = df[df['team_size'].isin(n_include)]
     print(df2)
-    df3 = df2[df2['f_ex'].isin(list(f_ex_include))]
+    df3 = df2[df2['f_ex'].isin(fex_include)]
     print(df3)
-    df4 = df3[df3['km_minus'].isin(list(km_include))]
+    df4 = df3[df3['km'].isin(km_include)]
     print(df4)
 
     #
@@ -1160,12 +1161,11 @@ def plot_n_fex_km_seg(dirct, filename, n_include=(1, 2, 3, 4), fex_include=(0, -
     sns.color_palette()
     sns.set_style("whitegrid")
     print('Making figure..')
-    #
-    for i in f_ex_include:
+    for i in fex_include:
 
         df5 = df4[df4['f_ex'].isin([i])]
         plt.figure()
-        sns.displot(df5, col='team_size', row='km_minus', stat='count', common_norm=False, commen_bin=False).set_title(f'External force = {i}pN {titlestring}')
+        sns.displot(df5, col='team_size', row='km', stat='count', common_norm=False, commen_bin=False).set_title(f'External force = {i}pN ')
         #plt.title(f'Distribution (interpolated) of cargo location {titlestring} ')
         plt.xlabel('Segmented runs [nm]')
         plt.savefig(f'.\motor_objects\{dirct}\\figures\\figures\dist_segments_{i}fex_{figname}.png', format='png', dpi=300, bbox_inches='tight')
@@ -1232,7 +1232,7 @@ def segment_back_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
             #
-            xb = motor0.x_bead
+            xb = motor0.x_cargo
             del motor0
             #
             ts = ts_list[teamsize_count]
@@ -1470,7 +1470,7 @@ def motorforces_n_fex_km(dirct, ts_list, fex_list, km_list, stepsize=0.1, sample
                         if len(mf) < 2:
                             continue
                         #print(f'nf={mf}')
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(mf):
                             t.pop()
                         # Create function
@@ -1727,7 +1727,7 @@ def xm_n_fex_km(dirct, ts_list, fex_list, km_list, stepsize=0.01, samplesize=100
                         t = value
                         # locations of motors
                         xm_i = xm[i]
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(xm_i):
                             t.pop()
                         # Create function
@@ -1952,7 +1952,7 @@ def rl_motors_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
                     pickle_file_motor.close()
                     #
                     print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
-                    rl_all_motors.extend(motor.forces_unbind)
+                    rl_all_motors.extend(motor.run_length)
             #
             nested_rl.append(rl_all_motors)
             #
@@ -2257,7 +2257,7 @@ def rl_cargo_n_kmr(dirct, ts_list, kmminus_list, filename=''):
             key = (str(ts), str(km_minus))
             print(f'key={key}')
             #
-            runlength = list(motor0.runlength_bead)
+            runlength = list(motor0.runlength_cargo)
             flat_rl = [element for sublist in runlength for element in sublist]
             #print(flat_rl)
             #
@@ -2519,7 +2519,7 @@ def xb_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
             print(f'key={key}')
             key_tuples.append(key)
             #
-            xb = motor0.x_bead
+            xb = motor0.x_cargo
             time = motor0.time_points
             del motor0
             xb_total_interpl = []
@@ -2529,7 +2529,7 @@ def xb_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
                     # Original data
                     t_i = time[index]
                     xb_i = list_xb
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t_i) != len(xb_i):
                         t_i.pop()
                     # Create function
@@ -2648,7 +2648,7 @@ def xb_n_kmr_2(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
             print(f'key={key}')
             key_tuples.append(key)
             #
-            xb = motor0.x_bead
+            xb = motor0.x_cargo
             time = motor0.time_points
             del motor0
             xb_total_interpl = []
@@ -2658,7 +2658,7 @@ def xb_n_kmr_2(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
                     # Original data
                     t_i = time[index]
                     xb_i = list_xb
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t_i) != len(xb_i):
                         t_i.pop()
                     # Create function
@@ -2866,7 +2866,7 @@ def traj_n_kmr(dirct, ts_list, kmminus_list, show=True):
             for i in random_index:
                 motor0.time_points[i].pop()
                 x = motor0.time_points[i]
-                y = motor0.x_bead[i]
+                y = motor0.x_cargo[i]
                 # Plotting
                 if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
                     os.makedirs(f'.\motor_objects\\{dirct}\\figures')
@@ -2947,7 +2947,7 @@ def boundmotors_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
             print(f'key_antero={key_antero}')
             keys_bound.append(key_antero)
             #
-            antero_bound = motor0.antero_motors
+            antero_bound = motor0.antero_bound
             mean_antero_bound = []
             #
             print('Start interpolating antero bound motors...')
@@ -2956,7 +2956,7 @@ def boundmotors_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
                     # Original data
                     t = motor0.time_points[index]
                     bound = list_bm
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t) != len(bound):
                         t.pop()
                     # Create function
@@ -2975,7 +2975,7 @@ def boundmotors_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
             print(f'key_retro={key_retro}')
             keys_bound.append(key_retro)
             #
-            retro_bound = motor0.retro_motors
+            retro_bound = motor0.retro_bound
             mean_retro_bound = []
             #
             print('Start interpolating retro bound motors...')
@@ -2984,7 +2984,7 @@ def boundmotors_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
                     # Original data
                     t = motor0.time_points[index]
                     bound = list_bm
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t) != len(bound):
                         t.pop()
                     # Create function
@@ -3128,12 +3128,12 @@ def unbindevent_n_kmr(dirct, ts_list, kmminus_list, filename=''):
             key1 = (str(ts), str(km_minus), 'antero')
             print(f'key={key1}')
             key_tuples.append(key1)
-            nested_unbind.append(list(motor0.antero_unbinds))
+            nested_unbind.append(list(motor0.antero_unbind_events))
             #
             key2 = (str(ts), str(km_minus), 'retro')
             print(f'key={key2}')
             key_tuples.append(key2)
-            nested_unbind.append(list(motor0.retro_unbinds))
+            nested_unbind.append(list(motor0.retro_unbind_events))
 
             #
             if kmminus_count < len(kmminus_list) - 1:
@@ -3255,7 +3255,7 @@ def segment_n_kmr(dirct, ts_list, kmminus_list, filename=''):
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
             #
-            xb = motor0.x_bead
+            xb = motor0.x_cargo
             t = motor0.time_points
             del motor0
             #
@@ -3406,7 +3406,7 @@ def seg_back_n_kmr(dirct, ts_list, kmminus_list, filename=''):
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
             #
-            xb = motor0.x_bead
+            xb = motor0.x_cargo
             del motor0
             #
             ts = ts_list[teamsize_count]
@@ -3601,7 +3601,7 @@ def motorforces_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
                         if len(mf) < 2:
                             continue
                         #print(f'nf={mf}')
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(mf):
                             t.pop()
                         # Create function
@@ -3758,7 +3758,7 @@ def motorforces_n_kmr_2(dirct, ts_list, kmminus_list, stepsize=0.1, samplesize=1
                         if len(mf) < 2:
                             continue
                         #print(f'nf={mf}')
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(mf):
                             t.pop()
                         # Create function
@@ -3894,7 +3894,7 @@ def motorforces_n_kmr_2_sep(dirct, ts_list, kmminus_list, stepsize=0.1, filename
                             if len(mf) < 2:
                                 continue
                             #print(f'nf={mf}')
-                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                             if len(t) != len(mf):
                                 t.pop()
                             # Create function
@@ -3951,7 +3951,7 @@ def motorforces_n_kmr_2_sep(dirct, ts_list, kmminus_list, stepsize=0.1, filename
                             if len(mf) < 2:
                                 continue
                             #print(f'nf={mf}')
-                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                             if len(t) != len(mf):
                                 t.pop()
                             # Create function
@@ -4197,7 +4197,7 @@ def xm_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
                         if len(xm_i) < 2:
                             continue
                         #print(f'nf={mf}')
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(xm_i):
                             t.pop()
                         # Create function
@@ -4352,7 +4352,7 @@ def xm_n_kmr_2(dirct, ts_list, kmminus_list, stepsize=0.1, samplesize=100, filen
                         if len(xm_i) < 2:
                             continue
                         #print(f'nf={mf}')
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(xm_i):
                             t.pop()
                         # Create function
@@ -4488,7 +4488,7 @@ def xm_n_kmr_2_sep(dirct, ts_list, kmminus_list, stepsize=0.1, samplesize=100, f
                             if len(xm_i) < 2:
                                 continue
                             #print(f'nf={mf}')
-                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                             if len(t) != len(xm_i):
                                 t.pop()
                             # Create function
@@ -4544,7 +4544,7 @@ def xm_n_kmr_2_sep(dirct, ts_list, kmminus_list, stepsize=0.1, samplesize=100, f
                             if len(xm_i) < 2:
                                 continue
                             #print(f'nf={mf}')
-                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                             if len(t) != len(xm_i):
                                 t.pop()
                             # Create function

@@ -164,7 +164,7 @@ def plot_rl(dirct, figname, show=False):
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
 
-            rl = motor0.runlength_bead
+            rl = motor0.runlength_cargo
             #
             sns.color_palette()
             sns.set_style("whitegrid")
@@ -222,7 +222,7 @@ def trajectories(dirct, figname, it=0, show=True):
 
             #motor0.time_points[it].pop()
             x = motor0.time_points[it]
-            y = motor0.x_bead[it]
+            y = motor0.x_cargo[it]
             print(y[-1])
             print(y[-2])
             y.append(0)

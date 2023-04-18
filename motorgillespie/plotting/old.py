@@ -28,7 +28,7 @@ def rl_fu_bead2(family, kt, n_motors, n_it, epsilon, stat="probability"):
         motor0 = pickle.load(pickle_file_motor0)
         pickle_file_motor0.close()
         #
-        list_xbead = motor0.x_bead
+        list_xbead = motor0.x_cargo
         flattened_list = [val for sublist in list_xbead for val in sublist]
         size = len(flattened_list)
         index_list = [i + 1 for i, val in enumerate(flattened_list) if val == 0]
@@ -84,7 +84,7 @@ def dist_act_motors2(family, kt, n_motors, n_it, epsilon, stat="probability"):
         pickle_file_motor0.close()
 
         # Append attribute 'bound motors': list of active motors per time step
-        dict_active_motors[n] = motor0.antero_motors
+        dict_active_motors[n] = motor0.antero_bound
 
     # Transform dictionary to Pandas dataframe with equal dimensions
     df_bound_motors = pd.DataFrame({key: pd.Series(value) for key, value in dict_active_motors.items()})
@@ -161,7 +161,7 @@ def lineplots_kt(family, list_kt, n_motors, n_it, epsilon, file_name=None):
             output_array[it, 0] = kt
             output_array[it, 1] = mean_fu_total
             output_array[it, 2] = mean_run_total
-            output_array[it, 3] = sum(motor0.antero_motors) / len(motor0.antero_motors)
+            output_array[it, 3] = sum(motor0.antero_bound) / len(motor0.antero_bound)
 
             # Update iteration number
             it += 1
@@ -243,7 +243,7 @@ def lineplots_Nmotors(family, kt, n_motors, n_it, epsilon, file_name=None):
             mean_fu_total = (sum(mean_fu_motors) / len(mean_fu_motors))
             mean_run_total = (sum(mean_run_motors) / len(mean_run_motors))
             #
-            list_xbead = motor0.x_bead
+            list_xbead = motor0.x_cargo
             flattened_list = [val for sublist in list_xbead for val in sublist]
             size = len(flattened_list)
             index_list = [i + 1 for i, val in enumerate(flattened_list) if val == 0]
@@ -259,7 +259,7 @@ def lineplots_Nmotors(family, kt, n_motors, n_it, epsilon, file_name=None):
             output_array[counter, 0] = n
             output_array[counter, 1] = mean_fu_total
             output_array[counter, 2] = mean_run_total
-            output_array[counter, 3] = sum(motor0.antero_motors) / len(motor0.antero_motors)
+            output_array[counter, 3] = sum(motor0.antero_bound) / len(motor0.antero_bound)
             if len(list_rl) > 0:
                 output_array[counter, 4] = sum(list_rl)/len(list_rl)
             else:
@@ -746,7 +746,7 @@ def forces_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='proba
             print(len(t))
             forces = list_forces
             print(len(forces))
-            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
             if len(t) != len(forces):
                 t.pop()
             # Create function
@@ -822,7 +822,7 @@ def xm_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probabili
             t = motor0.time_points[index]
             print(f't={len(t)}')
             print(f'xm={len(list_xm)}')
-            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
             if len(t) != len(list_xm):
                 t.pop()
             # Create function
@@ -945,13 +945,13 @@ def xbead_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probab
     xb_ip = []
 
     # Loop through lists in nested list of bead locations
-    for index, list_xb in enumerate(motor0.x_bead):
+    for index, list_xb in enumerate(motor0.x_cargo):
         print(f'index={index}')
 
         # Original data
         t = motor0.time_points[index]
         xb = list_xb
-        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
         if len(t) != len(xb):
             t.pop()
         # Create function
@@ -1011,7 +1011,7 @@ def xbead_dist_notintrpl(subdir, family, n_motors, kt, calc_eps, subject='varval
     xb_nip = []
 
     # Loop through lists in nested list of bead locations
-    for index, list_xb in enumerate(motor0.x_bead):
+    for index, list_xb in enumerate(motor0.x_cargo):
         print(f'index={index}')
 
         # Add interpolated data points to list
@@ -1056,7 +1056,7 @@ def rl_fu_bead(dirct, subdir, figname, titlestring, k_t, stat='count', show=True
     pickle_file_motor0.close()
 
     #
-    rl_bead = motor0.runlength_bead
+    rl_bead = motor0.runlength_cargo
     fu_bead = [i*k_t for i in rl_bead]
     # Bins
     q25, q75 = np.percentile(rl_bead, [25, 75])
@@ -1114,14 +1114,14 @@ def dist_act_motors1(dirct, subdir, figname, titlestring, stepsize=0.001, stat='
     retro_bound = []
 
     # Loop through lists in nested list of bead locations
-    for index, antero_list in enumerate(motor0.antero_motors):
+    for index, antero_list in enumerate(motor0.antero_bound):
         print(f'index={index}')
 
         # Original data
         t = motor0.time_points[index]
         antero = antero_list
-        retro = motor0.retro_motors[index]
-        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+        retro = motor0.retro_bound[index]
+        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
         if len(t) != len(antero):
             t.pop()
         # Create function
@@ -1214,7 +1214,7 @@ def trace_velocity(dirct, subdir, figname, titlestring,  stat='count', show=True
     #
     trace_velocities = []
     # Loop through lists in nested list
-    for index, xb_list in enumerate(motor0.x_bead):
+    for index, xb_list in enumerate(motor0.x_cargo):
         xb = xb_list
         t = motor0.time_points[index]
         vel = (xb[-1]-xb[0])/(t[-1]-t[0])
@@ -1262,7 +1262,7 @@ def segmented_velocity(dirct, subdir, figname, titlestring, stat='probability', 
     vel_inst = []
 
     # Loop through lists in nested list of bead locations
-    for index, list_xb in enumerate(motor0.x_bead):
+    for index, list_xb in enumerate(motor0.x_cargo):
         print(f'index={index}')
         t = motor0.time_points[index]
         if len(t) != len(list_xb):
@@ -1319,7 +1319,7 @@ def violin_trace_vel(dirct, figname, titlestring, show=True):
             #
             trace_velocities = []
             # Loop through lists in nested list
-            for index, xb_list in enumerate(motor0.x_bead):
+            for index, xb_list in enumerate(motor0.x_cargo):
                 xb = xb_list
                 t = motor0.time_points[index]
                 vel = (xb[-1]-xb[0])/(t[-1]-t[0])
@@ -1374,7 +1374,7 @@ def violin_fu_rl(dirct, k_t, figname, titlestring, show=True):
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
             #
-            rl_bead = motor0.runlength_bead
+            rl_bead = motor0.runlength_cargo
             fu_bead = [i*k_t for i in rl_bead]
             # append to dictionary
             dict_fu[subdir] = fu_bead
@@ -1446,13 +1446,13 @@ def cdf_xbead(dirct, figname, titlestring, stepsize=0.001, show=False):
             xb_ip = []
 
             # Loop through lists in nested list of bead locations
-            for index, list_xb in enumerate(motor0.x_bead):
+            for index, list_xb in enumerate(motor0.x_cargo):
                 print(f'index={index}')
 
                 # Original data
                 t = motor0.time_points[index]
                 xb = list_xb
-                # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                 if len(t) != len(xb):
                     t.pop()
                 # Create function
@@ -1522,7 +1522,7 @@ def cdf_trace_vel(dirct, figname, titlestring, show=False):
             #
             trace_velocities = []
             # Loop through lists in nested list
-            for index, xb_list in enumerate(motor0.x_bead):
+            for index, xb_list in enumerate(motor0.x_cargo):
                 xb = xb_list
                 t = motor0.time_points[index]
                 vel = (xb[-1]-xb[0])/(t[-1]-t[0])
@@ -1600,8 +1600,8 @@ def heatmap_antero_retro(dirct, figname, titlestring, show=False):
             print(f'ratio={motorteam[-1].k_m/motorteam[0]}.k_m')
 
             #
-            flattened_antero = [val for sublist in motor0.antero_motors for val in sublist]
-            flattened_retro = [val for sublist in motor0.retro_motors for val in sublist]
+            flattened_antero = [val for sublist in motor0.antero_bound for val in sublist]
+            flattened_retro = [val for sublist in motor0.retro_bound for val in sublist]
             mean_antero = sum(flattened_antero)/len(flattened_antero)
             mean_retro = sum(flattened_retro)/len(flattened_retro)
             #
@@ -3288,7 +3288,7 @@ def traj_kt(subdir, family, list_kt, n_motors, time_frame, it=1, file_name=None)
         if not os.path.isdir(f'..\motor_objects\\kt\{subdir}\\figures'):
             os.makedirs(f'..\motor_objects\\kt\{subdir}\\figures')
         x = motor0.time_points[it][time_frame[0]:time_frame[1]]
-        y = motor0.x_bead[it][time_frame[0]:time_frame[1]]
+        y = motor0.x_cargo[it][time_frame[0]:time_frame[1]]
         plt.step(x, y, where='post')
         plt.scatter(x,y)
         plt.title(f'radius {kt}')
@@ -3322,7 +3322,7 @@ def traj_team_size(subdir, family, n_motors, time_frame, it=1, file_name=None):
         if not os.path.isdir(f'..\motor_objects\\teamsize\{subdir}\\figures'):
             os.makedirs(f'..\motor_objects\\teamsize\{subdir}\\figures')
         x = motor0.time_points[it][time_frame[0]:time_frame[1]]
-        y = motor0.x_bead[it][time_frame[0]:time_frame[1]]
+        y = motor0.x_cargo[it][time_frame[0]:time_frame[1]]
         plt.step(x, y, where='post')
         plt.scatter(x,y)
         plt.title(f'Teamsize {n_motors}')
@@ -3358,7 +3358,7 @@ def traj_radii(subdir, family, list_r, n_motors, time_frame, it=1, file_name=Non
 
         if all_traj==False:
             x = motor0.time_points[it][time_frame[0]:time_frame[1]]
-            y = motor0.x_bead[it][time_frame[0]:time_frame[1]]
+            y = motor0.x_cargo[it][time_frame[0]:time_frame[1]]
             plt.step(x, y, where='post')
             plt.scatter(x,y)
             plt.title(f'radius {r}')
@@ -3367,7 +3367,7 @@ def traj_radii(subdir, family, list_r, n_motors, time_frame, it=1, file_name=Non
         else:
             x = motor0.time_points
             x_new = np.asanyarray(x, dtype=list)
-            y = motor0.x_bead
+            y = motor0.x_cargo
             y_new = np.asanyarray(y, dtype=list)
             #print(len(x_new[1]))
             #print(len(y_new[1]))
@@ -3405,7 +3405,7 @@ def traj_restlength(subdir, family, list_rl, n_motors, time_frame, it=1, file_na
 
         if all_traj==False:
             x = motor0.time_points[it][time_frame[0]:time_frame[1]]
-            y = motor0.x_bead[it][time_frame[0]:time_frame[1]]
+            y = motor0.x_cargo[it][time_frame[0]:time_frame[1]]
             plt.step(x, y, where='post')
             plt.scatter(x,y)
             plt.title(f'rest length {rl}')
@@ -3413,7 +3413,7 @@ def traj_restlength(subdir, family, list_rl, n_motors, time_frame, it=1, file_na
             plt.show()
         else:
             x = motor0.time_points
-            y = motor0.x_bead
+            y = motor0.x_cargo
             plt.step(x, y, where='post')
             plt.title(f'rest length {rl}')
             plt.savefig(f'..\motor_objects\\rl\{subdir}\\figures\{fig_name}_{rl}rl_alltraj.png')
@@ -3443,7 +3443,7 @@ def traj_sym(subdir, family, it=1, file_name=None, all_traj=False):
     if all_traj == False:
         #motor0_Kinesin-1_0.0kt_1motors.time_points[it].pop()
         x = motor0.time_points[it]
-        y = motor0.x_bead[it]
+        y = motor0.x_cargo[it]
         plt.step(x, y, where='post')
         plt.scatter(x,y)
         plt.title(f'Symmetry bead trajectory')
@@ -3451,7 +3451,7 @@ def traj_sym(subdir, family, it=1, file_name=None, all_traj=False):
         plt.show()
     else:
         x = motor0.time_points
-        y = motor0.x_bead
+        y = motor0.x_cargo
         plt.step(x, y, where='post')
         plt.title(f'Symmetry bead trajectory')
         plt.savefig(f'..\motor_objects\\symmetry\{subdir}\{fig_name}.png')
@@ -3482,7 +3482,7 @@ def traj_kt_intrpl(subdir, family, n_motors, list_kt, calc_eps, interval=(0, 90)
         pickle_file_motor0.close()
 
         # Loop through lists in nested list of bead locations
-        for index, list_xb in enumerate(motor0.x_bead):
+        for index, list_xb in enumerate(motor0.x_cargo):
             print(f'index={index}')
 
             # Original data
@@ -3576,7 +3576,7 @@ def traj_kmratio(dirct, subdir, figname, titlestring, it=0, show=True):
 
     motor0.time_points[it].pop()
     x = motor0.time_points[it][0:750]
-    y = motor0.x_bead[it][0:750]
+    y = motor0.x_cargo[it][0:750]
     plt.step(x, y, where='post')
     #plt.scatter(x,y)
     plt.title(f'Trajectory: {titlestring}')
@@ -3611,7 +3611,7 @@ def traj_fex(dirct, subdir, figname, titlestring, it=0, show=True):
 
     motor0.time_points[it].pop()
     x = motor0.time_points[it]
-    y = motor0.x_bead[it]
+    y = motor0.x_cargo[it]
     plt.step(x, y, where='post')
     #plt.scatter(x,y)
     plt.title(f'Trajectory: {titlestring}')

@@ -59,7 +59,7 @@ def rl_bead_n_fex_km(dirct, filename, ts_list, fex_list, km_list):
             key = (str(ts), str(fex), str(km))
             print(f'key={key}')
             #
-            runlength = list(motor0.runlength_bead)
+            runlength = list(motor0.runlength_cargo)
             #
             dict_rl[key] = runlength
             #
@@ -230,8 +230,8 @@ def bound_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0.01):
             key = (str(ts), str(fex), str(km))
             print(f'key={key}')
             #
-            #runlength = motor0.runlength_bead
-            motors_bound = motor0.antero_motors
+            #runlength = motor0.runlength_cargo
+            motors_bound = motor0.antero_bound
             mean_bound_motors = []
 
             print('Start interpolating bound motors...')
@@ -240,7 +240,7 @@ def bound_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0.01):
                     # Original data
                     t = motor0.time_points[index]
                     bound = list_bm
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t) != len(bound):
                         t.pop()
                     # Create function
@@ -331,7 +331,7 @@ def meanmaxdist_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0
             key = (str(ts), str(fex), str(km))
             print(f'key={key}')
             #
-            runlengths = motor0.runlength_bead
+            runlengths = motor0.runlength_cargo
             meanmax_distances = [] # this will get 1000 entries
             #
             motor_team = []
@@ -367,7 +367,7 @@ def meanmaxdist_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0
                     t = motor0.time_points[i]
                     # locations of motors
                     xm = motor.x_m_abs[i]
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t) != len(xm):
                         t.pop()
                     # Create function
@@ -497,7 +497,7 @@ def meanmax_df_old(dirct, filename, stepsize=0.01):
             print(f'tz={tz}')
             print(f'km={km}')
             #
-            runlengths = motor0.runlength_bead
+            runlengths = motor0.runlength_cargo
             meanmax_distances = [] # this will get 1000 entries
             motor_team = []
             # loop through motor files
@@ -531,7 +531,7 @@ def meanmax_df_old(dirct, filename, stepsize=0.01):
                     t = motor0.time_points[i]
                     # locations of motors
                     xm = motor.x_m_abs[i]
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t) != len(xm):
                         t.pop()
                     # Create function
@@ -701,7 +701,7 @@ def xm_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0.01):
                         t = value
                         # locations of motors
                         xm_i = xm[i]
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(xm):
                             t.pop()
                         # Create function
@@ -863,7 +863,7 @@ def motorforces_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0
                         if len(mf) < 2:
                             continue
                         #print(f'nf={mf}')
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(mf):
                             t.pop()
                         # Create function
@@ -986,7 +986,7 @@ def rl_cargo_n_kmr(dirct, filename, ts_list, kmminus_list):
             key = (str(ts), str(km_minus))
             print(f'key={key}')
             #
-            runlength = list(motor0.runlength_bead)
+            runlength = list(motor0.runlength_cargo)
             flat_rl = [element for sublist in runlength for element in sublist]
             #print(flat_rl)
             #
@@ -1056,7 +1056,7 @@ def xb_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
             key = (str(ts), str(km_ratio))
             print(f'key={key}')
             #
-            xb = motor0.x_bead
+            xb = motor0.x_cargo
             time = motor0.time_points
             del motor0
             xb_total_interpl = []
@@ -1066,7 +1066,7 @@ def xb_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
                     # Original data
                     t_i = time[index]
                     xb_i = list_xb
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t_i) != len(xb_i):
                         t_i.pop()
                     # Create function
@@ -1243,8 +1243,8 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
             keys_anterobound.append(key_antero)
             keys_retrobound.append(key_retro)
             #
-            antero_bound = motor0.antero_motors
-            retro_bound = motor0.retro_motors
+            antero_bound = motor0.antero_bound
+            retro_bound = motor0.retro_bound
             mean_antero_bound = []
             mean_retro_bound = []
 
@@ -1254,7 +1254,7 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
                     # Original data
                     t = motor0.time_points[index]
                     bound = list_bm
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t) != len(bound):
                         t.pop()
                     # Create function
@@ -1274,7 +1274,7 @@ def boundmotors_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.01):
                     # Original data
                     t = motor0.time_points[index]
                     bound = list_bm
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                     if len(t) != len(bound):
                         t.pop()
                     # Create function
@@ -1539,7 +1539,7 @@ def segment_parratio_asc(dirct, filename, ts_list, parratio_list):
             print(f'ts={ts}')
             print(f'parratio={par_ratio}')
             #
-            xb = motor0.x_bead
+            xb = motor0.x_cargo
             t = motor0.time_points
             del motor0
             #
@@ -1616,7 +1616,7 @@ def segment_parratio_desc(dirct, filename, ts_list, parratio_list, processive):
             print(f'ts={ts}')
             print(f'parratio={par_ratio}')
             #
-            xb = motor0.x_bead
+            xb = motor0.x_cargo
             t = motor0.time_points
             del motor0
             #
@@ -1747,7 +1747,7 @@ def xm_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=0.1):
                         if len(xm_i) < 2:
                             continue
                         #print(f'nf={mf}')
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(xm_i):
                             t.pop()
                         # Create function
@@ -1903,7 +1903,7 @@ def xm_n_kmr_2(dirct, filename, ts_list, kmratio_list, stepsize=0.1):
                         if len(xm_i) < 2:
                             continue
                         #print(f'nf={mf}')
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(xm_i):
                             t.pop()
                         # Create function
@@ -2049,7 +2049,7 @@ def motorforces_n_kmr(dirct, filename, ts_list, parratio_list, stepsize=0.1):
                         if len(mf) < 2:
                             continue
                         #print(f'nf={mf}')
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(mf):
                             t.pop()
                         # Create function
@@ -2207,7 +2207,7 @@ def motorforces_n_kmr_2(dirct, filename, ts_list, parratio_list, stepsize=0.1):
                         if len(mf) < 2:
                             continue
                         #print(f'nf={mf}')
-                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_bead)
+                        # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
                         if len(t) != len(mf):
                             t.pop()
                         # Create function

@@ -60,7 +60,7 @@ def init_run(sim_params, gill_set, *motor_params, dirct, subdir, sd=None):
         pickle.dump(team_out[-1], pickleTeam)
         pickleTeam.close()
         team_out.pop()
-    # Motor0/fixed motor: holds data about the 'bead'
+    # Motor0/fixed motor: holds data about the cargo
     print('Pickling motor0...')
     pickleMotor0 = open(f'.\motor_objects\{dirct}\{subdir}\motor0', 'wb')
     pickle.dump(motor0_out, pickleMotor0)
@@ -150,7 +150,7 @@ def simpar_loop(sim_params, varsimpar, simpar, gill_set, *motor_params, dirct, s
         pickleTeam = open(f'.\motor_objects\{dirct}\{t}_{sp}{sim_par}\motorteam', 'wb')
         pickle.dump(team_out, pickleTeam)
         pickleTeam.close()
-        # Motor0/fixed motor: holds data about the 'bead'
+        # Motor0/fixed motor: holds data about the cargo
         pickleMotor0 = open(f'.\motor_objects\{dirct}\{t}_{sp}{sim_par}\motor0', 'wb')
         pickle.dump(motor0_out, pickleMotor0)
         pickleMotor0.close()

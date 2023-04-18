@@ -223,8 +223,9 @@ class MotorProtein(object):
             Displacement vector strongly bound state [d_1_x, d_1_z]
         dp_v2 : numpy array of floats
             Displacement weakly strongly bound state [d_2_x, d_2_z]
-        T : float or integer
+        T : float or integer > 0
             Temperature in Kelvin [K]
+        i : current iteration
 
         Returns
         -------
@@ -268,7 +269,7 @@ class MotorProtein(object):
             raise ValueError("Transport must be either retrograde or anterograde")
         return
 
-    def binding_event(self, x_bead):
+    def binding_event(self, x_cargo):
         """
 
         Parameters
@@ -279,7 +280,7 @@ class MotorProtein(object):
         -------
 
         """
-        self.xm_abs = x_bead
+        self.xm_abs = x_cargo
         self.xm_rel = 0
         self.unbound = False
 
@@ -331,15 +332,15 @@ class MotorFixed(object):
         self.angle = None
         self.init_antero = None
         self.init_retro = None
-        ## Bead/simulation data  ##
+        ## Cargo/simulation data  ##
         self.time_points = [] # list of lists
-        self.x_bead = [] # list of lists
-        self.antero_motors = [] # list of lists
-        self.retro_motors = [] # list of lists
-        self.antero_unbinds = [] # list
-        self.retro_unbinds = [] # list
+        self.x_cargo = [] # list of lists
+        self.antero_bound = [] # list of lists
+        self.retro_bound = [] # list of lists
+        self.antero_unbind_events = [] # list
+        self.retro_unbind_events = [] # list
         #self.match_events = [] # list of lists; for testing simulation
-        self.runlength_bead = [] # list of lists, divide bij k_t to get force (of optical trap)
+        self.runlength_cargo = [] # list of lists, divide bij k_t to get force (of optical trap)
         self.time_unbind = [] # list of lists
         self.stall_time = []
         #self.sum_rates = [] # for testing simulation
@@ -387,13 +388,14 @@ class MotorFixed(object):
 
         #print(f'self.init_antero, self.init_retro = {self.init_antero} {self.init_retro}') #debug
         self.time_points.append([0])
-        self.x_bead.append([])
-        self.runlength_bead.append([])
+        self.antero_bound.append([self.init_antero])
+        self.retro_bound.append([self.init_retro])
+        self.retro_unbind_events.append(0)
+        self.antero_unbind_events.append(0)
+        self.x_cargo.append([])
+        self.runlength_cargo.append([])
         self.time_unbind.append([])
-        self.antero_motors.append([self.init_antero])
-        self.retro_motors.append([self.init_retro])
-        self.retro_unbinds.append(0)
-        self.antero_unbinds.append(0)
+
         #self.match_events.append([])
 
         return
