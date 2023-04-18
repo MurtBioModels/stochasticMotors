@@ -43,9 +43,10 @@ init_state = 'allbound'
 date = time.strftime("%Y%m%d_%H%M%S")
 dirct = f'{date}_elasticcoupling_{t_end}_{singlerun}_{init_state}'
 
-retro_km = [0.12, 0.14, 0.16, 0.18, 0.2]
-team_comb = [[4]]
-f_ex = [0]
+retro_km = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4]
+team_comb = [[1], [2], [3], [4]]
+f_ex = [0, -1, -2, -3, -4, -5, -6]
+
 
 
 for i in team_comb:

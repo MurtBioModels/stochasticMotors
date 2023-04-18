@@ -3,24 +3,28 @@
   <component name="ChangeListManager">
     <list default="true" id="d599fbad-a598-4a0a-a323-4384fad44ad1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Internship/single_motor_validation/trap_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/single_motor_validation_REPORT/trap_analysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Internship/single_motor_validation/trap_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/single_motor_validation_REPORT/trap_init.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Internship/single_motor_validation/zero_force_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/single_motor_validation_REPORT/zero_force_analysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Internship/single_motor_validation/zero_force_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/single_motor_validation_REPORT/zero_force_init.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_fd_init_nonequalkm.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_fd_init_nonequalkm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_kt_new_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_kt_init_new.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_new_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis_new.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_new_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_init_new.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_eps0_analysis_equalkm.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_eps0_analysis_equalkm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_eps0_ianalysis_nonequalkm.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_eps0_ianalysis_nonequalkm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_fd_analysis_equalkm.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_fd_analysis_equalkm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_fs_analysis_equalkm.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_fs_analysis_equalkm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_fs_analysis_nonequalkm.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_fs_analysis_nonequalkm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis_new.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_init_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_init_new.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_kt_init_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_kt_init_new.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_analysis._new.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_analysis._new.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_init._new.py" beforeDir="false" afterPath="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_init._new.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/dataframes.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/dataframes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/cargo_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/cargo_figures.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/segment_trajectories.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/segment_trajectories.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/cargo_figures.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/indlude_in_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/indlude_in_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/motor_figures.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/motor_figures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/report.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/report_singlemotor.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/trajectories.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/trajectories.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/motor_figures.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/old.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/old.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/trajectories.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/gs_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/gs_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/initiate_motors.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/initiate_motors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/motor_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/motor_class.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,15 +76,15 @@
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation\unbiased_model2\motor_objects" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\20230414_125004_elasticcoupling_100_False_allbound" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\20230115_211249_100_False_notbound" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\model_validation_code_testing\dataframes" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\model_validation_code_testing" />
-      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\Internship\symmetry_break\motor_objects\20230111_133617_elasticcoupling_100_False_allbound" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.teamsize_km_symbreak1_analysis._new">
-    <configuration name="assymmetry_reverse_fd_init_nonequalkm" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.elastic_coupling_analysis_new">
+    <configuration name="elastic_coupling_analysis_new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="2Dsimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -92,7 +96,49 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Internship/symmetry_break/assymmetry_reverse_fd_init_nonequalkm.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_analysis_new.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="elastic_coupling_init_new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="2Dsimulation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Internship/symmetry_break" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_init_new.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="elastic_coupling_kt_init_new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="2Dsimulation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Internship/symmetry_break" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Internship/symmetry_break/elastic_coupling_kt_init_new.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -122,6 +168,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="segment_trajectories" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="2Dsimulation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/motorgillespie/analysis" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/motorgillespie/analysis/segment_trajectories.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="teamsize_km_symbreak1_analysis._new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="2Dsimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -143,76 +210,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="teamsize_km_symbreak1_init._new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="2Dsimulation" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Internship/symmetry_break" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Internship/symmetry_break/teamsize_km_symbreak1_init._new.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="test_dataframes (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="2Dsimulation" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Internship/model_validation_code_testing/dataframes" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Internship/model_validation_code_testing/dataframes/test_dataframes.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="test_motors" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="2Dsimulation" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Internship/model_validation_code_testing/dataframes" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Internship/model_validation_code_testing/dataframes/test_motors.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.elastic_coupling_analysis_new" />
+        <item itemvalue="Python.elastic_coupling_kt_init_new" />
+        <item itemvalue="Python.elastic_coupling_init_new" />
+        <item itemvalue="Python.segment_trajectories" />
         <item itemvalue="Python.teamsize_km_symbreak1_analysis._new" />
-        <item itemvalue="Python.assymmetry_reverse_fd_init_nonequalkm" />
-        <item itemvalue="Python.teamsize_km_symbreak1_init._new" />
-        <item itemvalue="Python.test_dataframes (1)" />
-        <item itemvalue="Python.test_motors" />
       </list>
     </recent_temporary>
   </component>

@@ -17,7 +17,7 @@ fdratiolist = [0.75, 0.5, 1.25, 1, 1.5] # HAS TO BE THE RIGHT ORDER!!!!
 
 
 '''Dataframe'''
-#df.rl_bead_n_parratio(dirct=dirct1, filename='', ts_list=ts, parratio_list=fdratiolist, parname='fd')
+#df.rl_bead_n_parratio(dirct=dirct1, filename='', ts_list=ts, km_list=fdratiolist, parname='fd')
 
 '''Bead figures'''
 bf.plot_n_parratio_rl(dirct=dirct1, filename='N_parratio_rl.csv', parname='fd', figname='fd', titlestring='', show=True)

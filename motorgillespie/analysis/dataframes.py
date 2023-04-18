@@ -316,7 +316,7 @@ def meanmaxdist_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0
             print(f'teamsize_count={teamsize_count}')
             print(f'km_count={km_count}')
             print(f'fex_count={fex_count}')
-            # Unpickle test_motor0_1 object
+            # Unpickle motor0 object
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
@@ -934,6 +934,8 @@ def motorforces_n_fex_km(dirct, filename, ts_list, fex_list, km_list, stepsize=0
     df_melt2.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_fex_km_motorforces_TS4.csv')
 
     return
+
+
 
 ### N + KM_RATIO >> SYM BREAK ###
 def rl_cargo_n_kmr(dirct, filename, ts_list, kmminus_list):
@@ -2260,6 +2262,7 @@ def motorforces_n_kmr_2(dirct, filename, ts_list, parratio_list, stepsize=0.1):
     df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_kmratio_motorforces.csv')
 
     return
+
 
 
 

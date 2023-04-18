@@ -1,6 +1,4 @@
-import pickle
 import numpy as np
-import os
 
 
 def diff_asc(x_list, t_list):
@@ -21,7 +19,7 @@ def diff_asc(x_list, t_list):
             #print(f'diff_t[index]={diff_t[index]}')
             #print(f'asc_count={asc_count}')
             #print(f't_count={t_count}')
-            if x >= 0:
+            if x >= 0 and x <= 8:
                 asc_count += x
                 t_count += diff_t[index]
             else:
@@ -43,8 +41,24 @@ def diff_asc(x_list, t_list):
         t_per_it.append(timepoints)
 
     return runs_per_it, t_per_it
+def diff_unbind(x_list):
 
+    back_movement = []
 
+    for index, it_list in enumerate(x_list):
+        diff_x = np.diff(it_list)
+        #print(diff_x)
+        for index, x in enumerate(diff_x):
+            #print(f'x={x}')
+            #print(f'diff_t[index]={diff_t[index]}')
+            #print(f'asc_count={asc_count}')
+            #print(f't_count={t_count}')
+            if x > 8 or x < -8:
+                back_movement.append(x)
+            else:
+                pass
+
+    return back_movement
 def diff_desc(x_list, t_list):
 
     runs_per_it = []
@@ -63,7 +77,7 @@ def diff_desc(x_list, t_list):
             #print(f'diff_t[index]={diff_t[index]}')
             #print(f'desc_count={desc_count}')
             #print(f't_count={t_count}')
-            if x <= 0:
+            if x <= 0 and x >= -8:
                 desc_count += x
                 t_count += diff_t[index]
             else:
@@ -86,15 +100,6 @@ def diff_desc(x_list, t_list):
         t_per_it.append(timepoints)
 
     return runs_per_it, t_per_it
-
-#x_list = [[0,1,2,3,3,2,3,2,2,1,0,-1,-2,-1,0,1], [0,1,2,5,3,2,9,2,2,1,0,-1,-2,-1,0,1]]
-#t_list = [[0, 0.1, 0.2, 0.7, 1, 1.2, 1.5, 1.6, 1.9, 2.1, 3, 3.1, 3.3, 3.5, 4.1,4.2], [0, 0.1, 0.2, 0.9, 1, 1.2, 1.5, 1.6, 1.9, 2.1, 3, 3.1, 3.3, 3.5, 4.1,4.2]]
-#xs, ts = diff_asc(x_list, t_list)
-#print(xs)
-#print(ts)
-#xs, ts = diff_desc(x_list, t_list)
-#print(xs)
-#print(ts)
 
 
 def segment_parratio_test(xb, t):
@@ -132,75 +137,17 @@ def segment_parratio_test(xb, t):
 
     return
 
-#segment_parratio_test(xb=x_list, t=t_list)
+if __name__ == "__main__":
+    x_list = [[0,1,2,3         ,11,    20,  22, 2,3,2,2,1,0,-1,-2,-1,0,1], [0,1,2,5,3,2,9,2,2,1,0,-1,-2,-1,0,1]]
+    t_list = [[0, 0.1, 0.2, 0.7, 1,    1.2, 1.4, 1.5, 1.6, 1.9, 2.1, 3, 3.1, 3.3, 3.5, 4.1,4.2, 4.4], [0, 0.1, 0.2, 0.9, 1, 1.2, 1.5, 1.6, 1.9, 2.1, 3, 3.1, 3.3, 3.5, 4.1,4.2]]
+    xs, ts = diff_asc(x_list, t_list)
+    xs2, ts2 = diff_desc(x_list, t_list)
+    print(xs)
+    print(ts)
+    print(xs2)
+    print(ts2)
+    back = diff_unbind(x_list)
+    print(back)
 
 
-def decending(l):
-    result = [] # the list of sub-lists
-    sublist = [] # temporary sub-list kept in descending order
-    i = 0
-    while i < (len(l)-2):
-        if i == (len(l)-3):
-            if (l[i] > l[i+1]) and (l[i+1] > l[i+2]):
-                sublist.append(l[i])
-                sublist.append(l[i+1])
-                sublist.append(l[i+2])
-                i+=1
-            elif (l[i] > l[i+1]) and (l[i+1] <= l[i+2]):
-                sublist.append(l[i])
-                sublist.append(l[i+1])
-                i+=1
-
-        else:
-            if (l[i] > l[i+1]) and (l[i+1] <= l[i+2]):
-                sublist.append(l[i])
-                sublist.append(l[i+1])
-                i+=2
-            elif (l[i] > l[i+1]) and (l[i+1] > l[i+2]):
-                sublist.append(l[i])
-                i+=1
-            else:
-                result.append(sublist)
-                sublist = []
-                i+=1
-
-    result.append(sublist)
-
-    return result
-
-
-def ascending(l):
-    result = [] # the list of sub-lists
-    sublist = [] # temporary sub-list kept in descending order
-    i = 0
-    while i < (len(l)-2):
-
-        if i == (len(l)-3):
-            if (l[i] < l[i+1]) and (l[i+1] < l[i+2]):
-                sublist.append(l[i])
-                sublist.append(l[i+1])
-                sublist.append(l[i+2])
-                i+=1
-
-            elif (l[i] < l[i+1]) and (l[i+1] >= l[i+2]):
-                sublist.append(l[i])
-                sublist.append(l[i+1])
-                i+=1
-
-        else:
-            if (l[i] < l[i+1]) and (l[i+1] >= l[i+2]):
-                sublist.append(l[i])
-                sublist.append(l[i+1])
-                i+=2
-            elif (l[i] < l[i+1]) and (l[i+1] < l[i+2]):
-                sublist.append(l[i])
-                i+=1
-            else:
-                result.append(sublist)
-                sublist = []
-                i+=1
-
-    result.append(sublist)
-
-    return result
 

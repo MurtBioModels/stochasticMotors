@@ -59,8 +59,8 @@ init_state = 'notbound'
 date = time.strftime("%Y%m%d_%H%M%S")
 dir = f'{date}_{t_end}_{singlerun}_{init_state}'
 
-team_comb = [[4,4]]
-retro_km = [0.12]
+team_comb = [[1, 1], [2, 2], [3, 3], [4, 4]]
+retro_km = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4]
 
 for i in team_comb:
     for j in retro_km:

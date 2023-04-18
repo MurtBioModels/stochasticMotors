@@ -17,7 +17,7 @@ eps0ratiolist = [0.5, 0.67, 0.83, 1, 1.17, 1.33] # HAS TO BE THE RIGHT ORDER!!!!
 
 
 '''Dataframe'''
-#df.rl_bead_n_parratio(dirct=dirct1, filename='', ts_list=ts, parratio_list=eps0ratiolist, parname='eps0')
+#df.rl_bead_n_parratio(dirct=dirct1, filename='', ts_list=ts, km_list=eps0ratiolist, parname='eps0')
 
 '''Bead figures'''
 bf.plot_n_parratio_rl(dirct=dirct1, filename='N_parratio_rl.csv', parname='eps0', figname='eps0', titlestring='', show=True)

@@ -43,20 +43,21 @@ init_state = 'unbound'
 date = time.strftime("%Y%m%d_%H%M%S")
 dirct = f'{date}_elasticcoupling_KT_{t_end}_{singlerun}_{init_state}'
 
-retro_km = [0.1, 0.12, 0.14, 0.16, 0.18, 0.2]
 team_comb = [[1], [2], [3], [4]]
-kt = [0.2, 0.25, 0.3, 0.35]
+kt = [0.02, 0.05, 0.1]
+km = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4]
+
 
 
 for i in team_comb:
     for j in kt:
-        for k in retro_km:
+        for k in km:
             gill_set['n_motors'] = i
             sim_params['k_t'] = j
             plus_params['k_m'] = k
 
             ### Data storage ###
-            subdir = f'{i}n_{j}fex_{k}km'
+            subdir = f'{i}n_{j}kt_{k}km'
             short_description = ''
 
             # Initiate motor team an run simulation n_it times for t_end seconds each

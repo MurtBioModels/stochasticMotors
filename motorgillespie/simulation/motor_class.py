@@ -4,7 +4,7 @@ import numpy as np
 class MotorProtein(object):
 
     ### Motor protein attributes ###
-    def __init__(self, family, member, k_m, alfa_0, f_s, epsilon_0, f_d, bind_rate, step_size, direction, init_state, calc_eps, id, init_pos=None):
+    def __init__(self, family, member, k_m, alfa_0, f_s, epsilon_0, f_d, bind_rate, step_size, direction, init_state, calc_eps, id):
         """
 
         Parameters
@@ -25,12 +25,14 @@ class MotorProtein(object):
         bind_rate : float or integer
                    Binding rate (1/s)
         direction : string
-                    retrograde or anterograde
+                    Retrograde or anterograde
         init_state : string
-                     bound or unbound
+                     Bound or unbound
         calc_eps : string
+                   Function to calculate the unbinding rate
         id : integer
              Numerical id for bookkeeping during simulation
+
 
         Returns
         -------
@@ -50,7 +52,6 @@ class MotorProtein(object):
         self.init_state = init_state
         self.calc_eps = calc_eps
         self.id = int(id) + 1
-        self.init_pos = init_pos
         ## Updating variables ##
         self.unbound = None
         self.xm_abs = None
@@ -94,8 +95,6 @@ class MotorProtein(object):
         initial_options = ['bound', 'unbound']
         if self.init_state not in initial_options:
             raise ValueError("Not a valid motor: invalid initial state. Expected one of: %s." % initial_options)
-        if self.init_state == 'unbound' and self.init_pos is not None:
-            raise ValueError("An initially unbound motor cannot have a initial position")
         # Check motor direction
         direction_options = ['anterograde', 'retrograde']
         if self.direction not in direction_options:
@@ -117,7 +116,7 @@ class MotorProtein(object):
         return
 
     ### Initiate motor to default state every Gillespie run (t=0) ###
-    def init(self, dimension):
+    def init(self, dimension, f_ex):
         """
 
         Parameters
@@ -135,16 +134,12 @@ class MotorProtein(object):
             self.x_m_abs.append([float('nan')])
         elif self.init_state == 'bound':
             self.unbound = False
-            if self.init_pos is not None:
-                self.xm_abs = self.init_pos
-                self.xm_rel = 0
-                self.x_m_abs.append([self.init_pos])
-                #print(f'init_pos={self.init_pos}') #debug
-            else:
-                self.xm_abs = 0
-                self.xm_rel = 0
+            self.xm_abs = 0
+            self.xm_rel = 0
+            if f_ex != 0:
                 self.x_m_abs.append([0])
-                #print(f'init_pos={self.init_pos} and xm_abs start={self.xm_abs}') #debug
+            else:
+                self.x_m_abs.append([])
         else:
             raise ValueError("Motor proteins can either be in an bound or unbound (initial) state")
 

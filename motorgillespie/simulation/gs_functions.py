@@ -52,10 +52,15 @@ def calc_force_1D(team, motor_0, k_t, x_motor0, f_ex, i, t, end_run):
     else:
         if t == 0: # Start iteration, dependent on initial state parameter cargo can be bound or unbound
             net_force = f_ex
-            bead_distance = xm_km_sum/km_sum
+            # Cargo needs to start at X0=0
             bead_loc = 0
+            # Calculate initial distance of cargo to bound motors
+            bead_distance = xm_km_sum/km_sum
             for motor in team:
-                motor.xm_abs = 0 - bead_distance
+                if motor.unbound is False:
+                    xm = 0 - bead_distance
+                    motor.xm_abs = xm # change initial 0 to correct position
+                    motor.x_m_abs[-1].append(xm)
             #print(f't==0, bead_distance={bead_distance}')
         elif end_run is True: # Cargo detached last time step
             net_force = 0

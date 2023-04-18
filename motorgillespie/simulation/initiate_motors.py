@@ -36,10 +36,7 @@ def init_mixed_team(mnr, *motor_params):
     mixed_team = []
     for index, params in enumerate(motor_params):
         for i in range(mnr[index]):
-            if 'init_pos' in params:
-                mixed_team.append(mc.MotorProtein(params['family'], params['member'], params['k_m'], params['alfa_0'], params['f_s'], params['epsilon_0'], params['f_d'], params['bind_rate'], params['step_size'], params['direction'], params['init_state'], params['calc_eps'], len(mixed_team), init_pos=params['init_pos']))
-            else:
-                mixed_team.append(mc.MotorProtein(params['family'], params['member'], params['k_m'], params['alfa_0'], params['f_s'], params['epsilon_0'], params['f_d'], params['bind_rate'], params['step_size'], params['direction'], params['init_state'], params['calc_eps'], len(mixed_team)))
+            mixed_team.append(mc.MotorProtein(params['family'], params['member'], params['k_m'], params['alfa_0'], params['f_s'], params['epsilon_0'], params['f_d'], params['bind_rate'], params['step_size'], params['direction'], params['init_state'], params['calc_eps'], len(mixed_team)))
             print(f'{mixed_team[-1].id} - {mixed_team[-1].direction}')
 
     return mixed_team
