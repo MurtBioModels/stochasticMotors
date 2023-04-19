@@ -19,7 +19,7 @@ def diff_asc(x_list, t_list):
             #print(f'diff_t[index]={diff_t[index]}')
             #print(f'asc_count={asc_count}')
             #print(f't_count={t_count}')
-            if x >= 0 and x <= 8:
+            if x >= 0 and x <= 8.005:
                 asc_count += x
                 t_count += diff_t[index]
             else:
@@ -41,6 +41,7 @@ def diff_asc(x_list, t_list):
         t_per_it.append(timepoints)
 
     return runs_per_it, t_per_it
+
 def diff_unbind(x_list):
 
     back_movement = []

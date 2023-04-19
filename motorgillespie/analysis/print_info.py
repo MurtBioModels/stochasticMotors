@@ -72,14 +72,14 @@ def inspect(dirct):
                         pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\{file}', 'rb')
                         motor0 = pickle.load(pickle_file_motor0)
                         pickle_file_motor0.close()
-                        print(f'')
+                        print(f'{motor0.f_ex}')
+                        print(f'{motor0.x_bead}')
                     else:
                         print('PRINT NAME IN FILES')
                         print(os.path.join(sub_path,file))
                         pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
                         motor = pickle.load(pickle_file_motor)
                         pickle_file_motor.close()
-
                         print(f'motor_id={motor.id}, direction={motor.direction}, km={motor.k_m}')
 
 
@@ -87,7 +87,7 @@ def inspect(dirct):
     return
 
 
-def inspect(dirct):
+def inspect2(dirct):
 
     path = f'.\motor_objects\\{dirct}'
     for root, subdirs, files in os.walk(path):

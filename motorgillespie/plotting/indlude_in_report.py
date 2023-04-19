@@ -1116,7 +1116,7 @@ def segment_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     del df1_melt, df2_melt
     print(df3)
     #
-    df3.to_csv(f'.\motor_objects\\{dirct}\\data\\segments_{filename}.csv')
+    df3.to_csv(f'.\motor_objects\\{dirct}\\data\\segments_{filename}.csv', index=False)
 
     return
 def plot_n_fex_km_seg(dirct, filename, n_include, fex_include, km_include, show=True, figname=''):
@@ -1162,21 +1162,31 @@ def plot_n_fex_km_seg(dirct, filename, n_include, fex_include, km_include, show=
     sns.set_style("whitegrid")
     print('Making figure..')
     for i in fex_include:
-
-        df5 = df4[df4['f_ex'].isin([i])]
-        plt.figure()
-        sns.displot(df5, col='team_size', row='km', stat='count', common_norm=False, commen_bin=False).set_title(f'External force = {i}pN ')
-        #plt.title(f'Distribution (interpolated) of cargo location {titlestring} ')
-        plt.xlabel('Segmented runs [nm]')
-        plt.savefig(f'.\motor_objects\{dirct}\\figures\\figures\dist_segments_{i}fex_{figname}.png', format='png', dpi=300, bbox_inches='tight')
-        if show == True:
-            plt.show()
-            plt.clf()
-            plt.close()
-        else:
-            plt.clf()
-            plt.close()
-            print('Figure saved')
+        print(i)
+        print(type(i))
+        print(df4['f_ex'].iloc[0])
+        print(type(df4['f_ex'].iloc[0]))
+        df5 = df4[df4['f_ex'] == i]
+        print(df5)
+        for j in n_include:
+            df6 = df5[df5['team_size'] == j]
+            print(df6)
+            for k in km_include:
+                df7 = df6[round(df6['km'], 2) == round(k, 2)]
+                print(df7)
+                plt.figure()
+                sns.displot(df7, x='segments', stat='probability')
+                plt.title(f'F_ex={i}pN, N={j}, km={k}pN/nm')
+                plt.xlabel('Segmented runs [nm]')
+                plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_segments_{i}fex{j}N{k}km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+                if show == True:
+                    plt.show()
+                    plt.clf()
+                    plt.close()
+                else:
+                    plt.clf()
+                    plt.close()
+                    print('Figure saved')
 
     return
 def segment_back_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
@@ -1525,7 +1535,7 @@ def motorforces_n_fex_km(dirct, ts_list, fex_list, km_list, stepsize=0.1, sample
     df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\motorforces_N_fex_km_{filename}.csv')
 
     return
-def plot_fex_N_km_forces_motors(dirct, filename, n_include=(1, 2, 3, 4), fex_include=(0, -1, -2, -3, -4, -5, -6), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=False, figname=''):
+def plot_fex_N_km_forces_motors(dirct, filename, n_include, fex_include, km_include, show=True, figname=''):
     """
 
     Parameters
@@ -1534,11 +1544,11 @@ def plot_fex_N_km_forces_motors(dirct, filename, n_include=(1, 2, 3, 4), fex_inc
             Name of the subsubdirectory within the 'motor_object' subdirectory within the current working directory
     filename : string
             Name of the dataframe file
-    n_include : tuple of strings,  default = ('1', '2', '3', '4')
+    n_include : tuple of strings
                   Which values of the team size N to include
-    fex_include : tuple of strings,  default = ('0', '-1', '-2', '-3', '-4', '-5', '-6', '-7')
+    fex_include : tuple of strings
                   Which values of the external force f_ex to include
-    km_include : tuple of strings,  default = ('0.1', '0.12', '0.14', '0.16', '0.18', '0.2')
+    km_include : tuple of strings
                   Which values of the  motor stiffness km to include
     show : boolean,  default = True
                   If True, display all figures and blocks until the figures have been closed
@@ -1550,25 +1560,20 @@ def plot_fex_N_km_forces_motors(dirct, filename, n_include=(1, 2, 3, 4), fex_inc
 
     """
 
-    #
-    if total == False:
-        df1 = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename1}')
-        df1_nozeroes = df1[df1['motor_forces'] != 0 ]
-        df2 = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename2}')
-        df2_nozeroes = df2[df2['motor_forces'] != 0 ]
-        df_total = pd.concat([df1_nozeroes, df2_nozeroes], ignore_index=True)
-        df_total.to_csv(f'.\motor_objects\\{dirct}\\data\\N_fex_km_motorforces_total.csv')
-    else:
-        df_total = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\N_fex_km_motorforces_total.csv')
+
     #
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
-    # plotting
-    sns.set_style("whitegrid")
-
-    fexlist = [-4, -5, -6, -7]
     #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+    print(df)
+    df2 = df[df['team_size'].isin(n_include)]
+    print(df2)
+    df3 = df2[df2['f_ex'].isin(fex_include)]
+    print(df3)
+    df4 = df3[df3['km'].isin(km_include)]
+    print(df4)
 
     for i in fexlist:
         df2 = df_total[df_total['f_ex'] == i]
@@ -1582,7 +1587,7 @@ def plot_fex_N_km_forces_motors(dirct, filename, n_include=(1, 2, 3, 4), fex_inc
         plt.figure()
         sns.displot(df2, x='motor_forces', col='team_size', stat='probability',binwidth=0.2, palette='bright', common_norm=False, common_bins=False)
         plt.xlabel('Motor forces [pN]')
-        plt.title(f' Distribution motor forces fex={i} {titlestring}')
+        plt.title(f' Distribution motor forces fex={i} ')
         plt.savefig(f'.\motor_objects\\{dirct}\\figures\\dist_fmotors_n_fex_km_{figname}_{i}fex.png', format='png', dpi=300, bbox_inches='tight')
         if show == True:
             plt.show()

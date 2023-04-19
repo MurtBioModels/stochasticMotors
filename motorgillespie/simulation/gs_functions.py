@@ -79,7 +79,6 @@ def calc_force_1D(team, motor_0, k_t, f_ex, t, i, end_run, x_motor0):
             cargo_loc = xm_km_sum/km_sum
             #print(f'else happened, cargo_loc={cargo_loc}')
 
-
     # Append cargo location
     motor_0.x_cargo[i].append(cargo_loc)
     #print(f'it{i}: xb={motor_0.x_cargo[i][-1]}')

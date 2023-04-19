@@ -41,12 +41,13 @@ singlerun = gill_set['single_run']
 init_state = 'unbound'
 
 date = time.strftime("%Y%m%d_%H%M%S")
-dirct = f'{date}_elasticcoupling_KT_{t_end}_{singlerun}_{init_state}'
+dirct = f'{date}_optical_trap_{t_end}_{singlerun}_{init_state}'
 
-team_comb = [[1], [2], [3], [4]]
-kt = [0.02, 0.05, 0.1]
+#team_comb = [[1], [2], [3], [4]]
+#kt = [0.02, 0.05, 0.1]
 km = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4]
-
+team_comb = [[4]]
+kt = [0.1]
 
 
 for i in team_comb:

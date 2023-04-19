@@ -128,7 +128,6 @@ def simpar_loop(sim_params, varsimpar, simpar, gill_set, *motor_params, dirct, s
     n_it = gill_set['n_it']
     t_max = gill_set['t_max']
     dimension = gill_set['dimension']
-    calc_epsilon = gill_set['epsilon']
     sim_par = simpar
 
     t = time.strftime("%Y%m%d_%H%M%S")
@@ -142,7 +141,7 @@ def simpar_loop(sim_params, varsimpar, simpar, gill_set, *motor_params, dirct, s
         sim_params[sim_par] = sp
         motor0 = im.init_motor_0(sim_params)
         # Simulate motor dynamics with Gillespie
-        team_out, motor0_out = gsim.gillespie_2D_walk(motor_team, motor0, t_max, n_it, dimension=dimension)
+        team_out, motor0_out = gsim.gillespie_2D_walk(my_team=motor_team, motor_0=motor0, t_max=t_max, n_iteration=n_it, dimension=dimension)
 
         # Directory created in current working directory
         os.makedirs(f'.\motor_objects\{dirct}\{t}_{sp}{sim_par}')

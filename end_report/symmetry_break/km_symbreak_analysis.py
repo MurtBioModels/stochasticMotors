@@ -1,21 +1,8 @@
-from motorgillespie.plotting import cargo_figures as bf
-from motorgillespie.plotting import motor_figures as mf
-from motorgillespie.plotting import trajectories as traj
-from motorgillespie.analysis import dataframes as df
-from motorgillespie.analysis import statistics as st
-from motorgillespie.analysis import print_info as pi
-from motorgillespie.analysis import test as test
-from motorgillespie.analysis import segment_trajectories as seg
-from motorgillespie.plotting import indlude_in_report as ir
-import os
-import pickle
-
-
 dirct1 = '20230115_211249_symbreak_100_False_notbound'
 dirct2 = '20230411_130059_100_False_notbound'
 tslist = [[1, 1], [2, 2], [3, 3], [4, 4]]
 km_minus_list = [0.02, 0.04, 0.06, 0.08, 0.12, 0.14, 0.16, 0.18, 0.1, 0.2] # HAS TO BE THE RIGHT ORDER!!!!
-km_minus_list2 = [0.15, 0.1, 0.25, 0.2, 0.35, 0.3, 0.4]
+km_minus_list2 = [0.15, 0.1, 0.25, 0.2, 0.35, 0.3, 0.4] # HAS TO BE THE RIGHT ORDER!!!!
 
 '''Cargo RL pdf, cdf and lineplot/barplot <>'''
 '''Cargo displacement: pdf and cdf'''
