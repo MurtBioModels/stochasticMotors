@@ -8,9 +8,10 @@ import os
 from motorgillespie.analysis import segment_trajectories as st
 import random
 
+# index=false in dataframes!!
 
 ##### ELASTIC COUPLING, N + FEX + KM #####
-'''Cargo RL '''
+'''Cargo RL pointplot'''
 def rl_bead_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     """
     DONEE
@@ -232,7 +233,7 @@ def plot_n_km_rl_analytical(dirct, filename, n_include, fex_include, km_include,
 
     return
 
-'''Cargo bind time'''
+'''Cargo bind time pointplot'''
 def bt_bead_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     """
     DONEE
@@ -394,7 +395,7 @@ def plot_n_fex_km_bt(dirct, filename, n_include, fex_include, km_include, show=T
 
     return
 
-'''Cargo velocity'''
+'''Cargo velocity pointplot'''
 def vel_bead_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     """
     DONEE
@@ -564,7 +565,7 @@ def plot_n_fex_km_vel(dirct, filename, n_include, fex_include, km_include, show=
 
     return
 
-'''Cargo displacement'''
+'''Cargo displacement pdf'''
 def xb_n_fex_km(dirct, ts_list, fex_list, km_list, stepsize=0.1, samplesize=100, filename=''):
     """
     DONEE
@@ -760,12 +761,12 @@ def plot_n_fex_km_xb(dirct, filename, n_include, fex_include, km_include, stat='
                     print(f'min={min}')
                     bins_xb = round((float(df_km['xb'].max()) - float(df_km['xb'].min())) / float(bin_width))
                 else:
-                    bins_xb =len(list(df_km['xb']))/100
+                    bins_xb = round(len(list(df_km['xb']))/100)
                 plt.figure()
                 sns.displot(df_km, x='xb', stat=stat, bins=bins_xb)
                 plt.title(f'F_ex={i}pN, N={j} motors, km={k}pN/nm')
                 plt.xlabel('xb [nm]')
-                plt.savefig(f'.\motor_objects\{dirct}\\figures\dist_xb_{i}fex{j}N{k}km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+                plt.savefig(f'.\motor_objects\\{dirct}\\figures\dist_xb_{i}fex{j}N{k}km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
                 if show == True:
                     plt.show()
                     plt.clf()
@@ -839,7 +840,7 @@ def traj_n_fex_km(dirct, ts_list, fex_list, km_list, show=True):
             for i in random_index:
                 motor0.time_points[i].pop()
                 x = motor0.time_points[i]
-                y = motor0.x_cargo[i]
+                y = motor0.x_bead[i] #x_cargo
                 # Plotting
                 if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
                     os.makedirs(f'.\motor_objects\\{dirct}\\figures')
@@ -939,11 +940,11 @@ def bound_n_fex_km(dirct, ts_list, fex_list, km_list, stepsize=0.01, filename=''
             print(f'key={key}')
             keys_bound.append(key)
             #
-            retro = motor0.retro_bound
+            retro = motor0.retro_motors #retro_bound
             if retro != 0:
                 print(f'There should be no minus motors, check simulation settings')
             #
-            motors_bound = motor0.antero_bound
+            motors_bound = motor0.antero_motors #antero_bound
             mean_bound_motors = []
             #
             print('Start interpolating bound motors...')
@@ -1059,7 +1060,7 @@ def plot_n_fex_km_boundmotors(dirct, filename, n_include, fex_include, km_includ
 
     return
 
-'''Unbind events  barplot'''
+'''Unbind events barplot'''
 def unbindevent_bead_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     """
     DONEE
@@ -1120,14 +1121,14 @@ def unbindevent_bead_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
             print(f'fex={fex}')
             print(f'km={km}')
             #
-            retro = motor0.retro_unbind_events
+            retro = motor0.retro_unbinds #retro_unbind_events
             if retro != 0:
                 print(f'There should be no minus motors, check simulation settings')
             #
             key = (str(ts), str(fex), str(km))
             print(f'key={key}')
             key_tuples.append(key)
-            nested_unbind.append(list(motor0.antero_unbind_events))
+            nested_unbind.append(list(motor0.antero_unbinds)) #antero_unbind_events
 
             #
             if km_count < len(km_list) - 1:
@@ -1207,9 +1208,9 @@ def plot_n_fex_km_unbindevent(dirct, filename, n_include, fex_include, km_includ
         plt.figure()
         sns.barplot(data=df_n, x="f_ex", y="unbind_events", hue="km", ci=95)
         plt.xlabel('External force [pN]')
-        plt.ylabel('Unbinding events')
+        plt.ylabel('Unbinding events n')
         plt.title(f' {i} motors')
-        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\bar_unbindingevents_{i}n_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\bar_unbindingevents_{i}N_{figname}.png', format='png', dpi=300, bbox_inches='tight')
         if show == True:
             plt.show()
             plt.clf()
@@ -1221,7 +1222,7 @@ def plot_n_fex_km_unbindevent(dirct, filename, n_include, fex_include, km_includ
 
     return
 
-'''segments or x vs v segments >> eventueel RL opsplitsen en dan segmenten'''
+'''segments pdf or x vs v segments >> eventueel RL opsplitsen en dan segmenten'''
 def segment_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     """
     DONEE
@@ -1338,7 +1339,7 @@ def segment_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     df3.to_csv(f'.\motor_objects\\{dirct}\\data\\segments_{filename}.csv', index=False)
 
     return
-def plot_n_fex_km_seg(dirct, filename, n_include, fex_include, km_include, show=True, figname=''):
+def plot_n_fex_km_seg(dirct, filename, n_include, fex_include, km_include, stat='probability', show=True, figname=''):
     """
     DONEE
     Parameters
@@ -1353,6 +1354,7 @@ def plot_n_fex_km_seg(dirct, filename, n_include, fex_include, km_include, show=
                   Which values of the external force f_ex to include
     km_include : list of int or list of float
                   Which values of the  motor stiffness km to include
+    stat :
     show : boolean,  default = True
                   If True, display all figures and blocks until the figures have been closed
     figname : string, optional
@@ -1392,7 +1394,7 @@ def plot_n_fex_km_seg(dirct, filename, n_include, fex_include, km_include, show=
                 print(df_km)
 
                 plt.figure()
-                sns.displot(df_km, x='segments', stat='probability')
+                sns.displot(df_km, x='segments', stat=stat)
                 plt.title(f'F_ex={i}pN, N={j} motors, km={k}pN/nm')
                 plt.xlabel('Segmented runs [nm]')
                 plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_segments_{i}fex{j}N{k}km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
@@ -1406,6 +1408,8 @@ def plot_n_fex_km_seg(dirct, filename, n_include, fex_include, km_include, show=
                     print('Figure saved')
 
     return
+
+#not finished
 def segment_back_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     """
 
@@ -1582,8 +1586,10 @@ def plot_n_fex_km_seg_back(dirct, filename, n_include, fex_include, km_include, 
 
     return
 
+#>> box(median) or poin/bar(mean)??
 
 ## motors ##
+
 '''Motor forces pdf'''
 def motorforces_n_fex_km(dirct, ts_list, fex_list, km_list, stepsize=0.1, samplesize=100, filename=''):
     """
@@ -1811,7 +1817,7 @@ def plot_fex_N_km_forces_motors(dirct, filename, n_include, fex_include, km_incl
                 bin_width = 2 * (q75 - q25) * len(df_km['motor_forces']) ** (-1/3)
                 bins_forces = round((max(df_km['motor_forces']) - min(df_km['motor_forces'])) / bin_width)
                 plt.figure()
-                sns.displot(df2, x='motor_forces', stat=stat, binwidth=0.2, palette='bright', bins=bins_forces)
+                sns.displot(df2, x='motor_forces', stat=stat, palette='bright', bins=bins_forces)
                 plt.xlabel('Motor forces [pN]')
                 plt.title(f'F_ex={i}pN, N={j} motors, km={k}pN/nm')
                 plt.savefig(f'.\motor_objects\\{dirct}\\figures\\dist_fmotors_{i}fex{j}N{k}km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
@@ -1825,6 +1831,7 @@ def plot_fex_N_km_forces_motors(dirct, filename, n_include, fex_include, km_incl
                     print('Figure saved')
 
     return
+
 '''Motor displacement pdf'''
 def xm_n_fex_km(dirct, ts_list, fex_list, km_list, stepsize=0.01, samplesize=100, filename=''):
     """
@@ -2047,7 +2054,7 @@ def plot_fex_N_km_xm(dirct, filename, n_include, fex_include, km_include, stat='
                 bin_width = 2 * (q75 - q25) * len(df_km['xm']) ** (-1/3)
                 bins_xm = round((max(df_km['xm']) - min(df_km['xm'])) / bin_width)
                 plt.figure()
-                sns.displot(df2, x='xm', stat=stat, binwidth=0.2, palette='bright', bins=bins_xm)
+                sns.displot(df2, x='xm', stat=stat, palette='bright', bins=bins_xm)
                 plt.xlabel('xm [nm]')
                 plt.title(f'F_ex={i}pN, N={j} motors, km={k}pN/nm')
                 plt.savefig(f'.\motor_objects\\{dirct}\\figures\\dist_xm_{i}fex{j}N{k}km_{figname}.png', format='png', dpi=300, bbox_inches='tight')
@@ -2061,7 +2068,8 @@ def plot_fex_N_km_xm(dirct, filename, n_include, fex_include, km_include, stat='
                     print('Figure saved')
 
     return
-'''Motor RL pdf'''
+
+'''Motor RL box'''
 def rl_motors_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
     """
     DONEE
@@ -2379,23 +2387,14 @@ def plot_fex_N_km_rl_motors(dirct, filename, n_include, fex_include, km_include,
     '''
     return
 
-
+# NOG IETS!!!
 
 ##########################################
 
 ##### SYMMETRY, N + KM_RATIO #####
-# cargo Fu may also be interesting: how close to N x Fs says something about how well the motors with a certain Km work together, how wel do they share load
-
+# trap Fu may also be interesting: how close to N x Fs says something about how well the motors with a certain Km work together, how wel do they share load
 # RL cargo
-# FU trap
-# bounds motors
-# unbinding events
-# segments > counts
-
-
-# forces motors
-# xm
-# rl motors
+# vel cargo
 
 
 ##########################################
@@ -2404,7 +2403,7 @@ def plot_fex_N_km_rl_motors(dirct, filename, n_include, fex_include, km_include,
 '''Cargo RL '''
 def rl_cargo_n_kmr(dirct, ts_list, kmminus_list, filename=''):
     """
-    DONE
+    DONEE
     Parameters
     ----------
     dirct : string
@@ -2475,12 +2474,12 @@ def rl_cargo_n_kmr(dirct, ts_list, kmminus_list, filename=''):
     df_melt = pd.melt(df, value_name='run_length', var_name=['team_size', 'km_minus']).dropna()
     print(df_melt)
     #
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_km_minus_rl.csv', index=False)
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\rl_cargo_Nkmr_{filename}.csv', index=False)
 
     return
-def plot_n_kmratio_rl(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True, figname=''):
+def plot_n_kmratio_rl(dirct, filename, n_include, km_include, show=True, figname=''):
     """
-    DONE
+    DONEE
     Parameters
     ----------
     dirct : string
@@ -2519,12 +2518,11 @@ def plot_n_kmratio_rl(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', 
     print('Making figure..')
     plt.figure()
     sns.catplot(data=df3, x="km_minus", y="run_length", hue="team_size", style='team_size', marker='team_size', kind="point", errornar='se')
-    plt.xlabel('Trap stiffness of minus motor [pN/nm]')
-    plt.ylabel('<Cargo run length> [nm]')
+    plt.xlabel('k [pN/nm]')
+    plt.ylabel('Cargo Runlength [nm]')
     plt.title(f'')
     print(f'Start saving...')
     plt.savefig(f'.\motor_objects\{dirct}\\figures\\pp_cargo_rl_{figname}.png', format='png', dpi=300)
-    # bbox_inches='tight'
     if show == True:
         plt.show()
         plt.clf()
@@ -2536,10 +2534,10 @@ def plot_n_kmratio_rl(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', 
 
     return
 
-'''Bind time cargo >> combine with RL? >>> or velocity?? ?? >> doens't work'''
+'''Bind time cargo >> combine with RL? >>> or velocity?? '''
 def bt_cargo_n_kmr(dirct, ts_list, kmminus_list, filename=''):
     """
-    DONE
+    DONEE
     Parameters
     ----------
     dirct : string
@@ -2591,11 +2589,12 @@ def bt_cargo_n_kmr(dirct, ts_list, kmminus_list, filename=''):
             key = (str(ts), str(km_minus))
             print(f'key={key}')
             #
-            binding_times = list(motor0.time_unbind)
-            flat_bt = [element for sublist in binding_times for element in sublist]
-            #print(flat_rl)
+            time_bind = list(motor0.time_unbind)
+            diff_tb = [list(np.diff(sublist)) for sublist in time_bind]
+            print(len(diff_tb))
+            flat_diff_tb = [element for sublist in diff_tb for element in sublist]
             #
-            dict_bt[key] = flat_bt
+            dict_bt[key] = flat_diff_tb
             #
             if kmminus_count < len(kmminus_list) - 1:
                 kmminus_count += 1
@@ -2610,15 +2609,15 @@ def bt_cargo_n_kmr(dirct, ts_list, kmminus_list, filename=''):
     df_melt = pd.melt(df, value_name='time_unbind', var_name=['team_size', 'km_minus']).dropna()
     print(df_melt)
     #
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_km_minus_bt.csv', index=False)
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\bt_Nkmr_{filename}.csv', index=False)
 
     return
-def plot_n_kmratio_bt(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True, figname=''):
+def plot_n_kmratio_bt(dirct, filename, n_include, km_include, show=True, figname=''):
     """
 
     Parameters
     ----------
-    DONE
+    DONEE
     Returns
     -------
 
@@ -2642,11 +2641,11 @@ def plot_n_kmratio_bt(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', 
     print('Making figure..')
     plt.figure()
     sns.catplot(data=df3, x="km_minus", y="time_unbind", hue="team_size", style='team_size', marker='team_size', kind="point", errornar='se')
-    plt.xlabel('Trap stiffness minus motor [pN/nm]')
-    plt.ylabel('<Cargo unbind time [s]>')
-    plt.title(f'{titlestring}')
+    plt.xlabel('k [pN/nm]')
+    plt.ylabel('Cargo Bindtime [s]')
+    plt.title(f'')
     print(f'Start saving...')
-    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pp_cargo_bt_{figname}.png', format='png', dpi=300)
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\pp_cargo_bt_{figname}.png', format='png', dpi=300)
     # bbox_inches='tight'
     if show == True:
         plt.show()
@@ -2660,6 +2659,187 @@ def plot_n_kmratio_bt(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', 
     return
 
 '''Cargo displacement: pdf and cdf'''
+def xb_n_kmr_2(dirct, ts_list, kmminus_list, stepsize=0.1, samplesize=100, filename=''):
+    """
+    DONEE
+    Parameters
+    ----------
+    dirct : string
+            Name of the subdirectory within the 'motor_object'
+    ts_list : list of lists,
+                  Values of the team size N within dirct
+    kmminus_list : list of floats,
+                  Values of the minus motor stiffness km within dirct
+    stepsize : float, default=0.1
+               Step size for interpolation function
+    filename : string, optional
+            Addition to include into the default file name
+
+    Returns
+    -------
+    None
+    """
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\data')
+    #
+    nested_xb = []
+    key_tuples = []
+    #
+    teamsize_count = 0
+    km_minus_count = 0
+    #
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
+        for index, subdir in enumerate(subdirs):
+            if subdir == 'figures':
+                continue
+            if subdir == 'data':
+                continue
+            #
+            print('NEW SUBDIR/SIMULATION')
+            print(os.path.join(path,subdir))
+            #
+            print(f'subdir={subdir}')
+            print(f'teamsize_count={teamsize_count}')
+            print(f'km_minus_count={km_minus_count}')
+            # Unpickle test_motor0 object
+            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
+            motor0 = pickle.load(pickle_file_motor0)
+            pickle_file_motor0.close()
+            #
+            ts = ts_list[teamsize_count]
+            km_minus = kmminus_list[km_minus_count]
+            print(f'ts={ts}')
+            print(f'km_minus={km_minus}')
+            #
+            key = (str(ts), str(km_minus))
+            print(f'key={key}')
+            key_tuples.append(key)
+            #
+            xb = motor0.x_cargo
+            time = motor0.time_points
+            del motor0
+            xb_total_interpl = []
+            print('Start interpolating bead locations...')
+            for index, list_xb in enumerate(xb):
+                    #print(f'index={index}')
+                    # Original data
+                    t_i = time[index]
+                    xb_i = list_xb
+                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
+                    if len(t_i) != len(xb_i):
+                        t_i.pop()
+                    # Create function
+                    f = interp1d(t_i, xb_i, kind='previous')
+                    # New x values, 100 seconds every second
+                    interval = (0, t_i[-1])
+                    t_intrpl = np.arange(interval[0], interval[1], stepsize)
+                    # Do interpolation on new data points
+                    xb_intrpl = f(t_intrpl)
+                    # Random sampling
+                    xb_sampled = random.sample(list(xb_intrpl), samplesize)
+                    # Add to list
+                    xb_total_interpl.extend(xb_sampled)
+
+            #
+            nested_xb.append(tuple(xb_total_interpl))
+
+            #
+            if km_minus_count < len(kmminus_list) - 1:
+                km_minus_count += 1
+            elif km_minus_count == len(kmminus_list) - 1:
+                km_minus_count = 0
+                teamsize_count += 1
+            else:
+                print('This cannot be right')
+
+    #
+    print(f'len(nested_nested_xb) should be {len(key_tuples)}: {len(nested_xb)}')
+    #
+    multi_column = pd.MultiIndex.from_tuples(key_tuples, names=['team_size', 'km_minus'])
+    print(multi_column)
+    del key_tuples
+    #
+    df1 = pd.DataFrame(nested_xb, index=multi_column).T
+    print(df1)
+    del nested_xb
+    #
+    print('Melt dataframe... ')
+    df_melt1 = pd.melt(df1, value_name='xb', var_name=['team_size', 'km_minus']).dropna()
+    print(df_melt1)
+    del df1
+    #
+    print('Save dataframe... ')
+    df_melt1.to_csv(f'.\motor_objects\\{dirct}\\data\\xb_Nkmr_{filename}.csv', index=False)
+
+    return
+def plot_N_kmr_xb_2(dirct, filename, n_include, km_include, stat='probability', show=True, figname=''):
+    """
+    DONEE
+    Parameters
+    ----------
+
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+    print(df)
+    df2 = df[df['team_size'].isin(list(n_include))]
+    print(df2)
+    df3 = df2[df2['km_minus'].isin(list(km_include))]
+    print(df3)
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    ### Plotting ###
+    sns.color_palette()
+    sns.set_style("whitegrid")
+    print('Making figure...')
+    for i in n_include:
+        print(i)
+        df_n = df3[df3['team_size'] == i]
+        print(df_n)
+        for j in km_include:
+            print(j)
+            df_km = df_n[round(df_n['km'], 2) == round(j, 2)]
+            print(df_km)
+            #
+            q25, q75 = np.percentile(list(df_km['xb']), [25, 75])
+            print(q25)
+            print(q75)
+            bin_width = 2 * (q75 - q25) * len(list(df_km['xb'])) ** (-1/3)
+            print(bin_width)
+            if bin_width > 0:
+                max = df_km['xb'].max()
+                print(f'max={max}')
+                min = df_km['xb'].min()
+                print(f'min={min}')
+                bins_xb = round((float(df_km['xb'].max()) - float(df_km['xb'].min())) / float(bin_width))
+            else:
+                bins_xb = round(len(list(df_km['xb']))/100)
+            plt.figure()
+            sns.displot(df3, x='xb', stat=stat, bins=bins_xb)
+            plt.title(f'N= {i} motors, km minus= {j}pN/nm')
+            plt.xlabel('xb [nm]')
+            plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xb_{i}N{j}kminus_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+            if show == True:
+                plt.show()
+                plt.clf()
+                plt.close()
+            else:
+                plt.clf()
+                plt.close()
+                print('Figure saved')
+
+    return
+
+#not finished
 def xb_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
     """
     DONE
@@ -2789,122 +2969,7 @@ def xb_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
     df_melt2.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_kmratio_xb2.csv')
 
     return
-def xb_n_kmr_2(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
-    """
-    DONE
-    Parameters
-    ----------
-    dirct : string
-            Name of the subdirectory within the 'motor_object'
-    ts_list : list of lists,
-                  Values of the team size N within dirct
-    kmminus_list : list of floats,
-                  Values of the minus motor stiffness km within dirct
-    stepsize : float, default=0.1
-               Step size for interpolation function
-    filename : string, optional
-            Addition to include into the default file name
-
-    Returns
-    -------
-    None
-    """
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\data')
-    #
-    nested_xb = []
-    key_tuples = []
-    #
-    teamsize_count = 0
-    km_minus_count = 0
-    #
-    path = f'.\motor_objects\\{dirct}'
-    for root, subdirs, files in os.walk(path):
-        for index, subdir in enumerate(subdirs):
-            if subdir == 'figures':
-                continue
-            if subdir == 'data':
-                continue
-            #
-            print('NEW SUBDIR/SIMULATION')
-            print(os.path.join(path,subdir))
-            #
-            print(f'subdir={subdir}')
-            print(f'teamsize_count={teamsize_count}')
-            print(f'km_minus_count={km_minus_count}')
-            # Unpickle test_motor0 object
-            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
-            motor0 = pickle.load(pickle_file_motor0)
-            pickle_file_motor0.close()
-            #
-            ts = ts_list[teamsize_count]
-            km_minus = kmminus_list[km_minus_count]
-            print(f'ts={ts}')
-            print(f'km_minus={km_minus}')
-            #
-            key = (str(ts), str(km_minus))
-            print(f'key={key}')
-            key_tuples.append(key)
-            #
-            xb = motor0.x_cargo
-            time = motor0.time_points
-            del motor0
-            xb_total_interpl = []
-            print('Start interpolating bead locations...')
-            for index, list_xb in enumerate(xb):
-                    #print(f'index={index}')
-                    # Original data
-                    t_i = time[index]
-                    xb_i = list_xb
-                    # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
-                    if len(t_i) != len(xb_i):
-                        t_i.pop()
-                    # Create function
-                    f = interp1d(t_i, xb_i, kind='previous')
-                    # New x values, 100 seconds every second
-                    interval = (0, t_i[-1])
-                    t_intrpl = np.arange(interval[0], interval[1], stepsize)
-                    # Do interpolation on new data points
-                    xb_intrpl = f(t_intrpl)
-                    # Random sampling
-                    xb_sampled = random.sample(list(xb_intrpl), 50)
-                    # Add to list
-                    xb_total_interpl.extend(xb_sampled)
-
-            #
-            nested_xb.append(tuple(xb_total_interpl))
-
-            #
-            if km_minus_count < len(kmminus_list) - 1:
-                km_minus_count += 1
-            elif km_minus_count == len(kmminus_list) - 1:
-                km_minus_count = 0
-                teamsize_count += 1
-            else:
-                print('This cannot be right')
-
-    #
-    print(f'len(nested_nested_xb) should be {len(key_tuples)}: {len(nested_xb)}')
-    #
-    multi_column = pd.MultiIndex.from_tuples(key_tuples, names=['team_size', 'km_minus'])
-    print(multi_column)
-    del key_tuples
-    #
-    df1 = pd.DataFrame(nested_xb, index=multi_column).T
-    print(df1)
-    del nested_xb
-    #
-    print('Melt dataframe... ')
-    df_melt1 = pd.melt(df1, value_name='xb', var_name=['team_size', 'km_minus']).dropna()
-    print(df_melt1)
-    del df1
-    #
-    print('Save dataframe... ')
-    df_melt1.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_km_minus_xb.csv', index=False)
-
-    return
-def plot_N_kmr_xb(dirct, filename1, filename2, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True, total=False, figname=''):
+def plot_N_kmr_xb(dirct, filename, n_include, km_include, stat='probability', show=True, figname=''):
     """
 
     Parameters
@@ -2952,63 +3017,7 @@ def plot_N_kmr_xb(dirct, filename1, filename2, n_include=('[1, 1]', '[2, 2]', '[
         print('Figure saved')
 
     return
-def plot_N_kmr_xb_2(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True, figname=''):
-    """
-    DONE
-    Parameters
-    ----------
 
-    Returns
-    -------
-
-    """
-
-    #
-    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
-    print(df)
-    df2 = df[df['team_size'].isin(list(n_include))]
-    print(df2)
-    df3 = df2[df2['km_ratio'].isin(list(km_include))]
-    print(df3)
-
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
-
-    ### Plotting ###
-    sns.color_palette()
-    sns.set_style("whitegrid")
-    print('Making figure...')
-    plt.figure()
-    sns.displot(df3, x='xb',  col='km_ratio', row='team_size', stat=stat)
-    plt.title(f'Distribution of cargo displacement {titlestring}')
-    plt.xlabel('Distance traveled [nm]')
-    plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xb_{figname}.png', format='png', dpi=300, bbox_inches='tight')
-    if show == True:
-        plt.show()
-        plt.clf()
-        plt.close()
-    else:
-        plt.clf()
-        plt.close()
-        print('Figure saved')
-
-    plt.figure()
-    sns.boxplot(data=df3, x='km_ratio', y='xb', hue='team_size')
-    plt.xlabel('minus motor stiffness [pN/nm]')
-    plt.ylabel('<bead displacement> [nm]')
-    plt.title(f'Distribution of cargo displacement {titlestring}')
-    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\boxplot_xb_{figname}.png', format='png', dpi=300, bbox_inches='tight')
-    if show == True:
-        plt.show()
-        plt.clf()
-        plt.close()
-    else:
-        plt.clf()
-        plt.close()
-        print('Figure saved')
-
-    return
 
 '''Cargo trajectory examples > + motor trajectories ??'''
 def traj_n_kmr(dirct, ts_list, kmminus_list, show=True):
@@ -3099,7 +3108,7 @@ def traj_n_kmr(dirct, ts_list, kmminus_list, show=True):
 '''bound motors barplot'''
 def boundmotors_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
     """
-    DONE
+    DONEE
     Parameters
     ----------
 
@@ -3146,7 +3155,7 @@ def boundmotors_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
             print(f'key_antero={key_antero}')
             keys_bound.append(key_antero)
             #
-            antero_bound = motor0.antero_bound
+            antero_bound = motor0.antero_motors # antero_bound
             mean_antero_bound = []
             #
             print('Start interpolating antero bound motors...')
@@ -3174,7 +3183,7 @@ def boundmotors_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
             print(f'key_retro={key_retro}')
             keys_bound.append(key_retro)
             #
-            retro_bound = motor0.retro_bound
+            retro_bound = motor0.retro_motors #retro_bound
             mean_retro_bound = []
             #
             print('Start interpolating retro bound motors...')
@@ -3224,15 +3233,15 @@ def boundmotors_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
     print(melt_df)
     del df
 
-    melt_df.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}_N_kmratio_anteroretrobound.csv')
+    melt_df.to_csv(f'.\motor_objects\\{dirct}\\data\\anteroretrobound_Nkmratio_{filename}.csv', index=False)
 
     return
-def plot_n_kmr_boundmotors(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True, figname=''):
+def plot_n_kmr_boundmotors(dirct, filename, n_include, km_include, show=True, figname=''):
     """
 
     Parameters
     ----------
-    DONE
+    DONEE
     Return
     -------
 
@@ -3254,16 +3263,15 @@ def plot_n_kmr_boundmotors(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 
     sns.color_palette()
     sns.set_style("whitegrid")
     print('Making figure..')
-    #
     for i in n_include:
 
-        df4 = df3[df3['team_size'].isin([i])]
+        df_n = df3[df3['team_size'] == i]
         print('Making figure..')
         plt.figure()
-        sns.barplot(data=df4, x="km_minus", y="motors_bound", hue="direction", ci=95).set_title(f'Team size = {i} {titlestring}')
-        plt.xlabel('km minus motor [pN/nm]')
+        sns.barplot(data=df_n, x="km_minus", y="motors_bound", hue="direction", ci=95)
+        plt.xlabel('k [pN/nm]')
         plt.ylabel('Bound Motors n')
-        #plt.title(f' External force = {i} {titlestring}')
+        plt.title(f' {i} motors')
         plt.savefig(f'.\motor_objects\\{dirct}\\figures\\bar_boundmotors_{i}N_{figname}.png', format='png', dpi=300, bbox_inches='tight')
         if show == True:
             plt.show()
@@ -3283,7 +3291,7 @@ def unbindevent_n_kmr(dirct, ts_list, kmminus_list, filename=''):
 
     Parameters
     ----------
-
+    DONEE
 
     Returns
     -------
@@ -3327,12 +3335,12 @@ def unbindevent_n_kmr(dirct, ts_list, kmminus_list, filename=''):
             key1 = (str(ts), str(km_minus), 'antero')
             print(f'key={key1}')
             key_tuples.append(key1)
-            nested_unbind.append(list(motor0.antero_unbind_events))
+            nested_unbind.append(list(motor0.antero_unbinds)) #antero_unbind_events
             #
             key2 = (str(ts), str(km_minus), 'retro')
             print(f'key={key2}')
             key_tuples.append(key2)
-            nested_unbind.append(list(motor0.retro_unbind_events))
+            nested_unbind.append(list(motor0.retro_unbinds)) #retro_unbind_events
 
             #
             if kmminus_count < len(kmminus_list) - 1:
@@ -3359,15 +3367,15 @@ def unbindevent_n_kmr(dirct, ts_list, kmminus_list, filename=''):
     print(df_melt)
     #
     print('Save dataframe... ')
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\N_kmratio_unbindevents_{filename}.csv')
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\unbindevents_Nkmr_{filename}.csv', index=False)
 
     return
-def plot_n_kmr_unbindevent(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True, figname=''):
+def plot_n_kmr_unbindevent(dirct, filename, n_include, km_include, show=True, figname=''):
     """
 
     Parameters
     ----------
-    DONE
+    DONEE
     Return
     -------
 
@@ -3389,16 +3397,14 @@ def plot_n_kmr_unbindevent(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 
     sns.color_palette()
     sns.set_style("whitegrid")
     print('Making figure..')
-    #
     for i in n_include:
-
-        df4 = df3[df3['team_size'] == i]
+        df_n = df3[df3['team_size'] == i]
         plt.figure()
-        sns.barplot(data=df4, x="km_minus", y="unbind_events", hue="direction", ci=95).set_title(f'Team size = {i} {titlestring}')
-        plt.xlabel('km minus motor [pN/nm]')
-        plt.ylabel('Unbinding events [n]')
-        #plt.title(f' External force = {i} {titlestring}')
-        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\bar_unbindingevents_{i}fex_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+        sns.barplot(data=df_n, x="km_minus", y="unbind_events", hue="direction", ci=95)
+        plt.xlabel('k [pN/nm]')
+        plt.ylabel('Unbinding events n')
+        plt.title(f' {i} motors')
+        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\bar_unbindingevents_{i}N_{figname}.png', format='png', dpi=300, bbox_inches='tight')
         if show == True:
             plt.show()
             plt.clf()
@@ -3417,7 +3423,7 @@ def segment_n_kmr(dirct, ts_list, kmminus_list, filename=''):
 
     Parameters
     ----------
-    Check
+    DONEE
 
     Returns
     -------
@@ -3454,7 +3460,7 @@ def segment_n_kmr(dirct, ts_list, kmminus_list, filename=''):
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
             #
-            xb = motor0.x_cargo
+            xb = motor0.x_bead #x_cargo
             t = motor0.time_points
             del motor0
             #
@@ -3515,15 +3521,15 @@ def segment_n_kmr(dirct, ts_list, kmminus_list, filename=''):
     df_melt = pd.melt(df3, value_name='segments', var_name=['team_size', 'km_minus']).dropna()
     print(df_melt)
     #
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\segments_{filename}.csv')
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\segments_Nkmr_{filename}.csv', index=False)
 
     return
-def plot_n_kmr_seg(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'),  km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True, figname=''):
+def plot_n_kmr_seg(dirct, filename, n_include,  km_include, stat='probability', show=True, figname=''):
     """
 
     Parameters
     ----------
-
+    DONEE
     Returns
     -------
 
@@ -3540,35 +3546,54 @@ def plot_n_kmr_seg(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
-    # plotting
+    ### Plotting ###
     sns.color_palette()
     sns.set_style("whitegrid")
-    print('Making figure..')
-    #
+    print('Making figure...')
     for i in n_include:
-
-        df4 = df3[df3['team_size'] == i]
-        plt.figure()
-        sns.displot(df4, row='km_minus', stat='count', common_norm=False, commen_bin=False).set_title(f'N = {i} {titlestring}')
-        #plt.title(f'Distribution (interpolated) of cargo location {titlestring} ')
-        plt.xlabel('Segmented runs [nm]')
-        plt.savefig(f'.\motor_objects\{dirct}\\figures\\figures\dist_segments_{i}N_{figname}.png', format='png', dpi=300, bbox_inches='tight')
-        if show == True:
-            plt.show()
-            plt.clf()
-            plt.close()
-        else:
-            plt.clf()
-            plt.close()
-            print('Figure saved')
+        print(i)
+        df_n = df3[df3['team_size'] == i]
+        print(df_n)
+        for j in km_include:
+            print(j)
+            df_km = df_n[round(df_n['km_minus'], 2) == round(j, 2)]
+            print(df_km)
+            #
+            q25, q75 = np.percentile(list(df_km['segments']), [25, 75])
+            print(q25)
+            print(q75)
+            bin_width = 2 * (q75 - q25) * len(list(df_km['segments'])) ** (-1/3)
+            print(bin_width)
+            if bin_width > 0:
+                max = df_km['segments'].max()
+                print(f'max={max}')
+                min = df_km['segments'].min()
+                print(f'min={min}')
+                bins_xb = round((float(df_km['segments'].max()) - float(df_km['segments'].min())) / float(bin_width))
+            else:
+                bins_xb = round(len(list(df_km['segments']))/100)
+            plt.figure()
+            sns.displot(df_km, x='segments', hue='direction', stat=stat, common_norm=True)
+            plt.title(f'N= {i} motors, km minus= {j}pN/nm')
+            plt.xlabel('Segmented runs [nm]')
+            plt.savefig(f'.\motor_objects\{dirct}\\figures\\figures\dist_segments_{i}N_{k}kmminus_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+            if show == True:
+                plt.show()
+                plt.clf()
+                plt.close()
+            else:
+                plt.clf()
+                plt.close()
+                print('Figure saved')
 
     return
+
 def seg_back_n_kmr(dirct, ts_list, kmminus_list, filename=''):
     """
 
     Parameters
     ----------
-    Check
+    DONEE
 
     Returns
     -------
@@ -3656,15 +3681,15 @@ def seg_back_n_kmr(dirct, ts_list, kmminus_list, filename=''):
     df_melt = pd.melt(df3, value_name='segments_back', var_name=['team_size', 'km_minus']).dropna()
     print(df_melt)
     #
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\segments_back_{filename}.csv')
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\segments_back_{filename}.csv', index=False)
 
     return
-def plot_n_kmr_seg_back(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'),  km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True, figname=''):
+def plot_n_kmr_seg_back(dirct, filename, n_include,  km_include, stat='probability', show=True, figname=''):
     """
 
     Parameters
     ----------
-
+    DONEE
     Returns
     -------
 
@@ -3681,32 +3706,316 @@ def plot_n_kmr_seg_back(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]'
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
-    # plotting
+    ### Plotting ###
     sns.color_palette()
     sns.set_style("whitegrid")
-    print('Making figure..')
-    #
+    print('Making figure...')
     for i in n_include:
-
-        df4 = df3[df3['team_size'] == i]
-        plt.figure()
-        sns.displot(df4, row='km_minus', stat='count', common_norm=False, commen_bin=False).set_title(f'N = {i} {titlestring}')
-        #plt.title(f'Distribution (interpolated) of cargo location {titlestring} ')
-        plt.xlabel('Cargo back shifts [nm]')
-        plt.savefig(f'.\motor_objects\{dirct}\\figures\\figures\dist_segments_back_{i}N_{figname}.png', format='png', dpi=300, bbox_inches='tight')
-        if show == True:
-            plt.show()
-            plt.clf()
-            plt.close()
-        else:
-            plt.clf()
-            plt.close()
-            print('Figure saved')
+        print(i)
+        df_n = df3[df3['team_size'] == i]
+        print(df_n)
+        for j in km_include:
+            print(j)
+            df_km = df_n[round(df_n['km_minus'], 2) == round(j, 2)]
+            print(df_km)
+            #
+            q25, q75 = np.percentile(list(df_km['segments_back']), [25, 75])
+            print(q25)
+            print(q75)
+            bin_width = 2 * (q75 - q25) * len(list(df_km['segments_back'])) ** (-1/3)
+            print(bin_width)
+            if bin_width > 0:
+                max = df_km['segments_back'].max()
+                print(f'max={max}')
+                min = df_km['segments_back'].min()
+                print(f'min={min}')
+                bins_xb = round((float(df_km['segments_back'].max()) - float(df_km['segments_back'].min())) / float(bin_width))
+            else:
+                bins_xb = round(len(list(df_km['segments_back']))/100)
+            plt.figure()
+            sns.displot(df_km, x='segments_back', stat=stat)
+            plt.title(f'N= {i} motors, km minus= {j}pN/nm')
+            plt.xlabel('Back movements [nm]')
+            plt.savefig(f'.\motor_objects\{dirct}\\figures\\figures\dist_segback_{i}N_{k}kmminus_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+            if show == True:
+                plt.show()
+                plt.clf()
+                plt.close()
+            else:
+                plt.clf()
+                plt.close()
+                print('Figure saved')
 
     return
 
 ## motors ##
+
 '''Motor forces pdf'''
+def motorforces_n_kmr_2_sep(dirct, ts_list, kmminus_list, stepsize=0.1, samplesize=100, filename=''):
+    """
+
+    Parameters
+    ----------
+    DONEE
+    Returns
+    -------
+
+    """
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\data')
+    #
+    nested_motorforces = []
+    key_tuples = []
+    #
+    teamsize_count = 0
+    km_ratio_count = 0
+    #
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
+        for subdir in subdirs:
+            if subdir == 'figures':
+                continue
+            if subdir == 'data':
+                continue
+            #
+            print('NEW SUBDIR/SIMULATION')
+            print(os.path.join(path, subdir))
+            sub_path = os.path.join(path, subdir)
+            #
+            print(f'subdir={subdir}')
+            print(f'teamsize_count={teamsize_count}')
+            print(f'km_ratio_count={km_ratio_count}')
+            # Unpickle motor_0 object
+            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
+            motor0 = pickle.load(pickle_file_motor0)
+            pickle_file_motor0.close()
+            #
+            time = motor0.time_points
+            del motor0
+            print(f'len time should be 1000: {len(time)}')
+            #
+            ts = ts_list[teamsize_count]
+            km_ratio = kmminus_list[km_ratio_count]
+            print(f'ts={ts}')
+            print(f'km_ratio={km_ratio}')
+            #
+            antero_interpolated_forces = [] # not nested
+
+            ### loop through motor ANTERO files ###
+            for root2,subdir2,files2 in os.walk(sub_path):
+                for file in files2:
+                    if file.endswith('anterograde'):
+                        #
+                        print('PRINT NAME IN FILES')
+                        print(os.path.join(sub_path, file))
+                        # Unpickle motor
+                        print('Open pickle file...')
+                        pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
+                        print('Done')
+                        motor = pickle.load(pickle_file_motor)
+                        print('Close pickle file...')
+                        pickle_file_motor.close()
+                        print('Done')
+                        forces = motor.forces
+                        print(f'len forces should be 1000: {len(forces)}')
+                        del motor
+                        #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
+                        #
+                        print('Start interpolating distances...')
+                        for i, value in enumerate(time):
+                            #print(f'index={i}')
+                            # time points of run i
+                            t = value
+                            #print(f't={t}')
+                            # locations of motors
+                            mf = forces[i]
+                            if len(mf) < 2:
+                                continue
+                            #print(f'nf={mf}')
+                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
+                            if len(t) != len(mf):
+                                t.pop()
+                            # Create function
+                            f = interp1d(t, mf, kind='previous')
+                            # New x values, 100 seconds every second
+                            interval = (0, t[-1])
+                            #print(f'interval time: {interval}')
+                            t_intrpl = np.arange(interval[0], interval[1], stepsize)
+                            # Do interpolation on new data points
+                            mf_intrpl = f(t_intrpl)
+                            # Random sampling
+                            mf_sampled = random.sample(list(mf_intrpl), samplesize)
+                            # add nested list
+                            antero_interpolated_forces.extend(mf_sampled)
+                    else:
+                        pass
+            #
+            key = (str(ts), str(km_ratio), 'antero')
+            print(f'key={key}')
+            key_tuples.append(key)
+            nested_motorforces.append(tuple(antero_interpolated_forces))
+
+            #
+            retro_interpolated_forces = [] # not nested
+
+            ### loop through motor RETRO files ###
+            for root2,subdir2,files2 in os.walk(sub_path):
+                for file in files2:
+                    if file.endswith('retrograde'):
+                        #
+                        print('PRINT NAME IN FILES')
+                        print(os.path.join(sub_path, file))
+                        # Unpickle motor
+                        print('Open pickle file...')
+                        pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
+                        print('Done')
+                        motor = pickle.load(pickle_file_motor)
+                        print('Close pickle file...')
+                        pickle_file_motor.close()
+                        print('Done')
+                        forces = motor.forces
+                        print(f'len forces should be 1000: {len(forces)}')
+                        del motor
+                        #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
+                        #
+                        print('Start interpolating distances...')
+                        for i, value in enumerate(time):
+                            #print(f'index={i}')
+                            # time points of run i
+                            t = value
+                            #print(f't={t}')
+                            # locations of motors
+                            mf = forces[i]
+                            if len(mf) < 2:
+                                continue
+                            #print(f'nf={mf}')
+                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
+                            if len(t) != len(mf):
+                                t.pop()
+                            # Create function
+                            f = interp1d(t, mf, kind='previous')
+                            # New x values, 100 seconds every second
+                            interval = (0, t[-1])
+                            #print(f'interval time: {interval}')
+                            t_intrpl = np.arange(interval[0], interval[1], stepsize)
+                            # Do interpolation on new data points
+                            mf_intrpl = f(t_intrpl)
+                            # Random sampling
+                            mf_sampled = random.sample(list(mf_intrpl), , samplesize=100)
+                            # add nested list
+                            retro_interpolated_forces.extend(mf_sampled)
+                    else:
+                        pass
+
+            key = (str(ts), str(km_ratio), 'retro')
+            print(f'key={key}')
+            key_tuples.append(key)
+            nested_motorforces.append(tuple(retro_interpolated_forces))
+
+            #
+            if km_ratio_count < len(kmminus_list) - 1:
+                km_ratio_count += 1
+            elif km_ratio_count == len(kmminus_list) - 1:
+                km_ratio_count = 0
+                teamsize_count += 1
+            else:
+                print('This cannot be right')
+
+    #
+    print(f'len(nested_motorforces) should be {len(key_tuples)}: {len(nested_motorforces)}')
+    #
+    multi_column = pd.MultiIndex.from_tuples(key_tuples, names=['team_size', 'km_minus', 'direction'])
+    print(multi_column)
+    del key_tuples
+    #
+    df = pd.DataFrame(nested_motorforces, index=multi_column).T
+    print(df)
+    del nested_motorforces
+
+    '''
+    #
+    print('Make dataframe from dictionary... ')
+    df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in nested_motorforces.items() ]))
+    print(df)
+    '''
+    print('Melt dataframe... ')
+    df_melt = pd.melt(df, value_name='motor_forces', var_name=['team_size', 'km_minus', 'direction']).dropna()
+    print(df_melt)
+
+    print('Save dataframe... ')
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\motorforces_sep_Nkmminus__{filename}.csv', index=True)
+
+    return
+def plot_N_kmr_forces_motors_sep(dirct, filename, n_include, km_include, stat='probability', show=True, figname=''):
+    """
+
+    Parameters
+    ----------
+    DONEE
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+    print(df)
+    df2 = df[df['team_size'].isin(list(n_include))]
+    print(df2)
+    df3 = df2[df2['km_minus'].isin(list(km_include))]
+    print(df3)
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    ### Plotting ###
+    sns.color_palette()
+    sns.set_style("whitegrid")
+    print('Making figure...')
+    for i in n_include:
+        print(i)
+        df_n = df3[df3['team_size'] == i]
+        print(df_n)
+        for j in km_include:
+            print(j)
+            df_km = df_n[round(df_n['km_minus'], 2) == round(j, 2)]
+            print(df_km)
+            #
+            q25, q75 = np.percentile(list(df_km['motor_forces']), [25, 75])
+            print(q25)
+            print(q75)
+            bin_width = 2 * (q75 - q25) * len(list(df_km['motor_forces'])) ** (-1/3)
+            print(bin_width)
+            if bin_width > 0:
+                max = df_km['motor_forces'].max()
+                print(f'max={max}')
+                min = df_km['motor_forces'].min()
+                print(f'min={min}')
+                bins_mf = round((float(df_km['motor_forces'].max()) - float(df_km['motor_forces'].min())) / float(bin_width))
+            else:
+                bins_mf = round(len(list(df_km['motor_forces']))/100)
+            plt.figure()
+            sns.displot(df_km, x='motor_forces', hue='direction', stat=stat, palette='bright', bins=bins_mf)
+            plt.xlabel('Motor forces [pN]')
+            plt.title(f'N= {i} motors, km minus= {j}pN/nm')
+            plt.savefig(f'.\motor_objects\\{dirct}\\figures\\point_fmotors_{i}N_{j}kmminus_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+            if show == True:
+                plt.show()
+                plt.clf()
+                plt.close()
+            else:
+                plt.clf()
+                plt.close()
+                print('Figure saved')
+
+
+
+    return
+
+#not finished
 def motorforces_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
     """
 
@@ -4010,204 +4319,7 @@ def motorforces_n_kmr_2(dirct, ts_list, kmminus_list, stepsize=0.1, samplesize=1
     df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\N_kmratio_motorforces_{filename}.csv')
 
     return
-def motorforces_n_kmr_2_sep(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
-    """
-
-    Parameters
-    ----------
-    DONE
-    Returns
-    -------
-
-    """
-
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\data')
-    #
-    nested_motorforces = []
-    key_tuples = []
-    #
-    teamsize_count = 0
-    km_ratio_count = 0
-    #
-    path = f'.\motor_objects\\{dirct}'
-    for root, subdirs, files in os.walk(path):
-        for subdir in subdirs:
-            if subdir == 'figures':
-                continue
-            if subdir == 'data':
-                continue
-            #
-            print('NEW SUBDIR/SIMULATION')
-            print(os.path.join(path, subdir))
-            sub_path = os.path.join(path, subdir)
-            #
-            print(f'subdir={subdir}')
-            print(f'teamsize_count={teamsize_count}')
-            print(f'km_ratio_count={km_ratio_count}')
-            # Unpickle motor_0 object
-            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
-            motor0 = pickle.load(pickle_file_motor0)
-            pickle_file_motor0.close()
-            #
-            time = motor0.time_points
-            del motor0
-            print(f'len time should be 1000: {len(time)}')
-            #
-            ts = ts_list[teamsize_count]
-            km_ratio = kmminus_list[km_ratio_count]
-            print(f'ts={ts}')
-            print(f'km_ratio={km_ratio}')
-            #
-            antero_interpolated_forces = [] # not nested
-
-            ### loop through motor ANTERO files ###
-            for root2,subdir2,files2 in os.walk(sub_path):
-                for file in files2:
-                    if file.endswith('anterograde'):
-                        #
-                        print('PRINT NAME IN FILES')
-                        print(os.path.join(sub_path, file))
-                        # Unpickle motor
-                        print('Open pickle file...')
-                        pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
-                        print('Done')
-                        motor = pickle.load(pickle_file_motor)
-                        print('Close pickle file...')
-                        pickle_file_motor.close()
-                        print('Done')
-                        forces = motor.forces
-                        print(f'len forces should be 1000: {len(forces)}')
-                        del motor
-                        #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
-                        #
-                        print('Start interpolating distances...')
-                        for i, value in enumerate(time):
-                            #print(f'index={i}')
-                            # time points of run i
-                            t = value
-                            #print(f't={t}')
-                            # locations of motors
-                            mf = forces[i]
-                            if len(mf) < 2:
-                                continue
-                            #print(f'nf={mf}')
-                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
-                            if len(t) != len(mf):
-                                t.pop()
-                            # Create function
-                            f = interp1d(t, mf, kind='previous')
-                            # New x values, 100 seconds every second
-                            interval = (0, t[-1])
-                            #print(f'interval time: {interval}')
-                            t_intrpl = np.arange(interval[0], interval[1], stepsize)
-                            # Do interpolation on new data points
-                            mf_intrpl = f(t_intrpl)
-                            # Random sampling
-                            mf_sampled = random.sample(list(mf_intrpl), 50)
-                            # add nested list
-                            antero_interpolated_forces.extend(mf_sampled)
-                    else:
-                        pass
-            #
-            key = (str(ts), str(km_ratio), 'antero')
-            print(f'key={key}')
-            key_tuples.append(key)
-            nested_motorforces.append(tuple(antero_interpolated_forces))
-
-            #
-            retro_interpolated_forces = [] # not nested
-
-            ### loop through motor RETRO files ###
-            for root2,subdir2,files2 in os.walk(sub_path):
-                for file in files2:
-                    if file.endswith('retrograde'):
-                        #
-                        print('PRINT NAME IN FILES')
-                        print(os.path.join(sub_path, file))
-                        # Unpickle motor
-                        print('Open pickle file...')
-                        pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
-                        print('Done')
-                        motor = pickle.load(pickle_file_motor)
-                        print('Close pickle file...')
-                        pickle_file_motor.close()
-                        print('Done')
-                        forces = motor.forces
-                        print(f'len forces should be 1000: {len(forces)}')
-                        del motor
-                        #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
-                        #
-                        print('Start interpolating distances...')
-                        for i, value in enumerate(time):
-                            #print(f'index={i}')
-                            # time points of run i
-                            t = value
-                            #print(f't={t}')
-                            # locations of motors
-                            mf = forces[i]
-                            if len(mf) < 2:
-                                continue
-                            #print(f'nf={mf}')
-                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
-                            if len(t) != len(mf):
-                                t.pop()
-                            # Create function
-                            f = interp1d(t, mf, kind='previous')
-                            # New x values, 100 seconds every second
-                            interval = (0, t[-1])
-                            #print(f'interval time: {interval}')
-                            t_intrpl = np.arange(interval[0], interval[1], stepsize)
-                            # Do interpolation on new data points
-                            mf_intrpl = f(t_intrpl)
-                            # Random sampling
-                            mf_sampled = random.sample(list(mf_intrpl), 50)
-                            # add nested list
-                            retro_interpolated_forces.extend(mf_sampled)
-                    else:
-                        pass
-
-            key = (str(ts), str(km_ratio), 'retro')
-            print(f'key={key}')
-            key_tuples.append(key)
-            nested_motorforces.append(tuple(retro_interpolated_forces))
-
-            #
-            if km_ratio_count < len(kmminus_list) - 1:
-                km_ratio_count += 1
-            elif km_ratio_count == len(kmminus_list) - 1:
-                km_ratio_count = 0
-                teamsize_count += 1
-            else:
-                print('This cannot be right')
-
-    #
-    print(f'len(nested_motorforces) should be {len(key_tuples)}: {len(nested_motorforces)}')
-    #
-    multi_column = pd.MultiIndex.from_tuples(key_tuples, names=['team_size', 'km_ratio', 'direction'])
-    print(multi_column)
-    del key_tuples
-    #
-    df = pd.DataFrame(nested_motorforces, index=multi_column).T
-    print(df)
-    del nested_motorforces
-
-    '''
-    #
-    print('Make dataframe from dictionary... ')
-    df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in nested_motorforces.items() ]))
-    print(df)
-    '''
-    print('Melt dataframe... ')
-    df_melt = pd.melt(df, value_name='motor_forces', var_name=['team_size', 'km_ratio', 'direction']).dropna()
-    print(df_melt)
-
-    print('Save dataframe... ')
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\N_kmratio_motorforces_sep_{filename}.csv')
-
-    return
-def plot_N_kmr_forces_motors(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True, figname=''):
+def plot_N_kmr_forces_motors(dirct, filename, n_include, km_include, stat='probability', show=True, figname=''):
     """
 
     Parameters
@@ -4252,12 +4364,208 @@ def plot_N_kmr_forces_motors(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3
             print('Figure saved')
 
     return
-def plot_N_kmr_forces_motors_sep(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True, figname=''):
+
+'''Motor displacement pdf'''
+def xm_n_kmr_2_sep(dirct, ts_list, kmminus_list, stepsize=0.1, samplesize=100, filename=''):
     """
 
     Parameters
     ----------
-    DONE
+    DONEE
+    Returns
+    -------
+
+    """
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\data')
+    #
+    nested_xm = []
+    key_tuples = []
+    #
+    teamsize_count = 0
+    km_ratio_count = 0
+    #
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
+        for subdir in subdirs:
+            if subdir == 'figures':
+                continue
+            if subdir == 'data':
+                continue
+            #
+            print('NEW SUBDIR/SIMULATION')
+            print(os.path.join(path,subdir))
+            sub_path = os.path.join(path,subdir)
+            #
+            print(f'subdir={subdir}')
+            print(f'teamsize_count={teamsize_count}')
+            print(f'km_ratio_count={km_ratio_count}')
+            # Unpickle motor_0 object
+            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
+            motor0 = pickle.load(pickle_file_motor0)
+            pickle_file_motor0.close()
+            #
+            time = motor0.time_points
+            del motor0
+            print(f'len time should be 1000: {len(time)}')
+            #
+            ts = ts_list[teamsize_count]
+            km_ratio = kmminus_list[km_ratio_count]
+            print(f'ts={ts}')
+            print(f'km_ratio={km_ratio}')
+            #
+            antero_xm_interpolated = [] # not nested
+
+            ### loop through motor ANTERO files ###
+            for root2,subdir2,files2 in os.walk(sub_path):
+                for file in files2:
+                    if file.endswith('anterograde'):
+                        print('PRINT NAME IN FILES')
+                        print(os.path.join(sub_path,file))
+
+                        # Unpickle motor
+                        print('Open pickle file...')
+                        pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
+                        print('Done')
+                        motor = pickle.load(pickle_file_motor)
+                        print('Close pickle file...')
+                        pickle_file_motor.close()
+                        print('Done')
+                        xm = motor.x_m_abs
+                        print(f'len forces should be 1000: {len(xm)}')
+                        del motor
+                        #
+                        #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
+                        #
+                        print('Start interpolating distances...')
+                        for i, value in enumerate(time):
+                            #print(f'index={i}')
+                            # time points of run i
+                            t = value
+                            #print(f't={t}')
+                            # locations of motors
+                            xm_i = xm[i]
+                            if len(xm_i) < 2:
+                                continue
+                            #print(f'nf={mf}')
+                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
+                            if len(t) != len(xm_i):
+                                t.pop()
+                            # Create function
+                            f = interp1d(t, xm_i, kind='previous')
+                            # New x values, 100 seconds every second
+                            interval = (0, t[-1])
+                            #print(f'interval time: {interval}')
+                            t_intrpl = np.arange(interval[0], interval[1], stepsize)
+                            # Do interpolation on new data points
+                            xm_intrpl = f(t_intrpl)
+                            # Random sampling
+                            xm_sampled = random.sample(list(xm_intrpl), samplesize)
+                            # add nested list
+                            antero_xm_interpolated.extend(xm_sampled)
+
+            key = (str(ts), str(km_ratio), 'antero')
+            print(f'key={key}')
+            key_tuples.append(key)
+            nested_xm.append(tuple(antero_xm_interpolated))
+
+            #
+            retro_xm_interpolated = [] # not nested
+
+            ### loop through motor RETRO files ###
+            for root2,subdir2,files2 in os.walk(sub_path):
+                for file in files2:
+                    if file.endswith('retrograde'):
+                        print('PRINT NAME IN FILES')
+                        print(os.path.join(sub_path,file))
+
+                        # Unpickle motor
+                        print('Open pickle file...')
+                        pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
+                        print('Done')
+                        motor = pickle.load(pickle_file_motor)
+                        print('Close pickle file...')
+                        pickle_file_motor.close()
+                        print('Done')
+                        xm = motor.x_m_abs
+                        print(f'len forces should be 1000: {len(xm)}')
+                        del motor
+                        #
+                        #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
+                        #
+                        print('Start interpolating distances...')
+                        for i, value in enumerate(time):
+                            #print(f'index={i}')
+                            # time points of run i
+                            t = value
+                            #print(f't={t}')
+                            # locations of motors
+                            xm_i = xm[i]
+                            if len(xm_i) < 2:
+                                continue
+                            #print(f'nf={mf}')
+                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
+                            if len(t) != len(xm_i):
+                                t.pop()
+                            # Create function
+                            f = interp1d(t, xm_i, kind='previous')
+                            # New x values, 100 seconds every second
+                            interval = (0, t[-1])
+                            #print(f'interval time: {interval}')
+                            t_intrpl = np.arange(interval[0], interval[1], stepsize)
+                            # Do interpolation on new data points
+                            xm_intrpl = f(t_intrpl)
+                            # Random sampling
+                            xm_sampled = random.sample(list(xm_intrpl), samplesize)
+                            # add nested list
+                            retro_xm_interpolated.extend(xm_sampled)
+
+            key = (str(ts), str(km_ratio), 'retro')
+            print(f'key={key}')
+            key_tuples.append(key)
+            nested_xm.append(tuple(retro_xm_interpolated))
+
+            #
+            if km_ratio_count < len(kmminus_list) - 1:
+                km_ratio_count += 1
+            elif km_ratio_count == len(kmminus_list) - 1:
+                km_ratio_count = 0
+                teamsize_count += 1
+            else:
+                print('This cannot be right')
+    #
+    print(f'len(nested_xm) should be {len(key_tuples)}: {len(nested_xm)}')
+    #
+    multi_column = pd.MultiIndex.from_tuples(key_tuples, names=['team_size', 'km_minus', 'direction'])
+    print(multi_column)
+    del key_tuples
+    #
+    df = pd.DataFrame(nested_xm, index=multi_column).T
+    print(df)
+    del nested_xm
+
+    '''
+    #
+    print('Make dataframe from dictionary... ')
+    df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in nested_motorforces.items() ]))
+    print(df)
+    '''
+    print('Melt dataframe... ')
+    df_melt = pd.melt(df, value_name='xm', var_name=['team_size', 'km_minus', 'direction']).dropna()
+    print(df_melt)
+    #
+    print('Save dataframe... ')
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\xm_sep_Nkmminus_{filename}.csv', index=False)
+
+    return
+def plot_N_kmr_xm_sep(dirct, filename, n_include, km_include, stat='probability', show=True, figname=''):
+    """
+
+    Parameters
+    ----------
+    DONEE
     Returns
     -------
 
@@ -4270,38 +4578,53 @@ def plot_N_kmr_forces_motors_sep(dirct, filename, n_include=('[1, 1]', '[2, 2]',
     print(df2)
     df3 = df2[df2['km_ratio'].isin(list(km_include))]
     print(df3)
-
     #
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\figures')
 
-    # plotting
+    ### Plotting ###
     sns.color_palette()
     sns.set_style("whitegrid")
     print('Making figure...')
-    #
     for i in n_include:
-        #
-        df4 = df3[df3['team_size'] == i]
-        #
-        plt.figure()
-        sns.catplot(data=df4, x="km_ratio", y="motor_forces", hue="direction", style='team_size', marker='team_size', kind="point", errornar='se')
-        plt.xlabel('Motor forces [pN]')
-        plt.title(f'Distribution plus motor forces, team size = {i} {titlestring}')
-        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\point_fmotors_Nkmr_directionhue_{i}N_{figname}.png', format='png', dpi=300, bbox_inches='tight')
-        if show == True:
-            plt.show()
-            plt.clf()
-            plt.close()
-        else:
-            plt.clf()
-            plt.close()
-            print('Figure saved')
-
-
+        print(i)
+        df_n = df3[df3['team_size'] == i]
+        print(df_n)
+        for j in km_include:
+            print(j)
+            df_km = df_n[round(df_n['km_minus'], 2) == round(j, 2)]
+            print(df_km)
+            #
+            q25, q75 = np.percentile(list(df_km['xm']), [25, 75])
+            print(q25)
+            print(q75)
+            bin_width = 2 * (q75 - q25) * len(list(df_km['xm'])) ** (-1/3)
+            print(bin_width)
+            if bin_width > 0:
+                max = df_km['xm'].max()
+                print(f'max={max}')
+                min = df_km['xm'].min()
+                print(f'min={min}')
+                bins_xm = round((float(df_km['xm'].max()) - float(df_km['xm'].min())) / float(bin_width))
+            else:
+                bins_xm = round(len(list(df_km['xm']))/100)
+            plt.figure()
+            sns.displot(df_km, x='xm', hue='direction', stat=stat, palette='bright', bins=bins_xm, common_norm=True)
+            plt.xlabel('xm [nm]')
+            plt.title(f'N= {i} motors, km minus= {j}pN/nm')
+            plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xm_{i}N_{j}kmminus_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+            if show == True:
+                plt.show()
+                plt.clf()
+                plt.close()
+            else:
+                plt.clf()
+                plt.close()
+                print('Figure saved')
 
     return
-'''Motor displacement pdf'''
+
+#not finished
 def xm_n_kmr(dirct, ts_list, kmminus_list, stepsize=0.1, filename=''):
     """
 
@@ -4603,201 +4926,7 @@ def xm_n_kmr_2(dirct, ts_list, kmminus_list, stepsize=0.1, samplesize=100, filen
     df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\N_kmratio_xm_{filename}.csv')
 
     return
-def xm_n_kmr_2_sep(dirct, ts_list, kmminus_list, stepsize=0.1, samplesize=100, filename=''):
-    """
-
-    Parameters
-    ----------
-    DONE
-    Returns
-    -------
-
-    """
-
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\data')
-    #
-    nested_xm = []
-    key_tuples = []
-    #
-    teamsize_count = 0
-    km_ratio_count = 0
-    #
-    path = f'.\motor_objects\\{dirct}'
-    for root, subdirs, files in os.walk(path):
-        for subdir in subdirs:
-            if subdir == 'figures':
-                continue
-            if subdir == 'data':
-                continue
-            #
-            print('NEW SUBDIR/SIMULATION')
-            print(os.path.join(path,subdir))
-            sub_path = os.path.join(path,subdir)
-            #
-            print(f'subdir={subdir}')
-            print(f'teamsize_count={teamsize_count}')
-            print(f'km_ratio_count={km_ratio_count}')
-            # Unpickle motor_0 object
-            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
-            motor0 = pickle.load(pickle_file_motor0)
-            pickle_file_motor0.close()
-            #
-            time = motor0.time_points
-            del motor0
-            print(f'len time should be 1000: {len(time)}')
-            #
-            ts = ts_list[teamsize_count]
-            km_ratio = kmminus_list[km_ratio_count]
-            print(f'ts={ts}')
-            print(f'km_ratio={km_ratio}')
-            #
-            antero_xm_interpolated = [] # not nested
-
-            ### loop through motor ANTERO files ###
-            for root2,subdir2,files2 in os.walk(sub_path):
-                for file in files2:
-                    if file.endswith('anterograde'):
-                        print('PRINT NAME IN FILES')
-                        print(os.path.join(sub_path,file))
-
-                        # Unpickle motor
-                        print('Open pickle file...')
-                        pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
-                        print('Done')
-                        motor = pickle.load(pickle_file_motor)
-                        print('Close pickle file...')
-                        pickle_file_motor.close()
-                        print('Done')
-                        xm = motor.x_m_abs
-                        print(f'len forces should be 1000: {len(xm)}')
-                        del motor
-                        #
-                        #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
-                        #
-                        print('Start interpolating distances...')
-                        for i, value in enumerate(time):
-                            #print(f'index={i}')
-                            # time points of run i
-                            t = value
-                            #print(f't={t}')
-                            # locations of motors
-                            xm_i = xm[i]
-                            if len(xm_i) < 2:
-                                continue
-                            #print(f'nf={mf}')
-                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
-                            if len(t) != len(xm_i):
-                                t.pop()
-                            # Create function
-                            f = interp1d(t, xm_i, kind='previous')
-                            # New x values, 100 seconds every second
-                            interval = (0, t[-1])
-                            #print(f'interval time: {interval}')
-                            t_intrpl = np.arange(interval[0], interval[1], stepsize)
-                            # Do interpolation on new data points
-                            xm_intrpl = f(t_intrpl)
-                            # Random sampling
-                            xm_sampled = random.sample(list(xm_intrpl), samplesize)
-                            # add nested list
-                            antero_xm_interpolated.extend(xm_sampled)
-
-            key = (str(ts), str(km_ratio), 'antero')
-            print(f'key={key}')
-            key_tuples.append(key)
-            nested_xm.append(tuple(antero_xm_interpolated))
-
-            #
-            retro_xm_interpolated = [] # not nested
-
-            ### loop through motor RETRO files ###
-            for root2,subdir2,files2 in os.walk(sub_path):
-                for file in files2:
-                    if file.endswith('retrograde'):
-                        print('PRINT NAME IN FILES')
-                        print(os.path.join(sub_path,file))
-
-                        # Unpickle motor
-                        print('Open pickle file...')
-                        pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
-                        print('Done')
-                        motor = pickle.load(pickle_file_motor)
-                        print('Close pickle file...')
-                        pickle_file_motor.close()
-                        print('Done')
-                        xm = motor.x_m_abs
-                        print(f'len forces should be 1000: {len(xm)}')
-                        del motor
-                        #
-                        #print(f'motor: {motor.id}, {motor.direction}, {motor.k_m}')
-                        #
-                        print('Start interpolating distances...')
-                        for i, value in enumerate(time):
-                            #print(f'index={i}')
-                            # time points of run i
-                            t = value
-                            #print(f't={t}')
-                            # locations of motors
-                            xm_i = xm[i]
-                            if len(xm_i) < 2:
-                                continue
-                            #print(f'nf={mf}')
-                            # If the last tau draw makes the time overshoot t_end, the Gillespie stops, and t has 1 entry more then force (or x_cargo)
-                            if len(t) != len(xm_i):
-                                t.pop()
-                            # Create function
-                            f = interp1d(t, xm_i, kind='previous')
-                            # New x values, 100 seconds every second
-                            interval = (0, t[-1])
-                            #print(f'interval time: {interval}')
-                            t_intrpl = np.arange(interval[0], interval[1], stepsize)
-                            # Do interpolation on new data points
-                            xm_intrpl = f(t_intrpl)
-                            # Random sampling
-                            xm_sampled = random.sample(list(xm_intrpl), samplesize)
-                            # add nested list
-                            retro_xm_interpolated.extend(xm_sampled)
-
-            key = (str(ts), str(km_ratio), 'retro')
-            print(f'key={key}')
-            key_tuples.append(key)
-            nested_xm.append(tuple(retro_xm_interpolated))
-
-            #
-            if km_ratio_count < len(kmminus_list) - 1:
-                km_ratio_count += 1
-            elif km_ratio_count == len(kmminus_list) - 1:
-                km_ratio_count = 0
-                teamsize_count += 1
-            else:
-                print('This cannot be right')
-    #
-    print(f'len(nested_xm) should be {len(key_tuples)}: {len(nested_xm)}')
-    #
-    multi_column = pd.MultiIndex.from_tuples(key_tuples, names=['team_size', 'km_ratio', 'direction'])
-    print(multi_column)
-    del key_tuples
-    #
-    df = pd.DataFrame(nested_xm, index=multi_column).T
-    print(df)
-    del nested_xm
-
-    '''
-    #
-    print('Make dataframe from dictionary... ')
-    df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in nested_motorforces.items() ]))
-    print(df)
-    '''
-    print('Melt dataframe... ')
-    df_melt = pd.melt(df, value_name='xm', var_name=['team_size', 'km_ratio', 'direction']).dropna()
-    print(df_melt)
-    #
-    print('Save dataframe... ')
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\N_kmratio_xm_sep_{filename}.csv')
-
-    return
-def plot_N_kmr_xm(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True, figname=''):
+def plot_N_kmr_xm(dirct, filename, n_include, km_include, stat='probability', show=True, figname=''):
     """
 
     Parameters
@@ -4841,267 +4970,8 @@ def plot_N_kmr_xm(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4,
             print('Figure saved')
 
     return
-def plot_N_kmr_xm_sep(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True, figname=''):
-    """
 
-    Parameters
-    ----------
-    DONE
-    Returns
-    -------
-
-    """
-
-    #
-    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
-    print(df)
-    df2 = df[df['team_size'].isin(list(n_include))]
-    print(df2)
-    df3 = df2[df2['km_ratio'].isin(list(km_include))]
-    print(df3)
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
-
-    # plotting
-    sns.color_palette()
-    sns.set_style("whitegrid")
-    print('Making figure...')
-    #
-    for i in n_include:
-        df4 = df3[df3['team_size'] == i]
-        for j in km_include:
-            df5 = df4[df4['km_ratio'] == j]
-            plt.figure()
-            sns.displot(df5, x='xm', hue='direction', stat='probability', binwidth=10, palette='bright', common_norm=False, common_bins=False, multiple='stack')
-            plt.xlabel('Displacement [nm]')
-            plt.title(f' Distribution displacement motors, N={i}, Km minus motor = {j} {titlestring}')
-            plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_xm_directionhue_{i}N_{j}kmminus_{figname}.png', format='png', dpi=300, bbox_inches='tight')
-            if show == True:
-                plt.show()
-                plt.clf()
-                plt.close()
-            else:
-                plt.clf()
-                plt.close()
-                print('Figure saved')
-
-    return
 '''Motor rl'''
-def rl_motors_n_kmr(dirct, ts_list, kmminus_list, filename=''):
-    """
-
-    Parameters
-    ----------
-    DONE
-    Returns
-    -------
-
-    """
-
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\data')
-    #
-    nested_rl = []
-    key_tuples = []
-    #
-    teamsize_count = 0
-    km_ratio_count = 0
-    #
-    path = f'.\motor_objects\\{dirct}'
-    for root, subdirs, files in os.walk(path):
-        for subdir in subdirs:
-            if subdir == 'figures':
-                continue
-            if subdir == 'data':
-                continue
-            #
-            print('NEW SUBDIR/SIMULATION')
-            print(os.path.join(path,subdir))
-            sub_path = os.path.join(path,subdir)
-            #
-            print(f'subdir={subdir}')
-            print(f'teamsize_count={teamsize_count}')
-            print(f'km_minus_count={km_ratio_count}')
-            #
-            ts = ts_list[teamsize_count]
-            km_minus = kmminus_list[km_ratio_count]
-            print(f'ts={ts}')
-            print(f'km_minus={km_minus}')
-            #
-            key = (str(ts), str(km_minus))
-            print(f'key={key}')
-            key_tuples.append(key)
-            #
-            rl_all_motors = []
-            # loop through motor files
-            for root2,subdir2,files2 in os.walk(sub_path):
-                for file in files2:
-                    if file == 'motor0':
-                        continue
-                    if file == 'parameters.txt':
-                        continue
-                    if file == 'figures':
-                        continue
-                    if file == 'data':
-                        continue
-                    print('PRINT NAME IN FILES')
-                    print(os.path.join(sub_path,file))
-
-                    # Unpickle motor
-                    print('Open pickle file...')
-                    pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
-                    print('Done')
-                    motor = pickle.load(pickle_file_motor)
-                    print('Close pickle file...')
-                    pickle_file_motor.close()
-                    print('Done')
-                    rl_all_motors.extend(motor.run_length)
-
-            nested_rl.append(rl_all_motors)
-
-            #
-            if km_ratio_count < len(kmminus_list) - 1:
-                km_ratio_count += 1
-            elif km_ratio_count == len(kmminus_list) - 1:
-                km_ratio_count = 0
-                teamsize_count += 1
-            else:
-                print('This cannot be right')
-    #
-    print(f'len(nested_rl) should be {len(key_tuples)}: {len(nested_rl)}')
-    #
-    multi_column = pd.MultiIndex.from_tuples(key_tuples, names=['team_size', 'km_minus'])
-    print(multi_column)
-    del key_tuples
-
-    df = pd.DataFrame(nested_rl, index=multi_column).T
-    print(df)
-    del nested_rl
-    '''
-    #
-    print('Make dataframe from dictionary... ')
-    df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in nested_motorforces.items() ]))
-    print(df)
-    '''
-    print('Melt dataframe... ')
-    df_melt = pd.melt(df, value_name='rl_motors', var_name=['team_size', 'km_minus']).dropna()
-    print(df_melt)
-    #
-    print('Save dataframe... ')
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\rlmotors_N_kmratio_{filename}.csv')
-
-    return
-def plot_n_kmratio_rl_motors(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True, figname=''):
-    """
-    Parameters
-    ----------
-    DONE (not good tho)
-    Returns
-    -------
-
-    """
-
-    #
-    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
-    print(df)
-    df2 = df[df['team_size'].isin(list(n_include))]
-    print(df2)
-    df3 = df2[df2['km_minus'].isin(list(km_include))]
-    print(df3)
-
-
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
-
-    # plotting
-    sns.color_palette()
-    sns.set_style("whitegrid")
-    print('Making figure..')
-    #
-    for i in n_include:
-        df4 = df3[df3['team_size'] == i]
-        plt.figure()
-        sns.ecdfplot(data=df4, x='rl_motors', hue="km_minus", palette='bright')
-        plt.xlabel('Run length [nm]')
-        plt.title(f'Run length motors, team size = {i} {titlestring}')
-        plt.savefig(f'.\motor_objects\\{dirct}\\figures\\ecdf_rlmotors_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
-        if show == True:
-            plt.show()
-            plt.clf()
-            plt.close()
-        else:
-            plt.clf()
-            plt.close()
-            print('Figure saved')
-    '''
-    plt.figure()
-    sns.catplot(data=df3, x='km_minus', y='rl_motors', hue='team_size', kind='point')
-    plt.xlabel('Trap stiffness of minus motor [pN/nm]')
-    plt.ylabel('<Motor run length> [nm]')
-    plt.title(f'Run length motors {titlestring}')
-    plt.savefig(f'.\motor_objects\{dirct}\\figures\\point_rlmotors_{figname}.png', format='png', dpi=300, bbox_inches='tight')
-    if show == True:
-        plt.show()
-        plt.clf()
-        plt.close()
-    else:
-        plt.clf()
-        plt.close()
-        print('Figure saved')
-
-    plt.figure()
-    sns.catplot(data=df3, x='km_minus', y='rl_motors', hue='team_size', kind='box')
-    plt.xlabel('Run length [nm]')
-    plt.title(f'Distribution run length motors {titlestring}')
-    plt.savefig(f'.\motor_objects\{dirct}\\figures\\box_rlmotors_{figname}.png', format='png', dpi=300, bbox_inches='tight')
-    if show == True:
-        plt.show()
-        plt.clf()
-        plt.close()
-    else:
-        plt.clf()
-        plt.close()
-        print('Figure saved')
-
-    for i in n_include:
-        df4 = df3[df3['team_size'] == i]
-        plt.figure()
-        sns.displot(df4, x='rl_motors', col='km_minus', col_wrap=2, stat='probability', binwidth=4, palette='bright', common_norm=False, common_bins=False)
-        plt.xlabel('Run length [nm]')
-        plt.title(f'Distribution run length motors, team size = {i} {titlestring}')
-        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_rlmotors_colN_{i}N_{figname}.png', format='png', dpi=300, bbox_inches='tight')
-        if show == True:
-            plt.show()
-            plt.clf()
-            plt.close()
-        else:
-            plt.clf()
-            plt.close()
-            print('Figure saved')
-
-
-    plt.figure()
-    sns.catplot(data=df3, x="km_minus", y="run_length", hue="team_size", style='team_size', marker='team_size', kind="point", errornar='se')
-    plt.xlabel('Trap stiffness of minus motor [pN/nm]')
-    plt.ylabel('<Cargo run length> [nm]')
-    plt.title(f'{titlestring}')
-    print(f'Start saving...')
-    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pp_cargo_rl_{figname}.png', format='png', dpi=300)
-    # bbox_inches='tight'
-    if show == True:
-        plt.show()
-        plt.clf()
-        plt.close()
-    else:
-        plt.clf()
-        plt.close()
-        print('Figure saved')
-    '''
-
-    return
 def rl_motors_n_kmr_sep(dirct, ts_list, kmminus_list, filename=''):
     """
 
@@ -5230,7 +5100,7 @@ def rl_motors_n_kmr_sep(dirct, ts_list, kmminus_list, filename=''):
     df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_kmratio_rl_sep_motors.csv')
 
     return
-def plot_n_kmratio_rl_motors_sep(dirct, filename, n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True, figname=''):
+def plot_n_kmratio_rl_motors_sep(dirct, filename, n_include, km_include, show=True, figname=''):
     """
     DONE
     Parameters
@@ -5276,6 +5146,224 @@ def plot_n_kmratio_rl_motors_sep(dirct, filename, n_include=('[1, 1]', '[2, 2]',
 
 
     return
+
+#not finished
+def rl_motors_n_kmr(dirct, ts_list, kmminus_list, filename=''):
+    """
+
+    Parameters
+    ----------
+    DONEE
+    Returns
+    -------
+
+    """
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\data')
+    #
+    nested_rl = []
+    key_tuples = []
+    #
+    teamsize_count = 0
+    km_ratio_count = 0
+    #
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
+        for subdir in subdirs:
+            if subdir == 'figures':
+                continue
+            if subdir == 'data':
+                continue
+            #
+            print('NEW SUBDIR/SIMULATION')
+            print(os.path.join(path,subdir))
+            sub_path = os.path.join(path,subdir)
+            #
+            print(f'subdir={subdir}')
+            print(f'teamsize_count={teamsize_count}')
+            print(f'km_minus_count={km_ratio_count}')
+            #
+            ts = ts_list[teamsize_count]
+            km_minus = kmminus_list[km_ratio_count]
+            print(f'ts={ts}')
+            print(f'km_minus={km_minus}')
+            #
+            key = (str(ts), str(km_minus))
+            print(f'key={key}')
+            key_tuples.append(key)
+            #
+            rl_all_motors = []
+            # loop through motor files
+            for root2,subdir2,files2 in os.walk(sub_path):
+                for file in files2:
+                    if file == 'motor0':
+                        continue
+                    if file == 'parameters.txt':
+                        continue
+                    if file == 'figures':
+                        continue
+                    if file == 'data':
+                        continue
+                    print('PRINT NAME IN FILES')
+                    print(os.path.join(sub_path,file))
+
+                    # Unpickle motor
+                    print('Open pickle file...')
+                    pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
+                    print('Done')
+                    motor = pickle.load(pickle_file_motor)
+                    print('Close pickle file...')
+                    pickle_file_motor.close()
+                    print('Done')
+                    rl_all_motors.extend(motor.run_length)
+
+            nested_rl.append(rl_all_motors)
+
+            #
+            if km_ratio_count < len(kmminus_list) - 1:
+                km_ratio_count += 1
+            elif km_ratio_count == len(kmminus_list) - 1:
+                km_ratio_count = 0
+                teamsize_count += 1
+            else:
+                print('This cannot be right')
+    #
+    print(f'len(nested_rl) should be {len(key_tuples)}: {len(nested_rl)}')
+    #
+    multi_column = pd.MultiIndex.from_tuples(key_tuples, names=['team_size', 'km_minus'])
+    print(multi_column)
+    del key_tuples
+
+    df = pd.DataFrame(nested_rl, index=multi_column).T
+    print(df)
+    del nested_rl
+    '''
+    #
+    print('Make dataframe from dictionary... ')
+    df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in nested_motorforces.items() ]))
+    print(df)
+    '''
+    print('Melt dataframe... ')
+    df_melt = pd.melt(df, value_name='rl_motors', var_name=['team_size', 'km_minus']).dropna()
+    print(df_melt)
+    #
+    print('Save dataframe... ')
+    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\rlmotors_Nkmminus_{filename}.csv', index=False)
+
+    return
+def plot_n_kmratio_rl_motors(dirct, filename, n_include, km_include, show=True, figname=''):
+    """
+    Parameters
+    ----------
+    DONEE
+    Returns
+    -------
+
+    """
+
+    #
+    df = pd.read_csv(f'.\motor_objects\\{dirct}\\data\\{filename}')
+    print(df)
+    df2 = df[df['team_size'].isin(list(n_include))]
+    print(df2)
+    df3 = df2[df2['km_minus'].isin(list(km_include))]
+    print(df3)
+
+
+    #
+    if not os.path.isdir(f'.\motor_objects\\{dirct}\\figures'):
+        os.makedirs(f'.\motor_objects\\{dirct}\\figures')
+
+    # plotting
+    sns.color_palette()
+    sns.set_style("whitegrid")
+    print('Making figure..')
+
+    plt.figure()
+    sns.ecdfplot(data=df3, x='team_size', y='rl_motors', hue="km_minus", palette='bright')
+    plt.xlabel('k [pN/nm]')
+    plt.ylabel('Motor run length [nm]')
+    plt.title(f'')
+    plt.savefig(f'.\motor_objects\\{dirct}\\figures\\box_rlmotors_Nkmminus_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+    '''
+    plt.figure()
+    sns.catplot(data=df3, x='km_minus', y='rl_motors', hue='team_size', kind='point')
+    plt.xlabel('Trap stiffness of minus motor [pN/nm]')
+    plt.ylabel('<Motor run length> [nm]')
+    plt.title(f'Run length motors {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\point_rlmotors_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    plt.figure()
+    sns.catplot(data=df3, x='km_minus', y='rl_motors', hue='team_size', kind='box')
+    plt.xlabel('Run length [nm]')
+    plt.title(f'Distribution run length motors {titlestring}')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\box_rlmotors_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+
+    for i in n_include:
+        df4 = df3[df3['team_size'] == i]
+        plt.figure()
+        sns.displot(df4, x='rl_motors', col='km_minus', col_wrap=2, stat='probability', binwidth=4, palette='bright', common_norm=False, common_bins=False)
+        plt.xlabel('Run length [nm]')
+        plt.title(f'Distribution run length motors, team size = {i} {titlestring}')
+        plt.savefig(f'.\motor_objects\{dirct}\\figures\\dist_rlmotors_colN_{i}N_{figname}.png', format='png', dpi=300, bbox_inches='tight')
+        if show == True:
+            plt.show()
+            plt.clf()
+            plt.close()
+        else:
+            plt.clf()
+            plt.close()
+            print('Figure saved')
+
+
+    plt.figure()
+    sns.catplot(data=df3, x="km_minus", y="run_length", hue="team_size", style='team_size', marker='team_size', kind="point", errornar='se')
+    plt.xlabel('Trap stiffness of minus motor [pN/nm]')
+    plt.ylabel('<Cargo run length> [nm]')
+    plt.title(f'{titlestring}')
+    print(f'Start saving...')
+    plt.savefig(f'.\motor_objects\{dirct}\\figures\\pp_cargo_rl_{figname}.png', format='png', dpi=300)
+    # bbox_inches='tight'
+    if show == True:
+        plt.show()
+        plt.clf()
+        plt.close()
+    else:
+        plt.clf()
+        plt.close()
+        print('Figure saved')
+    '''
+
+    return
+
+
+
 
 
 ''''Quantify asymetry'''

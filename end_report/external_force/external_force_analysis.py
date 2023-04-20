@@ -25,17 +25,19 @@ fexlist = [-1, -2, -3, -4, -5, -6, 0] # HAS TO BE THE RIGHT ORDER!!!!
 
 # xb
 #ir.xb_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, stepsize=0.1, filename='')
-ir.plot_n_fex_km_xb(dirct=dirct1, filename='xb_sampled_.csv', n_include=tslist, fex_include=fexlist, km_include=kmlist, stat='probability', show=False, figname='')
+#ir.plot_n_fex_km_xb(dirct=dirct1, filename='xb_sampled_.csv', n_include=tslist, fex_include=fexlist, km_include=kmlist, stat='probability', show=False, figname='')
 
 # trajectories
-ir.traj_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, show=False)
+#ir.traj_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, show=False)
 
 # Bound motors
-ir.bound_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, stepsize=0.01, filename='')
-ir.plot_n_fex_km_boundmotors(dirct=dirct1, filename='', n_include=tslist, fex_include=fexlist, km_include=kmlist, show=True, figname='')
+#ir.bound_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, stepsize=0.01, filename='')
+#ir.plot_n_fex_km_boundmotors(dirct=dirct1, filename='boundmotors_N_fex_km_.csv', n_include=tslist, fex_include=fexlist, km_include=kmlist, show=True, figname='')
+
 # Motor unbinding events
-ir.unbindevent_bead_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, filename='')
-ir.plot_n_fex_km_unbindevent(dirct=dirct1, filename='', n_include=tslist, fex_include=fexlist, km_include=kmlist, show=True, figname='')
+#ir.unbindevent_bead_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, filename='')
+ir.plot_n_fex_km_unbindevent(dirct=dirct1, filename='unbindevents_N_fex_km_.csv', n_include=tslist, fex_include=fexlist, km_include=kmlist, show=False, figname='')
+
 # Segments
 #ir.segment_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, filename='')
 #ir.plot_n_fex_km_seg(dirct=dirct1, filename='segments_.csv', n_include=tslist, fex_include=fexlist, km_include=kmlist, show=False, figname='')
@@ -43,11 +45,11 @@ ir.plot_n_fex_km_unbindevent(dirct=dirct1, filename='', n_include=tslist, fex_in
 
 
 # motor forces
-ir.motorforces_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, stepsize=0.1, samplesize=100, filename='')
-ir.plot_fex_N_km_forces_motors(dirct=dirct1, filename='', n_include=tslist, fex_include=fexlist, km_include=kmlist, stat='probability', show=True, figname='')
+#ir.motorforces_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, stepsize=0.1, samplesize=100, filename='')
+ir.plot_fex_N_km_forces_motors(dirct=dirct1, filename='motorforces_N_fex_km_.csv', n_include=tslist, fex_include=fexlist, km_include=kmlist, stat='probability', show=False, figname='')
 # motor displacement
 ir.xm_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, stepsize=0.01, samplesize=100, filename='')
-ir.plot_fex_N_km_xm(dirct=dirct1, filename='', n_include=tslist, fex_include=fexlist, km_include=kmlist, stat='probability', show=True, figname='')
+ir.plot_fex_N_km_xm(dirct=dirct1, filename='', n_include=tslist, fex_include=fexlist, km_include=kmlist, stat='probability', show=False, figname='')
 # motor runlengths
 ir.rl_motors_n_fex_km(dirct=dirct1, ts_list=tslist, fex_list=fexlist, km_list=kmlist, filename='')
-ir.plot_fex_N_km_rl_motors(dirct=dirct1, filename='', n_include=tslist, fex_include=fexlist, km_include=kmlist, show=True, figname='')
+ir.plot_fex_N_km_rl_motors(dirct=dirct1, filename='', n_include=tslist, fex_include=fexlist, km_include=kmlist, show=False, figname='')

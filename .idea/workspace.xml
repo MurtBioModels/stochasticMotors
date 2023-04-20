@@ -4,7 +4,6 @@
     <list default="true" id="d599fbad-a598-4a0a-a323-4384fad44ad1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/end_report/external_force/external_force_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/external_force/external_force_analysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/segment_trajectories.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/segment_trajectories.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/indlude_in_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/indlude_in_report.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
