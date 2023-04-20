@@ -7,35 +7,49 @@ def diff_asc(x_list, t_list):
     t_per_it = []
 
     for index, it_list in enumerate(x_list):
+        print('forloop x_list')
+        print(f'len(runs_per_it)={len(runs_per_it)}')
+        print(f'len(t_per_it)={len(t_per_it)}')
         diff_x = np.diff(it_list)
         diff_t = np.diff(t_list[index])
         #print(diff_x)
+        #print(diff_t)
         runs = []
         timepoints = []
         asc_count = 0
         t_count = 0
+
         for index, x in enumerate(diff_x):
+            print('forloop diff_x')
             #print(f'x={x}')
             #print(f'diff_t[index]={diff_t[index]}')
-            #print(f'asc_count={asc_count}')
-            #print(f't_count={t_count}')
+            print(f'asc_count={asc_count}')
+            print(f't_count={t_count}')
+            print(f'len(run)={len(runs)}')
+            print(f'len(timepoints)={len(timepoints)}')
             if x >= 0 and x <= 8.005:
+                print('if x >= 0 and x <= 8.005')
                 asc_count += x
                 t_count += diff_t[index]
             else:
                 #print(f'< 0 happend')
                 if asc_count > 0:
+                    print('if asc_count > 0')
                     runs.append(asc_count)
                     timepoints.append(t_count)
                     asc_count = 0
                     t_count = 0
                 else:
+                    print('else')
                     asc_count = 0
                     t_count = 0
 
         if asc_count > 0:
+            print('if asc_count > 0 na diff_x')
             runs.append(asc_count)
             timepoints.append(t_count)
+            print(f'len(run)={len(runs)}')
+            print(f'len(timepoints)={len(timepoints)}')
 
         runs_per_it.append(runs)
         t_per_it.append(timepoints)
@@ -139,8 +153,8 @@ def segment_parratio_test(xb, t):
     return
 
 if __name__ == "__main__":
-    x_list = [[0,1,2,3         ,11,    20,  22, 2,3,2,2,1,0,-1,-2,-1,0,1], [0,1,2,5,3,2,9,2,2,1,0,-1,-2,-1,0,1]]
-    t_list = [[0, 0.1, 0.2, 0.7, 1,    1.2, 1.4, 1.5, 1.6, 1.9, 2.1, 3, 3.1, 3.3, 3.5, 4.1,4.2, 4.4], [0, 0.1, 0.2, 0.9, 1, 1.2, 1.5, 1.6, 1.9, 2.1, 3, 3.1, 3.3, 3.5, 4.1,4.2]]
+    x_list = [[0,1,2, 2, 3         ,11,    20,  22, 2,3,2,2,1,0,-1,-2,-1,0,1], [0,1,2,5,3,2,9,2,2,1,0,-1,-2,-1,0,1]]
+    t_list = [[0, 0.1, 0.2, 0.3, 0.7, 1,    1.2, 1.4, 1.5, 1.6, 1.9, 2.1, 3, 3.1, 3.3, 3.5, 4.1,4.2, 4.4], [0, 0.1, 0.2, 0.9, 1, 1.2, 1.5, 1.6, 1.9, 2.1, 3, 3.1, 3.3, 3.5, 4.1,4.2]]
     xs, ts = diff_asc(x_list, t_list)
     xs2, ts2 = diff_desc(x_list, t_list)
     print(xs)

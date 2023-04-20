@@ -4,23 +4,8 @@
     <list default="true" id="d599fbad-a598-4a0a-a323-4384fad44ad1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/end_report/external_force/external_force_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/external_force/external_force_analysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/end_report/optical_trap/elastic_coupling_kt_init_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/optical_trap/optical_trap_init.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/end_report/symmetry_break/teamsize_km_symbreak1_analysis._new.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/symmetry_break/km_symbreak_analysis.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/end_report/symmetry_break/teamsize_km_symbreak1_init._new.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/symmetry_break/km_symbreak_init..py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_eps0_analysis_equalkm.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_eps0_analysis_equalkm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_eps0_ianalysis_nonequalkm.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_eps0_ianalysis_nonequalkm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fd_analysis_equalkm.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fd_analysis_equalkm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fs_analysis_equalkm.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fs_analysis_equalkm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fs_analysis_nonequalkm.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fs_analysis_nonequalkm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/motor_objects/20221114_114529_elastic_coupling_firsttryTEST_kt/data/_N_km_meanmaxdist.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/print_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/print_info.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/segment_trajectories.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/segment_trajectories.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_validation_code_testing/test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/unbiased_walk.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_validation_code_testing/unbiased_walk.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/indlude_in_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/indlude_in_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/gs_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/gs_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/variable_loops.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/variable_loops.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,11 +57,11 @@
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation\unbiased_model2\motor_objects" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\external_force\motor_objects\20230414_125004_external_force_100_False_allbound\figures" />
+      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\external_force\motor_objects\20230414_125004_external_force_100_False_allbound\figures\RL_cargo_pp" />
+      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\external_force\motor_objects\20230414_125004_external_force_100_False_allbound\figures\segments" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\optical_trap\motor_objects\20230418_123327_optical_trap_100_False_unbound" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation_code_testing" />
-      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\optical_trap\motor_objects\20230418_123327_elasticcoupling_KT_100_False_unbound" />
-      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\optical_trap\motor_objects" />
-      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\symmetry_reverse" />
     </key>
   </component>
   <component name="RunManager" selected="Python.external_force_analysis (1)">
@@ -114,27 +99,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\external_force\external_force_analysis.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="external_force_init" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="2Dsimulation" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Internship/symmetry_break" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\external_force\external_force_init.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -227,13 +191,34 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="segment_trajectories" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="2Dsimulation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/motorgillespie/analysis" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/motorgillespie/analysis/segment_trajectories.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Python.external_force_analysis (1)" />
+        <item itemvalue="Python.segment_trajectories" />
         <item itemvalue="Python.optical_trap_init (1)" />
         <item itemvalue="Python.optical_trap_init" />
         <item itemvalue="Python.external_force_analysis" />
-        <item itemvalue="Python.optical_trap_init" />
       </list>
     </recent_temporary>
   </component>
