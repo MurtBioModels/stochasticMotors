@@ -68,12 +68,13 @@ def inspect(dirct):
                     if file == 'data':
                         continue
                     if file == 'motor0':
-                        print('motor0')
+                        print(' NEW motor0')
+                        print(os.path.join(sub_path,file))
                         pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\{file}', 'rb')
                         motor0 = pickle.load(pickle_file_motor0)
                         pickle_file_motor0.close()
                         print(f'{motor0.f_ex}')
-                        print(f'{motor0.x_bead}')
+                        #print(f'{motor0.x_bead}')
                     else:
                         print('PRINT NAME IN FILES')
                         print(os.path.join(sub_path,file))
@@ -81,6 +82,9 @@ def inspect(dirct):
                         motor = pickle.load(pickle_file_motor)
                         pickle_file_motor.close()
                         print(f'motor_id={motor.id}, direction={motor.direction}, km={motor.k_m}')
+                        flat = [element for sublist in motor.forces for element in sublist]
+                        check = np.unique(np.asanyarray(flat))
+                        print(f'{check}')
 
 
 
@@ -132,7 +136,7 @@ def print_things_radius(family, k_t, n_motors, n_it, list_r):
 
     for r in list_r:
 
-        # Unpickle motor_0 object
+        # Unpickle motor_fixed object
         pickleMotor0 = open(f'Motor0_{family}_{k_t}kt_{r}radius_{n_motors}motors_{n_it}it', 'rb')
         motor0 = pickle.load(pickleMotor0)
         pickleMotor0.close()
@@ -155,7 +159,7 @@ def print_things_rl(family, k_t, radius, n_motors, n_it, list_rl):
 
     for rl in list_rl:
 
-        # Unpickle motor_0 object
+        # Unpickle motor_fixed object
         pickleMotor0 = open(f'Motor0_{family}_{k_t}kt_{radius}r_{rl}rl_{n_motors}motors_{n_it}it', 'rb')
         motor0 = pickle.load(pickleMotor0)
         pickleMotor0.close()
@@ -186,7 +190,7 @@ def print_things_rl(family, k_t, radius, n_motors, n_it, list_rl):
 def print_things_sym(subdir, family, n_motors, kt):
 
 
-    # Unpickle motor_0 object
+    # Unpickle motor_fixed object
     pickleMotor0 = open(f'..\motor_objects\\symmetry\{subdir}\Motor0_{family}_{kt}kt_{n_motors}motors', 'rb')
     motor0 = pickle.load(pickleMotor0)
     pickleMotor0.close()
@@ -278,3 +282,48 @@ def checkinggg(dirct):
                             count_twos = []
                             test2.append(count)
                         '''
+
+def check_rl_singlemotor(dirct):
+
+    path = f'.\motor_objects\\{dirct}'
+    for root, subdirs, files in os.walk(path):
+        for subdir in subdirs:
+            if subdir == 'figures':
+                continue
+            if subdir == 'data':
+                continue
+            print('PRINT NAME IN SUBDIR')
+            print(os.path.join(path,subdir))
+            sub_path = os.path.join(path,subdir)
+            # loop through motor files
+            for root2,subdir2,files2 in os.walk(sub_path):
+                for file in files2:
+                    if file == 'parameters.txt':
+                        continue
+                    if file == 'figures':
+                        continue
+                    if file == 'data':
+                        continue
+                    if file == 'motor0':
+                        print(' NEW motor0')
+                        print(os.path.join(sub_path,file))
+                        pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\{file}', 'rb')
+                        motor0 = pickle.load(pickle_file_motor0)
+                        pickle_file_motor0.close()
+                        rl = motor0.runlength_bead
+                        flat_rl = [element for sublist in rl for element in sublist]
+                        rl_mean = np.mean(flat_rl)
+                        v_0 = 740
+                        eps_0 = 0.66
+                        f_s = 7
+                        f_d = 2.1
+                        f_current = motor0.f_ex * -1
+                        v = v_0 * (1 - (f_current / f_s))
+                        eps = eps_0 * (np.e**(f_current / f_d))
+                        theoretical_mean = v/eps
+                        print(f'theoretical mean = {theoretical_mean}, mean rl = {rl_mean} ')
+
+
+
+
+    return

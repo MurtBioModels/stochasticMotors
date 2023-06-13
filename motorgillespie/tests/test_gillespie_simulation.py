@@ -14,4 +14,4 @@ class TestMotorFixed(unittest.TestCase):
             self.test_motor0 = mc.MotorFixed(k_t=0, f_ex=0, dp_v1=None, dp_v2=None, radius=None, rest_length=None, temp=None)
 
         def testForces(self):
-            my_team, motor_0 = gs.gillespie_2D_walk(my_team=[self.test_motor], motor_0=self.test_motor0, t_max=100, n_iteration=1000, dimension='1D')
+            my_team, motor_0 = gs.gillespie_2D_walk(motor_team=[self.test_motor], motor_fixed=self.test_motor0, t_max=100, n_runs=1000, dimension='1D')

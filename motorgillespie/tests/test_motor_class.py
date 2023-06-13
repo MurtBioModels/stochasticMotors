@@ -79,19 +79,19 @@ class TestMotorProtein(unittest.TestCase):
 
     def test_init(self):
 
-        self.test_motor8.init('1D')
+        self.test_motor8.motor_init('1D')
         self.assertTrue(self.test_motor8.unbound, True)
         self.assertTrue(math.isnan(self.test_motor8.xm_abs))
         self.assertTrue(math.isnan(self.test_motor8.xm_rel))
         self.assertTrue(math.isnan(self.test_motor8.x_m_abs[-1][-1]))
 
-        self.test_motor9.init('1D')
+        self.test_motor9.motor_init('1D')
         self.assertEqual(self.test_motor9.unbound, False)
         self.assertEqual(self.test_motor9.xm_abs, 0)
         self.assertEqual(self.test_motor9.xm_rel, 0)
         self.assertEqual(self.test_motor9.x_m_abs[-1][-1], 0)
 
-        self.test_motor10.init('1D')
+        self.test_motor10.motor_init('1D')
         self.assertEqual(self.test_motor10.unbound, False)
         self.assertEqual(self.test_motor10.xm_abs, 8)
         self.assertEqual(self.test_motor10.xm_rel, 0)

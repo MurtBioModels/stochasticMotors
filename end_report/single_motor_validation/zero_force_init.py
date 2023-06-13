@@ -2,12 +2,11 @@ import motorgillespie.simulation.variable_loops as vl
 import time
 import cProfile
 import pstats
-import numpy as np
 
 ### Motor parameters ###
 plus_params = {
  'family': 'Kinesin-1',
- 'member': 'antero',
+ 'member': 'plus',
  'step_size': 8,
  'k_m': 0.2,
  'v_0': 740,
@@ -17,10 +16,9 @@ plus_params = {
  'f_d': 2.1,
  'bind_rate': 5,
  'direction': 'anterograde',
- 'init_state': 'bound',
- 'calc_eps': 'exponential', # exponential and gaussian
+ 'init_state': 'unbound',
+ 'calc_eps': 'exponential',
 }
-
 
 ### Simulation parameters ###
 sim_params = {
@@ -31,23 +29,23 @@ sim_params = {
 ### Simulation settings ###
 gill_set = {
     'n_motors': [1],
-    'n_it': 10000,
-    't_max': 10000,
-    'dimension': '1D'
+    'n_it': 1000,
+    't_max': 100,
+    'dimension': '1D',
+    'single_run': False
 }
 
+fex = sim_params['f_ex']
+n_motors = gill_set['n_motors']
+singlerun = gill_set['single_run']
+init_state = 'notbound'
 date = time.strftime("%Y%m%d_%H%M%S")
-dir = f'{date}_zeroforce_tend10000'
+dir = f'{date}_zeroforce_{singlerun}_{init_state}'
+subdir = f'N={n_motors}_fex={fex}'
 
 
-
-### Data storage ###
-subdir = f'zero_force'
-short_description = ''
-
-# Initiate motor team an run simulation n_it times for t_end seconds each
 with cProfile.Profile() as profile:
-    out = output_gillespie = vl.init_run(sim_params, gill_set, plus_params, sd=short_description, dirct=dir, subdir=subdir)
+    out = output_gillespie = vl.init_run(sim_params, gill_set, plus_params, dirct=dir, subdir=subdir)
     ps = pstats.Stats(profile)
     ps.sort_stats('calls', 'cumtime')
     ps.print_stats(15)

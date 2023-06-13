@@ -1,7 +1,7 @@
 import motorgillespie.simulation.motor_class as mc
 
 
-def init_motor_0(sim_params):
+def init_motor_fixed(sim_params):
     """
 
     Parameters

@@ -2,9 +2,70 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d599fbad-a598-4a0a-a323-4384fad44ad1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/end_report/single_motor_validation/figure_1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/end_report/single_motor_validation/figure_2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/motorgillespie/analysis/stat_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/motorgillespie/errors.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/end_report/external_force/external_force_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/external_force/external_force_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/external_force/external_force_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/external_force/external_force_init.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/optical_trap/optical_trap_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/optical_trap/optical_trap_init.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221216_161313_zeroforce/figures/distplot_rl_.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221216_161313_zeroforce/zero_force/1_Kinesin-1_anterograde" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221216_161313_zeroforce/zero_force/motor0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221216_161313_zeroforce/zero_force/parameters.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221216_163234_zeroforce/figures/distplot_rl_.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221216_163234_zeroforce/figures/traj_f0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221216_163234_zeroforce/figures/traj_f0_.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221216_163234_zeroforce/zero_force/1_Kinesin-1_anterograde" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221216_163234_zeroforce/zero_force/motor0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221216_163234_zeroforce/zero_force/parameters.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221220_123227_trap/figures/distplot_fu_kt0.3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221220_123227_trap/figures/distplot_rl_kt0.3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221220_123227_trap/figures/traj_kt0.3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221220_123227_trap/trap_0.3kt/1_Kinesin-1_anterograde" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221220_123227_trap/trap_0.3kt/motor0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221220_123227_trap/trap_0.3kt/parameters.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221223_095608_zeroforce_tend10000/figures/distplot_rl_.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221223_095608_zeroforce_tend10000/figures/traj_f0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221223_095608_zeroforce_tend10000/zero_force/1_Kinesin-1_anterograde" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221223_095608_zeroforce_tend10000/zero_force/motor0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/motor_objects/20221223_095608_zeroforce_tend10000/zero_force/parameters.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/trap_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/single_motor_validation/trap_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/trap_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/single_motor_validation/trap_init.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/zero_force_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/single_motor_validation/zero_force_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/single_motor_validation/zero_force_init.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/single_motor_validation/zero_force_init.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_break/km_symbreak_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/symmetry_break/km_symbreak_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_break/km_symbreak_init..py" beforeDir="false" afterPath="$PROJECT_DIR$/end_report/symmetry_break/km_symbreak_init..py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_eps0_analysis_equalkm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_eps0_ianalysis_nonequalkm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_eps0_init__equalkm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_eps0_init_nonequalkm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fd_analysis_equalkm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fd_init__equalkm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fd_init_nonequalkm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fs_analysis_equalkm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fs_analysis_nonequalkm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fs_init__equalkm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/end_report/symmetry_reverse/assymmetry_reverse_fs_init_nonequalkm.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_validation_code_testing/single_run/init_[1,1]_singlerun_startunbound.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_validation_code_testing/single_run/init_[1,1]_singlerun_startunbound.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_validation_code_testing/unbiased_walk.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_validation_code_testing/unbiased_walk.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/dataframes.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/dataframes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/print_info.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/print_info.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/analysis/segment_trajectories.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/analysis/segment_trajectories.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/indlude_in_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/indlude_in_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/old.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/old.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/plotting/report.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/plotting/report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/analytical.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/gillespie_simulation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/gs_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/gs_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/initiate_motors.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/initiate_motors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/motor_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/motor_class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/simulation/variable_loops.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/simulation/variable_loops.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/tests/test_gillespie_simulation.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/tests/test_gillespie_simulation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/tests/test_initiate_motors.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/tests/test_initiate_motors.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/motorgillespie/tests/test_motor_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/motorgillespie/tests/test_motor_class.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,15 +117,15 @@
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation\unbiased_model2\motor_objects" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\single_motor_validation\motor_objects\20230523_111758_trap_False_notbound" />
+      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\single_motor_validation\motor_objects\20230523_102303_trap_False_notbound" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\external_force\motor_objects\20230414_125004_external_force_100_False_allbound\figures" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\external_force\motor_objects\20230414_125004_external_force_100_False_allbound\figures\RL_cargo_pp" />
       <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\external_force\motor_objects\20230414_125004_external_force_100_False_allbound\figures\segments" />
-      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\optical_trap\motor_objects\20230418_123327_optical_trap_100_False_unbound" />
-      <recent name="C:\Users\myrth\PycharmProjects\2Dsimulation\model_validation_code_testing" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.external_force_analysis (1)">
-    <configuration name="external_force_analysis (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.external_force_analysis">
+    <configuration name="external_force_analysis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="2Dsimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -85,7 +146,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="external_force_analysis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="km_symbreak_analysis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="2Dsimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -93,11 +154,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Internship/symmetry_break" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/end_report/symmetry_break" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\external_force\external_force_analysis.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/end_report/symmetry_break/km_symbreak_analysis.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -127,70 +188,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="optical_trap_init (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="2Dsimulation" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/end_report/optical_trap" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/end_report/optical_trap/optical_trap_init.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="optical_trap_init" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="2Dsimulation" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Internship/symmetry_break" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\optical_trap\optical_trap_init.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="optical_trap_init" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="2Dsimulation" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/end_report/optical_trap" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\myrth\PycharmProjects\2Dsimulation\end_report\optical_trap\optical_trap_init.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="segment_trajectories" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="stat_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="2Dsimulation" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -202,7 +200,49 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/motorgillespie/analysis/segment_trajectories.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/motorgillespie/analysis/stat_test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="trap_analysis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="2Dsimulation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/end_report/single_motor_validation" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/end_report/single_motor_validation/trap_analysis.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="zero_force_analysis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="2Dsimulation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/end_report/single_motor_validation" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/end_report/single_motor_validation/zero_force_analysis.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -213,11 +253,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.external_force_analysis (1)" />
-        <item itemvalue="Python.segment_trajectories" />
-        <item itemvalue="Python.optical_trap_init (1)" />
-        <item itemvalue="Python.optical_trap_init" />
         <item itemvalue="Python.external_force_analysis" />
+        <item itemvalue="Python.km_symbreak_analysis" />
+        <item itemvalue="Python.stat_test" />
+        <item itemvalue="Python.trap_analysis" />
+        <item itemvalue="Python.zero_force_analysis" />
       </list>
     </recent_temporary>
   </component>

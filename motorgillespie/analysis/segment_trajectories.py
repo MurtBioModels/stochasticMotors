@@ -7,9 +7,9 @@ def diff_asc(x_list, t_list):
     t_per_it = []
 
     for index, it_list in enumerate(x_list):
-        print('forloop x_list')
-        print(f'len(runs_per_it)={len(runs_per_it)}')
-        print(f'len(t_per_it)={len(t_per_it)}')
+        #print('forloop x_list')
+        #print(f'len(runs_per_it)={len(runs_per_it)}')
+        #print(f'len(t_per_it)={len(t_per_it)}')
         diff_x = np.diff(it_list)
         diff_t = np.diff(t_list[index])
         #print(diff_x)
@@ -20,36 +20,36 @@ def diff_asc(x_list, t_list):
         t_count = 0
 
         for index, x in enumerate(diff_x):
-            print('forloop diff_x')
+            #print('forloop diff_x')
             #print(f'x={x}')
             #print(f'diff_t[index]={diff_t[index]}')
-            print(f'asc_count={asc_count}')
-            print(f't_count={t_count}')
-            print(f'len(run)={len(runs)}')
-            print(f'len(timepoints)={len(timepoints)}')
+            #print(f'asc_count={asc_count}')
+            #print(f't_count={t_count}')
+            #print(f'len(run)={len(runs)}')
+            #print(f'len(timepoints)={len(timepoints)}')
             if x >= 0 and x <= 8.005:
-                print('if x >= 0 and x <= 8.005')
+                #print('if x >= 0 and x <= 8.005')
                 asc_count += x
                 t_count += diff_t[index]
             else:
                 #print(f'< 0 happend')
                 if asc_count > 0:
-                    print('if asc_count > 0')
+                    #print('if asc_count > 0')
                     runs.append(asc_count)
                     timepoints.append(t_count)
                     asc_count = 0
                     t_count = 0
                 else:
-                    print('else')
+                    #print('else')
                     asc_count = 0
                     t_count = 0
 
         if asc_count > 0:
-            print('if asc_count > 0 na diff_x')
+            #print('if asc_count > 0 na diff_x')
             runs.append(asc_count)
             timepoints.append(t_count)
-            print(f'len(run)={len(runs)}')
-            print(f'len(timepoints)={len(timepoints)}')
+            #print(f'len(run)={len(runs)}')
+            #print(f'len(timepoints)={len(timepoints)}')
 
         runs_per_it.append(runs)
         t_per_it.append(timepoints)

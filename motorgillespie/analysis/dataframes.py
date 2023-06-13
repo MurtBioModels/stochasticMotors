@@ -1845,7 +1845,7 @@ def xm_n_kmr_2(dirct, filename, ts_list, kmratio_list, stepsize=0.1):
             print(f'subdir={subdir}')
             print(f'teamsize_count={teamsize_count}')
             print(f'km_ratio_count={km_ratio_count}')
-            # Unpickle motor_0 object
+            # Unpickle motor_fixed object
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
@@ -1992,7 +1992,7 @@ def motorforces_n_kmr(dirct, filename, ts_list, parratio_list, stepsize=0.1):
             print(f'subdir={subdir}')
             print(f'teamsize_count={teamsize_count}')
             print(f'km_ratio_count={km_ratio_count}')
-            # Unpickle motor_0 object
+            # Unpickle motor_fixed object
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
@@ -2150,7 +2150,7 @@ def motorforces_n_kmr_2(dirct, filename, ts_list, parratio_list, stepsize=0.1):
             print(f'subdir={subdir}')
             print(f'teamsize_count={teamsize_count}')
             print(f'km_ratio_count={km_ratio_count}')
-            # Unpickle motor_0 object
+            # Unpickle motor_fixed object
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()

@@ -1,58 +1,63 @@
-dirct1 = '20230115_211249_symbreak_100_False_notbound'
-dirct2 = '20230411_130059_100_False_notbound'
+from motorgillespie.plotting import indlude_in_report as ir
+from motorgillespie.analysis import stat_test as st
+import numpy as np
+
+'''Analysis of motor objects obtained from script km_symbreak_init..py'''
+
+dirct1 = '20230411_130059_100_False_notbound'
 tslist = [[1, 1], [2, 2], [3, 3], [4, 4]]
-km_minus_list = [0.02, 0.04, 0.06, 0.08, 0.12, 0.14, 0.16, 0.18, 0.1, 0.2] # HAS TO BE THE RIGHT ORDER!!!!
-km_minus_list2 = [0.15, 0.1, 0.25, 0.2, 0.35, 0.3, 0.4] # HAS TO BE THE RIGHT ORDER!!!!
+km_minus_list = [0.15, 0.1, 0.25, 0.2, 0.35, 0.3, 0.4] # HAS TO BE THE RIGHT ORDER!!!!
+ts_include = ['[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]']
 
-'''Cargo RL pdf, cdf and lineplot/barplot <>'''
-'''Cargo displacement: pdf and cdf'''
-'''Cargo trajectory examples > + motor trajectories ??'''
-'''Bound motors bar plot'''
-'''(unbinding events)'''
 
-'''Bind time cargo >> combine with RL? >>> or velocity??'''
-'''segments or x vs v segments >> eventueel RL opsplitsen en dan segmenten'''
 
-'''Motor forces pdf'''
-'''Motor displacement pdf'''
-'''Motor RL pdf, cdf and lineplot/barplot <>'''
-'''Contour plots??'''
+st.plot_n_kmr_unbindevent(dirct=dirct1, filename='unbindevents_Nkmr_.csv', n_include=ts_include, show=True)
 
-## Run length ##
-#ir.rl_cargo_n_kmr(dirct=dirct1, filename='', ts_list=tslist, kmminus_list=km_minus_list)
-#ir.plot_n_kmratio_rl(dirct=dirct1, filename='N_km_minus_rl.csv')
-#ir.rl_cargo_n_kmr(dirct=dirct2, filename='', ts_list=tslist, kmminus_list=km_minus_list2)
-#ir.plot_n_kmratio_rl(dirct=dirct2, filename='N_km_minus_rl.csv', km_include=(0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4))
+## CARGO ##
+# Run Length
+#ir.rl_cargo_n_kmr(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, filename='')
+#ir.plot_n_kmratio_rl(dirct=dirct1, filename='rl_cargo_Nkmr_.csv', n_include=ts_include, km_include=km_minus_list, show=False, figname='')
 
-## Binding time ##
-#ir.bt_cargo_n_kmr(dirct=dirct2, filename='', ts_list=tslist, kmminus_list=km_minus_list2)
-#ir.plot_n_kmratio_bt(dirct=dirct2, filename='N_km_minus_bt.csv', figname='', titlestring='', n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4), show=True)
+# Bind time
+#ir.bt_cargo_n_kmr(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, filename='')
+#ir.plot_n_kmratio_bt(dirct=dirct1, filename='bt_Nkmr_.csv', n_include=ts_include, km_include=km_minus_list, show=False, figname='')
 
-## Xb distribution ##
-#ir.xb_n_kmr(dirct=dirct1, filename='', ts_list=tslist, kmratio_list=km_minus_list)
-#ir.plot_N_kmr_xb(dirct=dirct1, filename1='N_kmratio_xb1.csv', filename2='N_kmratio_xb2.csv', figname='everything', stat='probability', show=True)
-#ir.xb_n_kmr_2(dirct=dirct1, filename='', ts_list=tslist, kmratio_list=km_minus_list)
-#ir.plot_N_kmr_xb_2(dirct=dirct1, filename='N_kmratio_xb.csv', figname='random_sampled', stat='probability', show=False)
+# xb
+#ir.xb_n_kmr_2(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, stepsize=0.1, samplesize=100, filename='')
+#ir.plot_N_kmr_xb_2(dirct=dirct1, filename='xb_Nkmr_.csv', n_include=ts_include, km_include=km_minus_list, stat='probability', show=False, figname='')
+#ir.plot_N_kmr_xb_2_cdf(dirct=dirct1, filename='xb_Nkmr_.csv', n_include=ts_include, km_include=km_minus_list, show=True, figname='')
 
-## Bound Motors ##
-#ir.boundmotors_n_kmr(dirct=dirct2, filename='', ts_list=tslist, kmratio_list=km_minus_list2, stepsize=0.1)
-#ir.plot_n_kmr_boundmotors(dirct2, filename='N_kmratio_anteroretrobound.csv', figname='', titlestring='', n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4), show=True)
+# trajectories
+#ir.traj_n_kmr(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, show=False)
 
-## Unbinding events ##
-#ir.unbindevent_n_kmr(dirct=dirct2, filename='', ts_list=tslist, kmminus_list=km_minus_list2)
-#ir.plot_n_kmr_unbindevent(dirct=dirct2, filename='N_kmratio_unbindevents_.csv', figname='', titlestring='', n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4), show=True)
+# Bound motors
+#ir.boundmotors_n_kmr(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, stepsize=0.1, filename='')
+#ir.plot_n_kmr_boundmotors(dirct=dirct1, filename='anteroretrobound_Nkmratio_.csv', n_include=ts_include, km_include=km_minus_list, show=False, figname='')
 
-## motor forces ##
-#ir.motorforces_n_kmr(dirct=dirct1, filename='notsampled', ts_list=tslist, km_list=km_minus_list, stepsize=0.1)
-#ir.motorforces_n_kmr_2(dirct=dirct1, filename='sampled', ts_list=tslist, km_list=km_minus_list, stepsize=0.1)
-#ir.plot_N_kmr_forces_motors(dirct=dirct1, filename='N_kmratio_motorforces_notsampled.csv', figname='notsampled', titlestring='', n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True)
-#ir.plot_N_kmr_forces_motors(dirct=dirct1, filename='N_kmratio_motorforces_sampled.csv', figname='sampled', titlestring='', n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True)
-#ir.motorforces_n_kmr_2_sep(dirct=dirct1, filename='', ts_list=tslist, km_list=km_minus_list, stepsize=0.1)
-#ir.plot_N_kmr_forces_motors_sep(dirct=dirct1, filename='N_kmratio_motorforces_sep.csv', figname='', titlestring='', n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True)
+# Motor unbinding events
+#ir.unbindevent_n_kmr(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, filename='')
+#ir.plot_n_kmr_unbindevent(dirct=dirct1, filename='unbindevents_Nkmr_.csv', n_include=ts_include, km_include=km_minus_list, show=False, figname='')
 
-## motor displacement ##
-#ir.xm_n_kmr_2_sep(dirct=dirct1, filename='', ts_list=tslist, kmratio_list=km_minus_list, stepsize=0.1)
-#ir.plot_N_kmr_xm_sep(dirct=dirct1, filename='N_kmratio_xm_sep_.csv', figname='commonnorm=false,stack', titlestring='', n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), stat='probability', show=True)
-## motors run length ##
-#ir.rl_motors_n_kmr_sep(dirct=dirct1, filename='', ts_list=tslist, kmratio_list=km_minus_list)
-#ir.plot_n_kmratio_rl_motors_sep(dirct=dirct1, filename='N_kmratio_rl_sep_motors.csv', figname='', titlestring='', n_include=('[1, 1]', '[2, 2]', '[3, 3]', '[4, 4]'), km_include=(0.1, 0.12, 0.14, 0.16, 0.18, 0.2), show=True)
+# Segments
+#ir.segment_n_kmr(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, filename='')
+#ir.plot_n_kmr_seg(dirct=dirct1, filename='', n_include=ts_include, km_include=km_minus_list, stat='probability', show=False, figname='')
+#ir.seg_back_n_kmr(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, filename='')
+#ir.plot_n_kmr_seg_back(dirct=dirct1, filename='', n_include=ts_include, km_include=km_minus_list, stat='probability', show=False, figname='')
+
+# motor forces
+#ir.motorforces_n_kmr_2_sep(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, stepsize=0.1, samplesize=40, filename='ss40')
+#ir.plot_N_kmr_forces_motors_pdf_sep(dirct=dirct1, filename='motorforces_sep_Nkmminus__.csv', n_include=ts_include, km_include=km_minus_list, stat='probability', show=False, figname='')
+
+#ir.motorforces_n_kmr_2(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, stepsize=0.1, samplesize=50, filename='')
+#ir.plot_N_kmr_forces_motors_cdf(dirct=dirct1, filename='N_kmratio_motorforces_.csv', n_include=ts_include, km_include=km_minus_list, show=False, figname='')
+#ir.plot_N_kmr_forces_motors_violin(dirct=dirct1, filename='N_kmratio_motorforces_.csv', n_include=ts_include, km_include=km_minus_list, show=False, figname='')
+
+# motor displacement
+#ir.xm_n_kmr_2_sep(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, stepsize=0.1, samplesize=100, filename='')
+#ir.plot_N_kmr_xm_sep(dirct=dirct1, filename='xm_sep_Nkmminus_.csv', n_include=ts_include, km_include=km_minus_list, stat='probability', show=False, figname='')
+
+# motor runlengths
+#ir.rl_motors_n_kmr_sep(dirct=dirct1, ts_list=tslist, kmminus_list=km_minus_list, filename='')
+#ir.plot_n_kmratio_rl_motors_sep(dirct=dirct1, filename='rl_cargo_Nkmr_.csv', n_include=ts_include, km_include=km_minus_list, show=False, figname='')
+
+

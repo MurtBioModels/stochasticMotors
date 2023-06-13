@@ -65,7 +65,7 @@ dir = f'{date}'
 subdir = f'{n_motors}_{t_end}_{teamsize}_{singlerun}_{init_state}_0.02minus'
 short_description = ''
 
-# Initiate motor team an run simulation n_it times for t_end seconds each
+# Initiate motor motor_team an run simulation n_it times for t_end seconds each
 with cProfile.Profile() as profile:
     out = output_gillespie = vl.init_run(sim_params, gill_set, minus_params, plus_params, sd=short_description, dirct=dir, subdir=subdir)
     ps = pstats.Stats(profile)

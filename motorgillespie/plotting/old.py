@@ -7,6 +7,55 @@ import seaborn as sns
 import pandas as pd
 import os
 
+### analytical ###
+
+def calc_fu_analytical(f_s, k_t, x_0):
+    if k_t > 0:
+        unbinding_force_average = f_s/(1+(f_s/(k_t*x_0)))
+    else:
+        unbinding_force_average = 0
+
+    return unbinding_force_average
+
+
+def calc_fu_analytical_2(f_s, k_t, eps_0, v_0, k_m):
+    if k_t > 0:
+        unbinding_force_average = f_s/(1+((f_s*eps_0)/((k_t*k_m*v_0)/(k_m+k_t))))
+    else:
+        unbinding_force_average = 0
+
+    return unbinding_force_average
+
+
+def calc_walk_dist_analytical(f_s, k_t, x_0):
+
+    walk_dist_average = x_0/(1+((k_t*x_0)/f_s))
+
+    return walk_dist_average
+
+
+def loop_analytical(f_s, list_kt, eps_0, v_0, k_m, x_0, family):
+    # Create array
+    analytic_output = np.zeros([len(list_kt), 3])
+    counter = 0
+
+    # Calculate <F> for different values of Kt
+    for kt in list_kt:
+        fu = calc_fu_analytical_2(f_s, kt, eps_0, v_0, k_m)
+        walk_dist = calc_walk_dist_analytical(f_s, kt, x_0)
+        analytic_output[counter, 0] = kt
+        analytic_output[counter, 1] = fu
+        analytic_output[counter, 2] = walk_dist
+        counter += 1
+
+    # Save array
+    np.savetxt(f'AnalyticalPerKt_{family}_{len(list_kt)}nKts', analytic_output, fmt='%1.3f', delimiter='\t')
+
+    return
+
+
+
+
 def rl_fu_bead2(family, kt, n_motors, n_it, epsilon, stat="probability"):
     """
 
@@ -20,10 +69,10 @@ def rl_fu_bead2(family, kt, n_motors, n_it, epsilon, stat="probability"):
     """
     # Dictionaries storing data (=values) per number of motors (=key)
     dict_run_length_bead = {}
-    # Loop over range of motor team sizes
+    # Loop over range of motor motor_team sizes
     for n in range(1, n_motors + 1):
 
-        # Unpickle motor_0 object
+        # Unpickle motor_fixed object
         pickle_file_motor0 = open(f'Motor0_{family}_{epsilon}_{kt}kt_{n_it}it_{n}motors', 'rb')
         motor0 = pickle.load(pickle_file_motor0)
         pickle_file_motor0.close()
@@ -51,7 +100,7 @@ def rl_fu_bead2(family, kt, n_motors, n_it, epsilon, stat="probability"):
     melted_run_lengths = pd.melt(df_run_lengths, value_vars=df_run_lengths.columns, var_name='N_motors').dropna()
     print(melted_run_lengths)
 
-    # Plot distributions per size of motor team (N motors)
+    # Plot distributions per size of motor motor_team (N motors)
     g = sns.FacetGrid(melted_run_lengths, col="N_motors", col_wrap=5)
     g.map(sns.histplot, "value", stat=stat, binwidth=1, common_norm=False)
     g.set_axis_labels("Run length of bead [x]")
@@ -76,9 +125,9 @@ def dist_act_motors2(family, kt, n_motors, n_it, epsilon, stat="probability"):
     """
     # Dictionaries storing data (=values) per number of motors (=key)
     dict_active_motors = {}
-    # Loop over range of motor team sizes
+    # Loop over range of motor motor_team sizes
     for n in range(1, n_motors + 1):
-        # Unpickle motor_0 object
+        # Unpickle motor_fixed object
         pickle_file_motor0 = open(f'Motor0_{family}_{epsilon}_{kt}kt_{n_it}it_{n}motors', 'rb')
         motor0 = pickle.load(pickle_file_motor0)
         pickle_file_motor0.close()
@@ -92,7 +141,7 @@ def dist_act_motors2(family, kt, n_motors, n_it, epsilon, stat="probability"):
     melted_bound_motors = pd.melt(df_bound_motors, value_vars=df_bound_motors.columns, var_name='N_motors').dropna()
     print(melted_bound_motors.head())
 
-    # Plot distributions per size of motor team (N motors)
+    # Plot distributions per size of motor motor_team (N motors)
     g = sns.FacetGrid(melted_bound_motors, col="N_motors", col_wrap=5)
     g.map(sns.histplot, "value", stat=stat, discrete=True, common_norm=False)
     g.set_axis_labels("Active motors")
@@ -137,7 +186,7 @@ def lineplots_kt(family, list_kt, n_motors, n_it, epsilon, file_name=None):
             pickle_file_team = open(f'MotorTeam_{kt}kt_{family}_{epsilon}_{n_motors}motors_{n_it}it', 'rb')
             motor_team = pickle.load(pickle_file_team)
             pickle_file_team.close()
-            # Unpickle motor_0 object
+            # Unpickle motor_fixed object
             pickle_file_motor0 = open(f'Motor0_{kt}kt_{family}_{epsilon}_{n_motors}motors_{n_it}it', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
@@ -152,7 +201,7 @@ def lineplots_kt(family, list_kt, n_motors, n_it, epsilon, file_name=None):
                 mean_fu_motors.append((sum(motor.f_tot_unbind) / len(motor.f_tot_unbind)))
                 mean_run_motors.append((sum(motor.run_lengths) / len(motor.run_lengths)))
 
-            # Total mean value for whole team
+            # Total mean value for whole motor_team
             mean_fu_total = sum(mean_fu_motors) / len(mean_fu_motors)
             mean_run_total = sum(mean_run_motors) / len(mean_run_motors)
 
@@ -219,14 +268,14 @@ def lineplots_Nmotors(family, kt, n_motors, n_it, epsilon, file_name=None):
         output_array = np.zeros([n_motors, 5])
         # Iteration tracker
         counter = 0
-        # Loop over range of motor team sizes
+        # Loop over range of motor motor_team sizes
         for n in range(1, n_motors + 1):
 
             # Unpickle list of motor objects
             pickle_file_team = open(f'MotorTeam_{family}_{epsilon}_{kt}kt_{n_it}it_{n}motors', 'rb')
             motor_team = pickle.load(pickle_file_team)
             pickle_file_team .close()
-            # Unpickle motor_0 object
+            # Unpickle motor_fixed object
             pickle_file_motor0 = open(f'Motor0_{family}_{epsilon}_{kt}kt_{n_it}it_{n}motors', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
@@ -239,7 +288,7 @@ def lineplots_Nmotors(family, kt, n_motors, n_it, epsilon, file_name=None):
                 mean_fu_motors.extend(motor.f_tot_unbind)
                 mean_run_motors.extend(motor.run_lengths)
 
-            # Total mean value for whole team
+            # Total mean value for whole motor_team
             mean_fu_total = (sum(mean_fu_motors) / len(mean_fu_motors))
             mean_run_total = (sum(mean_run_motors) / len(mean_run_motors))
             #
@@ -274,38 +323,38 @@ def lineplots_Nmotors(family, kt, n_motors, n_it, epsilon, file_name=None):
     ### Plotting ###
     output_gillespie = np.loadtxt(f'SimulationOutput_{family}_{epsilon}Eps_{kt}Kt_{n_it}it_{n_motors}motors')
 
-    # Plot simulated mean unbinding Force as a function of motor team size (N motors)
+    # Plot simulated mean unbinding Force as a function of motor motor_team size (N motors)
     plt.plot(output_gillespie[:,0], output_gillespie[:,1], label="simulation <F>", linestyle='--', marker='o', color='b')
     plt.xlabel('Number of active motor proteins (N)')
     plt.ylabel('Mean unbinding force [pN]')
-    plt.title(f'{family}: Mean unbinding force <F> as a function motor team size')
+    plt.title(f'{family}: Mean unbinding force <F> as a function motor motor_team size')
     plt.legend()
     plt.savefig(f'{family}_{epsilon}_{kt}_{n_motors}motors_Fu.png')
     plt.show()
 
-    # Plot simulated mean Run Length as a function of motor team size (N motors)
+    # Plot simulated mean Run Length as a function of motor motor_team size (N motors)
     plt.plot(output_gillespie[:,0], output_gillespie[:,2], label="simulation <motor run length>", linestyle=':', marker='o', color='r')
     plt.xlabel('Number of active motor proteins (N)')
     plt.ylabel('Mean motor Run Length [nm]')
-    plt.title(f'{family}: Mean motor Run Length <X> as a function of motor team size')
+    plt.title(f'{family}: Mean motor Run Length <X> as a function of motor motor_team size')
     plt.legend()
     plt.savefig(f'{family}_{epsilon}_{kt}_{n_motors}motors_RunLength.png')
     plt.show()
 
-    # Plot simulated mean active motors as a function of motor team size (N motors)
+    # Plot simulated mean active motors as a function of motor motor_team size (N motors)
     plt.plot(output_gillespie[:,0], output_gillespie[:,3], label="simulation <bound motors>", linestyle=':', marker='o', color='r')
     plt.xlabel('Number of active motor proteins (N)')
     plt.ylabel('Mean bound motors (n)')
-    plt.title(f'{family}: Mean active motors as a function of motor team size')
+    plt.title(f'{family}: Mean active motors as a function of motor motor_team size')
     plt.legend()
     plt.savefig(f'{family}_{epsilon}_{kt}_{n_motors}motors_BoundMotors.png')
     plt.show()
 
-    # Plot simulated mean ead Run Length as a function of motor team size (N motors)
+    # Plot simulated mean ead Run Length as a function of motor motor_team size (N motors)
     plt.plot(output_gillespie[:,0], output_gillespie[:,4], label="simulation <bead run length>", linestyle=':', marker='o', color='r')
     plt.xlabel('Number of active motor proteins (N)')
     plt.ylabel('Mean bead Run Length <X>')
-    plt.title(f'{family}: Mean bead Run Length <X>  as a function of motor team size')
+    plt.title(f'{family}: Mean bead Run Length <X>  as a function of motor motor_team size')
     plt.legend()
     plt.savefig(f'{family}_{epsilon}_{kt}_{n_motors}motors_RLBead.png')
     plt.show()
@@ -342,7 +391,7 @@ def lineplots_radius(family, k_t, list_r, n_motors, n_it, file_name=None):
             pickle_file_team = open(f'MotorTeam_{family}_{k_t}kt_{r}radius_{n_motors}motors_{n_it}it', 'rb')
             motor_team = pickle.load(pickle_file_team)
             pickle_file_team.close()
-            # Unpickle motor_0 object
+            # Unpickle motor_fixed object
             pickle_file_motor0 = open(f'Motor0_{family}_{k_t}kt_{r}radius_{n_motors}motors_{n_it}it', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
@@ -357,7 +406,7 @@ def lineplots_radius(family, k_t, list_r, n_motors, n_it, file_name=None):
                 mean_fz.append((sum(motor.fz_unbind) / len(motor.fz_unbind)))
                 mean_run_motors.append((sum(motor.run_lengths) / len(motor.run_lengths)))
 
-            # Total mean values for whole team
+            # Total mean values for whole motor_team
             mean_fx_total = sum(mean_fx) / len(mean_fx)
             mean_fz_total = sum(mean_fz) / len(mean_fz)
             mean_run_total = sum(mean_run_motors) / len(mean_run_motors)
@@ -453,7 +502,7 @@ def lineplots_rl(family, k_t, radius, list_rl, n_motors, n_it, file_name=None):
             pickle_file_team = open(f'MotorTeam_{family}_{k_t}kt_{radius}r_{rl}rl_{n_motors}motors_{n_it}it', 'rb')
             motor_team = pickle.load(pickle_file_team)
             pickle_file_team.close()
-            # Unpickle motor_0 object
+            # Unpickle motor_fixed object
             pickle_file_motor0 = open(f'Motor0_{family}_{k_t}kt_{radius}r_{rl}rl_{n_motors}motors_{n_it}it', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
@@ -468,7 +517,7 @@ def lineplots_rl(family, k_t, radius, list_rl, n_motors, n_it, file_name=None):
                 mean_fz.append((sum(motor.fz_unbind) / len(motor.fz_unbind)))
                 mean_run_motors.append((sum(motor.run_lengths) / len(motor.run_lengths)))
 
-            # Total mean values for whole team
+            # Total mean values for whole motor_team
             mean_fx_total = sum(mean_fx) / len(mean_fx)
             mean_fz_total = sum(mean_fz) / len(mean_fz)
             mean_run_total = sum(mean_run_motors) / len(mean_run_motors)
@@ -557,12 +606,12 @@ def furl(dirct, subdir, figname, titlestring, stat='probability'):
     # Loop over range of trap stifnesses
     for kt in list_kt:
 
-        # Unpickle motor team
+        # Unpickle motor motor_team
         pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\{subdir}\motorteam', 'rb')
         motorteam = pickle.load(pickle_file_motorteam)
         pickle_file_motorteam.close()
 
-        # Create lists with unbinding forces and run lengths for whole motor team
+        # Create lists with unbinding forces and run lengths for whole motor motor_team
         fu_list = []
         run_length_list = []
         for motor in motorteam:
@@ -580,7 +629,7 @@ def furl(dirct, subdir, figname, titlestring, stat='probability'):
     melted_run_length = pd.melt(df_run_length, value_vars=df_run_length.columns, var_name='Kt').dropna()
     melted_force_unbinding = pd.melt(df_force_unbinding, value_vars=df_force_unbinding.columns, var_name='Kt').dropna()
 
-    # Plot distributions per size of motor team (N motors)
+    # Plot distributions per size of motor motor_team (N motors)
     plt.figure()
     sns.displot(melted_run_length, x='value', hue='Kt', stat=stat, binwidth=8, common_norm=False, palette="bright")
     plt.title(f'Run Length (X) distribution')
@@ -644,12 +693,12 @@ def furl2(dirct, subdir, figname, titlestring, stat='probability'):
     # Loop over range of trap stifnesses
     for kt in list_kt:
 
-        # Unpickle motor team
+        # Unpickle motor motor_team
         pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\{subdir}\motorteam', 'rb')
         motorteam = pickle.load(pickle_file_motorteam)
         pickle_file_motorteam.close()
 
-        # Create lists with unbinding forces and run lengths for whole motor team
+        # Create lists with unbinding forces and run lengths for whole motor motor_team
         fu_list = []
         run_length_list = []
         for motor in motorteam:
@@ -667,7 +716,7 @@ def furl2(dirct, subdir, figname, titlestring, stat='probability'):
     melted_run_length = pd.melt(df_run_length, value_vars=df_run_length.columns, var_name='Kt').dropna()
     melted_force_unbinding = pd.melt(df_force_unbinding, value_vars=df_force_unbinding.columns, var_name='Kt').dropna()
 
-    # Plot distributions per size of motor team (N motors)
+    # Plot distributions per size of motor motor_team (N motors)
     plt.figure()
     sns.displot(melted_run_length, x='value', hue='Kt', stat=stat, binwidth=8, common_norm=False, palette="bright")
     plt.title(f'Run Length (X) distribution')
@@ -724,7 +773,7 @@ def forces_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='proba
     if not os.path.isdir(f'.\motor_objects\\{dirct}\{subdir}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\{subdir}\\figures')
 
-    # Unpickle motor team
+    # Unpickle motor motor_team
     pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\{subdir}\motorteam', 'rb')
     motorteam = pickle.load(pickle_file_motorteam)
     pickle_file_motorteam.close()
@@ -734,7 +783,7 @@ def forces_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='proba
     pickle_file_motor0.close()
 
     dict_ip_forces = {}
-    # Loop through motors in team
+    # Loop through motors in motor_team
     for motor in motorteam:
         forces_ip = []
         # Loop through lists in nested list of bead locations
@@ -801,7 +850,7 @@ def xm_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probabili
     if not os.path.isdir(f'.\motor_objects\\{dirct}\\{subdir}\\figures'):
         os.makedirs(f'.\motor_objects\\{dirct}\\{subdir}\\figures')
 
-    # Unpickle motor team
+    # Unpickle motor motor_team
     pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\\{subdir}\motorteam', 'rb')
     motorteam = pickle.load(pickle_file_motorteam)
     pickle_file_motorteam.close()
@@ -811,7 +860,7 @@ def xm_dist(dirct, subdir, figname, titlestring, stepsize=0.001, stat='probabili
     pickle_file_motor0.close()
 
     dict_ip_xb = {}
-    # Loop through motors in team
+    # Loop through motors in motor_team
     for motor in motorteam:
         xb_ip = []
         # Loop through lists in nested list of bead locations
@@ -878,7 +927,7 @@ def forces_dist_notintrpl(subdir, family, n_motors, kt, calc_eps, subject='varva
         os.makedirs(f'.\motor_objects\\{subject}\{subdir}\\figures')
     #
     print(f'varvalue={kt}')
-    # Unpickle motor team
+    # Unpickle motor motor_team
     pickle_file_motorteam = open(f'.\motor_objects\\{subject}\{subdir}\motorteam', 'rb')
     motorteam = pickle.load(pickle_file_motorteam)
     pickle_file_motorteam.close()
@@ -888,7 +937,7 @@ def forces_dist_notintrpl(subdir, family, n_motors, kt, calc_eps, subject='varva
     pickle_file_motor0.close()
 
     dict_ip_forces = {}
-    # Loop through motors in team
+    # Loop through motors in motor_team
     for motor in motorteam:
         f_nip = []
     # Loop through lists in nested list of bead locations
@@ -1050,7 +1099,7 @@ def rl_fu_bead(dirct, subdir, figname, titlestring, k_t, stat='count', show=True
     if not os.path.isdir(f'.\motor_objects\{dirct}\{subdir}\\figures'):
         os.makedirs(f'.\motor_objects\{dirct}\{subdir}\\figures')
 
-    # Unpickle motor_0 object
+    # Unpickle motor_fixed object
     pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\{subdir}\motor0', 'rb')
     motor0 = pickle.load(pickle_file_motor0)
     pickle_file_motor0.close()
@@ -1592,7 +1641,7 @@ def heatmap_antero_retro(dirct, figname, titlestring, show=False):
             pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
             motor0 = pickle.load(pickle_file_motor0)
             pickle_file_motor0.close()
-            # Unpickle motor team
+            # Unpickle motor motor_team
             pickle_file_motorteam = open(f'.\motor_objects\\{dirct}\{subdir}\motorteam', 'rb')
             motorteam = pickle.load(pickle_file_motorteam)
             pickle_file_motorteam.close()
@@ -1737,7 +1786,7 @@ def plot_n_fex_km_rl(dirct, filename, figname, titlestring, show=False):
         sns.catplot(data=df3, x="km", y="run_length", hue="f_ex", style='km', marker='km', kind="point", errornar='se')
         plt.xlabel('km [pN/nm]')
         plt.ylabel('<run length> [nm]')
-        plt.title(f' team size N = {i} {titlestring}')
+        plt.title(f' motor_team size N = {i} {titlestring}')
         plt.savefig(f'.\motor_objects\{dirct}\\figures\\pointplot_rl_{figname}_{i}N.png', format='png', dpi=300, bbox_inches='tight')
 
         if show == True:
@@ -2389,7 +2438,7 @@ def plot_n_parratio_rl(dirct, filename, parname, figname, titlestring, show=True
 
     plt.figure()
     sns.catplot(data=df, x=f'team_size', y='run_length', hue=f'{parname}', kind='box')
-    plt.xlabel('team size [N-, N+]')
+    plt.xlabel('motor_team size [N-, N+]')
     plt.ylabel('Run length [nm]')
     plt.title(f' {titlestring}')
     plt.savefig(f'.\motor_objects\\{dirct}\\figures\\box_rl_parratio_{figname}.png', format='png', dpi=300, bbox_inches='tight')
@@ -3280,7 +3329,7 @@ def traj_kt(subdir, family, list_kt, n_motors, time_frame, it=1, file_name=None)
         fig_name = file_name
 
     for kt in list_kt:
-        # Unpickle motor_0 object
+        # Unpickle motor_fixed object
         pickleMotor0 = open(f'..\motor_objects\\kt\{subdir}\motor0_{family}_{kt}kt_{n_motors}motors', 'rb')
         motor0 = pickle.load(pickleMotor0)
         pickleMotor0.close()
@@ -3314,7 +3363,7 @@ def traj_team_size(subdir, family, n_motors, time_frame, it=1, file_name=None):
         fig_name = file_name
 
     for n in range(1, n_motors + 1):
-        # Unpickle motor_0 object
+        # Unpickle motor_fixed object
         pickleMotor0 = open(f'..\motor_objects\\teamsize\{subdir}\motor0_{family}_{n_motors}motors', 'rb')
         motor0 = pickle.load(pickleMotor0)
         pickleMotor0.close()
@@ -3348,7 +3397,7 @@ def traj_radii(subdir, family, list_r, n_motors, time_frame, it=1, file_name=Non
         fig_name = file_name
 
     for r in list_r:
-        # Unpickle motor_0 object
+        # Unpickle motor_fixed object
         pickleMotor0 = open(f'..\motor_objects\\radius\{subdir}\motor0_{family}_{r}radius_{n_motors}motors', 'rb')
         motor0 = pickle.load(pickleMotor0)
         pickleMotor0.close()
@@ -3395,7 +3444,7 @@ def traj_restlength(subdir, family, list_rl, n_motors, time_frame, it=1, file_na
         fig_name = file_name
 
     for rl in list_rl:
-        # Unpickle motor_0 object
+        # Unpickle motor_fixed object
         pickleMotor0 = open(f'..\motor_objects\\rl\{subdir}\motor0_{family}_{rl}rl{n_motors}motors', 'rb')
         motor0 = pickle.load(pickleMotor0)
         pickleMotor0.close()

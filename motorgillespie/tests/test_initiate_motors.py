@@ -53,9 +53,9 @@ class TestMotorFixed(unittest.TestCase):
 
         def setUp(self):
             sim_params1 = {'k_t': None, 'f_ex': None, 'dp_v1' : 1, 'dp_v2' : 2, 'radius' : 3, 'rest_length' : 4, 'temp' : 5}
-            self.test_motor0_1 = im.init_motor_0(sim_params1)
+            self.test_motor0_1 = im.init_motor_fixed(sim_params1)
             sim_params2 = {'k_t': 10, 'f_ex': 20}
-            self.test_motor0_2 = im.init_motor_0(sim_params2)
+            self.test_motor0_2 = im.init_motor_fixed(sim_params2)
 
         def test_isMotorFixed(self):
             self.assertIsInstance(self.test_motor0_1, mc.MotorFixed)

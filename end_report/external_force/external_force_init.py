@@ -60,7 +60,7 @@ for i in team_comb:
             subdir = f'{i}n_{j}fex_{k}km'
             short_description = ''
 
-            # Initiate motor team an run simulation n_it times for t_end seconds each
+            # Initiate motor motor_team an run simulation n_it times for t_end seconds each
             with cProfile.Profile() as profile:
                 out = output_gillespie = vl.init_run(sim_params, gill_set, plus_params, sd=short_description, dirct=dirct, subdir=subdir)
                 ps = pstats.Stats(profile)

@@ -131,7 +131,7 @@ def fair_event_choice(dirct, subdir, alt='two-sided'):
     -------
 
     """
-    # Unpickle motor_0 object
+    # Unpickle motor_fixed object
     pickleMotor0 = open(f'.\motor_objects\\{dirct}\{subdir}\Motor0', 'rb')
     motor0 = pickle.load(pickleMotor0)
     pickleMotor0.close()

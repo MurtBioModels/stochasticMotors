@@ -96,7 +96,7 @@ $ # All parameter names same between functions and modules
 - ** Think about nice figures >> Look at articles (maybe contour plots, because now you are looking at one variable at a time) CHECK
         >> Of course think about what you are actually investigating CHECK
         >> Streamline everything in the same format, remove any hardcoding, and make adjustable as much as possible, otherwise make same function for other conditions, make normal short names!!) CHECK
-- ** Think about what is relevant if you think about a team of motors where the bead is mearured (so what data is interesting: example: individual motor force distribution, coloured per motor and per variable(like Kt, or team size)) CHECk
+- ** Think about what is relevant if you think about a motor_team of motors where the bead is mearured (so what data is interesting: example: individual motor force distribution, coloured per motor and per variable(like Kt, or motor_team size)) CHECk
 
 >> Math
 (# Write out equations)
