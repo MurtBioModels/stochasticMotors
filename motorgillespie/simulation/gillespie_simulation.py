@@ -8,28 +8,26 @@ os.environ['PYTHONBREAKPOINT'] = '0'
 
 
 def gillespie_2D_walk(motor_team, motor_fixed, t_max=100, n_runs=1000, dimension='1D', single_run=False):
-    """ Function that executes the Gillespie algorithm for studying stochastic motor protein dynamics.
+    """ Function that executes the Tau-leaping Gillespie algorithm for studying stochastic motor protein dynamics.
 
-    This is a custom Tau-leaping Gillespie algorithm for simulating (collective) motor protein dynamics.
-    This function relies on calls to functions in 'gs_functions.py', and requires the parameters 'motor_team'
-    and 'motor_fixed' to be created priorly by functions within 'initiate_motors.py', which create instances of
-    the classes within 'motor_class.py'. This can be done all in one function call by the init_run function within the variable_loop.py
+    This is a Tau-leaping Gillespie algorithm for simulating (collective) motor protein dynamics.
+    This function relies on calls to functions in the 'gs_functions' module, and requires the parameters 'motor_team'
+    and 'motor_fixed' to be created priorly by the 'initiate_motors' module, which create instances of
+    the classes MotorProtein and FixedMotor. This can be done all in one function call by the 'init_run' function within the 'variable_loop' module
     file. For more information on the programme flow and function pipeline, see ... .
 
     For n_runs:
         While t < t_max:
-            Calculate cargo position (gs_functions.py)
-            Calculate motor forces (gs_functions.py)
+            Calculate cargo position (motorgillespie.simulation.gs_functions.calc_force_1D/calc_force_2D)
+            Calculate motor forces (motorgillespie.simulation.gs_functions.calc_force_1D/calc_force_2D)
             Calculate stepping and detachment rates
             Draw waiting time
-            Draw event (gs_functions.py)
+            Draw event (motorgillespie.simulation.gs_functions.draw_event)
             Execute event
             Check how many motors are bound
             Repeat
-    Return: motor_0, motor_team
 
     More information on the Gillespie algorithm: https://en.wikipedia.org/wiki/Gillespie_algorithm
-
 
     Parameters
     ----------
@@ -40,21 +38,23 @@ def gillespie_2D_walk(motor_team, motor_fixed, t_max=100, n_runs=1000, dimension
         Instance of class 'MotorFixed'.
         Fixed location at x = 0.
         Holds simulation parameters and collects cargo data.
-    t_max : int, optional
+    t_max : int
         Duration of one iteration of the Gillespie simulation. Default is 100.
-    n_runs : int, optional
+    n_runs : int
         Number of Gillespie iterations. Default is 1000.
-    dimension : str, optional
+    dimension : str
         Dimensionality of the simulation. Possible values: '1D' or '2D'. Default is '1D'.
-    single_run : bool, optional
+    single_run : bool
         If True, each iteration terminates when the cargo unbinds, creating an amount of cargo runs equal to n_iteration.
         If False, the run will continue until t_max is reached, allowing more than one cargo run per iteration and trajectories
-        where the cargo falls back to the starting position x=0. Default is False.
+        where the cargo falls back to the starting position x = 0. Default is False.
+
     Returns
     -------
-    tuple
-        A tuple containing the updated motor_team of motor protein objects and the updated fixed motor object.
-        (my_team : list of MotorProtein, motor_fixed : MotorFixed)
+    motor_team : list of motorgillespie.simulation.motor_class.MotorProtein
+        Updated MotorProtein objects, hold motor data.
+    motor_fixed : motorgillespie.simulation.motor_class.MotorFixed
+        Updated MotorFixed object, holds cargo data.
     """
 
     start = time.time()
