@@ -146,7 +146,6 @@ def gillespie_2D_walk(motor_team, motor_fixed, t_max=100, n_runs=1000, dimension
                     list_ids.append(id)
             # Sum of rates
             sum_rates = sum(list_rates)
-            #motor_fixed.sum_rates.append(sum_rates) #debug
 
             #############################
             ### Draw waiting time Tau ###
@@ -175,7 +174,6 @@ def gillespie_2D_walk(motor_team, motor_fixed, t_max=100, n_runs=1000, dimension
                 # Which motor
                 if list_ids[index] == motor.id:
                     id_match += 1
-                    #motor_fixed.match_events[i].append(motor.id)
                     # Which event
                     if list_rates[index] == motor.epsilon:
                         event_match += 1
@@ -199,11 +197,6 @@ def gillespie_2D_walk(motor_team, motor_fixed, t_max=100, n_runs=1000, dimension
                         ### INITIATE UNBINDING EVENT ###
                         motor.unbinding_event()
 
-                        #print(f'unbind event at t={t}')
-                        #if time_leaps > 1:
-                            #print(f'antero bound before this event: {motor_fixed.antero_bound[i][-1]}')
-                            #print(f'retro bound before this event: {motor_fixed.retro_bound[i][-1]}')
-
                     elif list_rates[index] == motor.alfa:
                         event_match += 1
 
@@ -220,7 +213,6 @@ def gillespie_2D_walk(motor_team, motor_fixed, t_max=100, n_runs=1000, dimension
                                 cargo_distance = f_ex/motor.k_m
                                 motor_bind = 0 - cargo_distance
                                 motor.binding_event(x_cargo=motor_bind)
-                                #print(f'First binding after cargo unbinding, motor_bind={motor_bind} = cargo_distance={cargo_distance}')
                             else:
                                 motor.binding_event(x_cargo=motor_fixed.x_cargo[i][-1])
                         else:
@@ -236,7 +228,7 @@ def gillespie_2D_walk(motor_team, motor_fixed, t_max=100, n_runs=1000, dimension
             if event_match != 1:
                 raise AssertionError(f'Event should have 1 index match not {event_match}')
 
-            # Save all current motor locations (also for the motors that didn't move: important for data analysis)
+            # Save all current motor locations (also for the motors that didn't move: important for data analysis_plotting)
             for motor in motor_team:
                 motor.x_m_abs[i].append(motor.xm_abs)
 
@@ -260,25 +252,11 @@ def gillespie_2D_walk(motor_team, motor_fixed, t_max=100, n_runs=1000, dimension
             # If there are currently zero anterograde- and retrograde motors bound, the cargo has detached from the microtubule
             if antero_bound + retro_bound == 0:
 
-                #print(f'no motors bound happened')
-                #print(f'it={i}, t={t}')
-                #print(f'bound motors = {motor_fixed.antero_bound[i][-1] + motor_fixed.retro_bound[i][-1]}')
-                #print(f'bound motors PREVIOUS= {motor_fixed.antero_bound[i][-2] + motor_fixed.retro_bound[i][-2]}')
-                #for motor in motor_team:
-                    #print(f'{motor.id}: unbound={motor.unbound}')
-                #xm_km_list = [(motor.xm_abs * motor.k_m) for motor in motor_team]
-
                 ## Save cargo run data ##
                 motor_fixed.runlength_cargo[i].append(motor_fixed.x_cargo[i][-1]) # Save current cargo location = run length
                 motor_fixed.time_unbind[i].append(t)  # Save current time: time of cargo unbind event
                 motor_fixed.stall_time.append(tau) # Stall time: time before last motor unbinds
                 end_run = True
-
-                #print(f'motor_fixed.x_cargo[i][-1]={motor_fixed.x_cargo[i][-1]}')
-                #print(f'motor_fixed.x_cargo[i][0]={motor_fixed.x_cargo[i][0]}')
-                #print(motor_fixed.x_cargo[i][-1] - motor_fixed.x_cargo[i][0])
-                #print(f'len motor0_runlength{len(motor_fixed.runlength_cargo)}')
-                #print(f'last runlength={motor_fixed.runlength_cargo[-1]}')
 
                 ## Stop the current Gillespie iteration i if single_run parameter is True, otherwise cargo will (re)attach next time step ##
                 if single_run is True:

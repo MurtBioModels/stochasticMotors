@@ -54,10 +54,6 @@ def init_run(sim_params, gill_set, *motor_params, dirct, subdir, sd=None):
     if not os.path.isdir(f'.\motor_objects\{dirct}'):
         os.makedirs(f'.\motor_objects\{dirct}')
     os.makedirs(f'.\motor_objects\{dirct}\{subdir}')
-    '''
-    if not os.path.isdir(os.path.join(".", "motor_objects", dirct)):
-        os.makedirs(os.path.join(".", "motor_objects", dirct))
-    os.makedirs(os.path.join(".", "motor_objects", dirct, subdir)) '''
 
     ### Create motor_team of motor proteins ###
     print('Initiating motor motor_team..')
@@ -72,9 +68,7 @@ def init_run(sim_params, gill_set, *motor_params, dirct, subdir, sd=None):
     print('Call Gillespie simulation...')
     team_out, motor_fixed_out = gsim.gillespie_2D_walk(motor_team=motor_team, motor_fixed=motor_fixed, t_max=t_max, n_runs=n_it, dimension=dimension, single_run=single_run)
     print('Done simulating')
-    #print(motor_fixed is motor_fixed_out)
-    #print(motor_team is team_out)
-    #print(motor_fixed.time_points[0] is motor_fixed_out.time_points[0])
+
     del motor_team
     del motor_fixed
 

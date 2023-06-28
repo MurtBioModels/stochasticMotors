@@ -43,9 +43,9 @@ singlerun = gill_set['single_run']
 init_state = 'notbound'
 dirct = f'{date}_trap_{singlerun}_{init_state}'
 
-kt_list = [0.12, 0.14, 0.16, 0.18, 0.2]
-#kt_list = [0, 0.01, 0.02, 0.04, 0.06, 0.08, 0.1]
-# Initiate motor motor_team an run simulation n_it times for t_end seconds each
+kt_list = [0, 0.01, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2] # this isn't the order in which it is saved within the filesystem!
+
+# Simulate per combination of parameters
 for i in kt_list:
     sim_params['k_t'] = i
 

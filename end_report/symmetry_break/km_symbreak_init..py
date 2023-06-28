@@ -59,9 +59,10 @@ init_state = 'notbound'
 date = time.strftime("%Y%m%d_%H%M%S")
 dir = f'{date}_{t_end}_{singlerun}_{init_state}'
 
-team_comb = [[1, 1], [2, 2], [3, 3], [4, 4]]
-retro_km = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4]
+team_comb = [[1, 1], [2, 2], [3, 3], [4, 4]] # this isn't the order in which it is saved within the filesystem!
+retro_km = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4] # this isn't the order in which it is saved within the filesystem!
 
+# Simulate per combination of parameters
 for i in team_comb:
     for j in retro_km:
         gill_set['n_motors'] = i

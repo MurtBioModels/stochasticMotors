@@ -17,9 +17,9 @@ def calc_force_1D(motor_team, motor_fixed, k_t, f_ex, t, i, end_run, x_motor0):
           List of MotorProtein instances representing the team of motor proteins.
     motor_fixed : motorgillespie.simulation.motor_class.MotorFixed
               Cargo object
-    k_t : float
-        Trap stiffness, >= 0.
-    f_ex: float
+    k_t : int or float
+        Trap stiffness.
+    f_ex: int or float
         Constant external force.
     i : int
         Current iteration for list indexing

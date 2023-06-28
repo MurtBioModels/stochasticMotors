@@ -43,12 +43,12 @@ init_state = 'allbound'
 date = time.strftime("%Y%m%d_%H%M%S")
 dirct = f'{date}_external_force_{t_end}_{singlerun}_{init_state}'
 
-retro_km = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4]
+
+retro_km = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4] # this isn't the order in which it is saved within the filesystem!
 team_comb = [[1], [2], [3], [4]]
-f_ex = [0, -1, -2, -3, -4, -5, -6]
+f_ex = [0, -1, -2, -3, -4, -5, -6] # this isn't the order in which it is saved within the filesystem!
 
-
-
+# Simulate per combination of parameters
 for i in team_comb:
     for j in f_ex:
         for k in retro_km:

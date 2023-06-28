@@ -5,11 +5,14 @@ import pickle
 import numpy as np
 import pandas as pd
 import os
-from motorgillespie.analysis import segment_trajectories as st
+from analysis_plotting import segment_trajectories as st
 import random
 
-# index=false in dataframes!!
 
+''' First function is for creating the dataframe and the second, always starts with plot_, handles
+the plotting'''
+
+# index=false in dataframes!!
 ##### ELASTIC COUPLING, N + FEX + KM #####
 '''Cargo RL pointplot''' #REPORT #DONE
 def rl_bead_n_fex_km(dirct, ts_list, fex_list, km_list, filename=''):
@@ -2770,17 +2773,6 @@ def plot_fex_N_km_rl_motors(dirct, filename, n_include, fex_include, km_include,
     '''
     return
 
-
-
-##########################################
-
-##### SYMMETRY, N + KM_RATIO #####
-# trap Fu may also be interesting: how close to N x Fs says something about how well the motors with a certain Km work together, how wel do they share load
-# RL cargo
-# vel cargo
-
-
-##########################################
 
 ##### SYMMETRY, N + KM_RATIO #####
 '''Cargo RL ''' # REPORT #DONE
@@ -5962,164 +5954,3 @@ def plot_n_kmratio_rl_motors(dirct, filename, n_include, km_include, show=True, 
     return
 
 
-
-
-
-''''Quantify asymetry'''
-'''(((contourplots??)))'''
-'''cdf/pdf(mode), box/violin(median) and lineplot/barplot(mean)'''
-'''meanmaxdist #2
-def meanmaxdist_n_kmr(dirct, filename, ts_list, kmratio_list, stepsize=1):
-    """
-
-    Parameters
-    ----------
-    NOT READY IN CALCULATIONS
-
-    Returns
-    -------
-
-    """
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\data')
-    #
-    dict_meanmaxdist = {}
-    #
-    teamsize_count = 0
-    km_ratio_count = 0
-    #
-    path = f'.\motor_objects\\{dirct}'
-    for root, subdirs, files in os.walk(path):
-        for subdir in subdirs:
-            if subdir == 'figures':
-                continue
-            if subdir == 'data':
-                continue
-            #
-            print('NEW SUBDIR/SIMULATION')
-            print(os.path.join(path,subdir))
-            sub_path = os.path.join(path,subdir)
-            #
-            print(f'subdir={subdir}')
-            print(f'teamsize_count={teamsize_count}')
-            print(f'km_ratio_count={km_ratio_count}')
-
-            # Unpickle motor_fixed object
-            pickle_file_motor0 = open(f'.\motor_objects\\{dirct}\\{subdir}\motor0', 'rb')
-            motor0 = pickle.load(pickle_file_motor0)
-            pickle_file_motor0.close()
-            #
-            ts = ts_list[teamsize_count]
-            km_ratio = kmratio_list[km_ratio_count]
-            print(f'ts={ts}')
-            print(f'km_ratio={km_ratio}')
-            #
-            key = (str(ts), str(km_ratio))
-            print(f'key={key}')
-            #
-            time = motor0.time_points
-            meanmax_distances = [] # this will get 1000 entries
-            #
-            motor_team = []
-            # loop through motor files
-            for root2,subdir2,files2 in os.walk(sub_path):
-                for file in files2:
-                    if file == 'motor0':
-                        continue
-                    if file == 'parameters.txt':
-                        continue
-                    if file == 'figures':
-                        continue
-                    if file == 'data':
-                        continue
-                    print('PRINT MOTOR FILE:')
-                    print(os.path.join(sub_path,file))
-
-                    # Unpickle motor
-                    pickle_file_motor = open(f'{sub_path}\\{file}', 'rb')
-                    motor = pickle.load(pickle_file_motor)
-                    pickle_file_motor.close()
-                    motor_team.append(motor)
-            #
-            print(f'motor_team:{motor_team}')
-            length_motorteam = len(motor_team)
-
-            #
-            print('Start interpolating distances...')
-            for i, value in enumerate(time):
-                list_of_lists = [] # one run, so one nested list per motor
-                for motor in motor_team:
-                    list_of_lists.append(motor.x_m_abs[i])
-
-                # check nested list
-                print('BEGIN EDITING')
-                test = [len(x) for x in list_of_lists]
-                print(f'lists in listoflists should be of equal size: {test}')
-                print(f'len(listoflists) should be {length_motorteam}: {len(list_of_lists)}')
-
-                # zip nested list
-                print('zip list...')
-                zipped = list(zip(*list_of_lists))
-                #print(f'print zipped: {zipped}')
-                # check zipped list
-                test2 = [len(x) for x in zipped]
-                print(f'lists of zippedlists should be of equal size, namely {length_motorteam}: unqiue values= {np.unique(np.array(test2))} , type = {type(zipped[0])}')
-                print(f'len(zipped) should be same as {test}: {len(zipped)}')
-                # remove nans
-                print('Remove NaNs...')
-                nonans = []
-                for x in zipped:
-                    nonans.append([y for y in x if y == y])
-                #nonans = [list(filter(lambda x: x == x, inner_list)) for inner_list in zipped]
-                if len(nonans) > 0:
-                    #print(f'print nozeroes: {nozeroes}')
-                    # check if any zeroes
-                    test3 = [x for sublist in nonans for x in sublist if x != x]
-                    print(f'are there any NaNs? should not be: {len(test3)}')
-                    # check equal sizes
-                    test4 = [len(x) for x in nonans]
-                    print(f'nozeroes lists should NOT be of equal size, unqiue values: {np.unique(np.array(test4))}')
-                    # max distance
-                    print('Sort lists...')
-                    sortedlists = [sorted(x) for x in nonans]
-                    # check sorted()
-                    #print(f'before sort entry 0: {nozeroes[6]}')
-                    #print(f'after sort entry 0: {sortedlists[6]}')
-                    print('Calculate distance between leading and legging motor (max distance)...')
-                    maxdistance = [x[-1]- x[0] for x in sortedlists]
-                    #test if integer/floatL
-                    print(f'check type first entry: {type(maxdistance[0])}, and lenght: {len(maxdistance)}')
-                    # check len maxdistance
-                    print('Calculate mean of the max distances...')
-                    t = np.diff(value)
-                    print(f'len(diff(t)): {len(t)}')
-                    mean_maxdistance = sum([a*b for a,b in zip(maxdistance,t)])/value[-1]
-                    meanmax_distances.append(mean_maxdistance)
-                else:
-                    meanmax_distances.append(float('nan'))
-            #
-            print(f'len meanmaxdistances (approx 1000) : {len(meanmax_distances)}')
-
-            #
-            dict_meanmaxdist[key] = meanmax_distances
-            #
-            if km_ratio_count < len(kmratio_list) - 1:
-                km_ratio_count += 1
-            elif km_ratio_count == len(kmratio_list) - 1:
-                km_ratio_count = 0
-                teamsize_count += 1
-            else:
-                print('This cannot be right')
-
-    df = pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in dict_meanmaxdist.items() ]))
-    print(df)
-    df_melt = pd.melt(df, value_name='meanmaxdist_motors', var_name=['team_size', 'km_ratio']).dropna()
-    print(df_melt)
-    #
-    if not os.path.isdir(f'.\motor_objects\\{dirct}\\data'):
-        os.makedirs(f'.\motor_objects\\{dirct}\\data')
-    df_melt.to_csv(f'.\motor_objects\\{dirct}\\data\\{filename}N_kmratio_meanmaxdist.csv')
-
-    return
-'''
